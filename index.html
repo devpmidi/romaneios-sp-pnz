@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>QVestido — Romaneios</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#f2f2f7; --bg2:#ffffff; --card:#ffffff; --text:#1c1c1e; --muted:#8e8e93;
+    --sep:#e5e5ea; --accent:#e8879e; --accent-ink:#ffffff; --chip:#f2eef0;
+    --ok:#34c759; --warn:#ff9f0a; --erro:#ff3b30; --blue:#0a84ff; --field:#f2f2f7;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.05);
+  }
+  [data-theme="escuro"]{
+    --bg:#000000; --bg2:#1c1c1e; --card:#1c1c1e; --text:#f5f5f7; --muted:#98989f;
+    --sep:#2c2c2e; --accent:#ff8fab; --accent-ink:#1c1c1e; --chip:#2c2c2e; --field:#2c2c2e;
+    --shadow:0 1px 3px rgba(0,0,0,.4);
+  }
+  [data-theme="rosa"]{
+    --bg:#fff2f6; --bg2:#ffffff; --card:#ffffff; --text:#4a2f38; --muted:#c095a3;
+    --sep:#ffe0ea; --accent:#e26d90; --accent-ink:#fff; --chip:#ffe9f0; --field:#fff5f9;
+    --shadow:0 1px 3px rgba(210,110,140,.08),0 8px 24px rgba(210,110,140,.1);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--text)}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;letter-spacing:-.01em;
+    font-feature-settings:"cv02","cv03","cv04","cv11";
+  }
+  .wrap{max-width:600px;margin:0 auto;padding:8px 14px 80px}
+  /* NAV BAR estilo iOS */
+  .nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);
+    backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:12px 4px 10px;margin:0 -4px 4px;border-bottom:.5px solid var(--sep)}
+  .nav .lead{display:flex;align-items:center;gap:8px;min-width:0}
+  .nav h1{font-size:20px;font-weight:800;margin:0;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav .sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+  .back{display:inline-flex;align-items:center;gap:2px;color:var(--accent);font-weight:600;font-size:16px;background:none;border:none;cursor:pointer;padding:6px 4px}
+  .themes{display:flex;gap:6px}
+  .dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--sep);cursor:pointer;padding:0;transition:transform .15s}
+  .dot:active{transform:scale(.9)}
+  .dot.on{border-color:var(--text)}
+  /* large title */
+  .largetitle{font-size:32px;font-weight:800;letter-spacing:-.03em;margin:6px 2px 14px}
+  /* CARDS */
+  .card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .card h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin:0 0 12px}
+  /* form fields */
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px;font-weight:600}
+  input,textarea,select{
+    width:100%;padding:12px 13px;border:none;border-radius:12px;background:var(--field);
+    color:var(--text);font-size:16px;font-family:inherit;letter-spacing:-.01em;
+  }
+  input::placeholder,textarea::placeholder{color:var(--muted)}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0}
+  textarea{resize:vertical}
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    padding:13px 18px;border-radius:14px;border:none;cursor:pointer;
+    font-size:16px;font-weight:600;font-family:inherit;letter-spacing:-.01em;transition:transform .12s,opacity .12s}
+  .btn:active{transform:scale(.97)}
+  .btn.primary{background:var(--accent);color:var(--accent-ink)}
+  .btn.tint{background:var(--chip);color:var(--accent)}
+  .btn.ghost{background:var(--field);color:var(--text)}
+  .btn.block{width:100%}
+  .btn:disabled{opacity:.45;cursor:default}
+  .btn.sm{padding:8px 12px;font-size:14px;border-radius:11px}
+  /* home tiles */
+  .tiles{display:flex;flex-direction:column;gap:12px}
+  .tile{display:flex;align-items:center;gap:14px;background:var(--card);border:none;border-radius:18px;
+    padding:18px;cursor:pointer;box-shadow:var(--shadow);text-align:left;width:100%;transition:transform .12s}
+  .tile:active{transform:scale(.98)}
+  .tile .ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto}
+  .tile .tx{flex:1;min-width:0}
+  .tile h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em}
+  .tile p{margin:2px 0 0;color:var(--muted);font-size:13px}
+  /* list rows */
+  .rows{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .rw{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:.5px solid var(--sep);background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;transition:background .1s}
+  .rw:last-child{border-bottom:none}
+  .rw:active{background:var(--field)}
+  .rw .tx{flex:1;min-width:0}
+  .rw .tt{font-size:16px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rw .mt{font-size:13px;color:var(--muted);margin-top:2px}
+  /* chips / badges */
+  .chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--chip);color:var(--muted)}
+  .chip.enviado{background:rgba(255,159,10,.15);color:var(--warn)}
+  .chip.conferido{background:rgba(52,199,89,.16);color:var(--ok)}
+  .chip.divergencia{background:rgba(255,59,48,.15);color:var(--erro)}
+  .item{border-radius:14px;padding:13px;margin-bottom:10px;background:var(--field)}
+  .item .tt{font-weight:600;font-size:15px;letter-spacing:-.02em}
+  .item .mt{font-size:12.5px;color:var(--muted);margin-top:3px}
+  /* search + segmented */
+  .search{position:relative;margin-bottom:12px}
+  .search input{padding-left:36px;background:var(--card);box-shadow:var(--shadow)}
+  .search .mag{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .seg{display:flex;background:var(--field);border-radius:11px;padding:3px;gap:3px;margin-bottom:12px}
+  .seg button{flex:1;border:none;background:none;padding:8px;border-radius:9px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit}
+  .seg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .datebar{display:flex;gap:8px;align-items:flex-end}
+  .datebar>div{flex:1}
+  .datebar label{margin-top:0}
+  /* grade */
+  .grade{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:5px}
+  .gc{border-radius:11px;padding:6px 4px 7px;text-align:center;background:var(--field);border:1.5px solid transparent}
+  .gc.on{border-color:var(--accent);background:var(--chip)}
+  .gc span{display:block;font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:3px}
+  .gc input{padding:5px 2px;text-align:center;font-weight:700;font-size:15px;background:var(--card)}
+  @media(max-width:480px){.grade{grid-template-columns:repeat(4,1fr)}}
+  /* misc */
+  .wpp{white-space:pre-wrap;font-size:13px;line-height:1.55;background:var(--field);border-radius:14px;padding:14px;margin-top:12px;font-family:ui-monospace,"SF Mono",Menlo,monospace}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(30,30,32,.92);color:#fff;
+    padding:12px 20px;border-radius:30px;font-size:14px;font-weight:600;z-index:99;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+  .empty{text-align:center;padding:34px 14px;color:var(--muted)}
+  .empty .big{font-size:40px;margin-bottom:8px}
+  .empty p{font-size:14px;margin:0}
+  .aviso{font-size:12.5px;color:var(--erro);margin-top:7px;font-weight:500}
+  .row2{display:flex;gap:10px}.row2>*{flex:1}
+  .spin{width:20px;height:20px;border:2.5px solid var(--sep);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;margin:24px auto}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .fab{margin-top:2px}
+  .stat{display:flex;gap:10px;margin-bottom:14px}
+  .stat .b{flex:1;background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--shadow);text-align:center}
+  .stat .b .n{font-size:22px;font-weight:800;letter-spacing:-.03em}
+  .stat .b .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+/* ============================================================
+   COLE AQUI a URL /exec da implantação do Apps Script:
+   ============================================================ */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVWWtSlUM07XTT0AjLUmzUwR5Pt-QK5rl9Kc-Cb80FRFDCwT8MclXcpZXEtjZiMChg8Q/exec";
+
+const GRADE = ["XPP/34","PP/36","P/38","M/40","G/42","GG/44","G1/46","G2/48","G3/50","G4/52"];
+const THEMES = [ {id:"claro",cor:"#e8879e"}, {id:"escuro",cor:"#1c1c1e"}, {id:"rosa",cor:"#e26d90"} ];
+
+/* ---- ícones SF-style (SVG stroke) ---- */
+const I = {
+  chevron:(p)=><svg width="9" height="15" viewBox="0 0 9 15" fill="none" {...p}><path d="M1.5 1.5 7 7.5 1.5 13.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  back:(p)=><svg width="12" height="19" viewBox="0 0 12 19" fill="none" {...p}><path d="M10 1.5 2.5 9.5 10 17.5" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  mag:(p)=><svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...p}><circle cx="7" cy="7" r="5.2" stroke="currentColor" strokeWidth="1.8"/><path d="M11 11l3.2 3.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  download:(p)=><svg width="17" height="17" viewBox="0 0 17 17" fill="none" {...p}><path d="M8.5 1.5v9m0 0L5 7m3.5 3.5L12 7" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/><path d="M2.5 11.5v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"/></svg>,
+  copy:(p)=><svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...p}><rect x="5" y="5" width="9" height="9" rx="2.2" stroke="currentColor" strokeWidth="1.7"/><path d="M11 5V3.8A2 2 0 009 1.8H3.8A2 2 0 001.8 3.8V9a2 2 0 002 2H5" stroke="currentColor" strokeWidth="1.7"/></svg>,
+};
+
+async function api(payload){
+  if(SCRIPT_URL.indexOf("COLE_A_URL")===0) throw new Error("Falta colar a SCRIPT_URL no topo do arquivo.");
+  const res = await fetch(SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.erro||"Erro no servidor");
+  return data;
+}
+
+/* ---- helpers ---- */
+function parseGrade(g){ if(!g) return {}; if(typeof g==="object") return g; try{return JSON.parse(g)||{}}catch(e){return {}} }
+function somaGrade(g){ return Object.values(g||{}).reduce((a,b)=>a+(Number(b)||0),0); }
+function gradeTexto(g){ const e=Object.entries(g||{}).filter(([_,q])=>Number(q)>0); return e.length? e.map(([t,q])=>`${t}:${q}`).join(" ") : "—"; }
+function fmtData(v){ if(!v) return ""; const d=new Date(v); if(isNaN(d)) return String(v); return d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
+function fmtDia(v){ const d=new Date(v); if(isNaN(d)) return ""; return d.toLocaleDateString("pt-BR"); }
+function ymd(v){ const d=new Date(v); if(isNaN(d)) return ""; return d.toISOString().slice(0,10); }
+function baixar(nome,texto,tipo){ const b=new Blob([texto],{type:tipo||"text/plain;charset=utf-8"}); const u=URL.createObjectURL(b); const a=document.createElement("a"); a.href=u; a.download=nome; a.click(); URL.revokeObjectURL(u); }
+
+function romaneioWhatsapp(origem,destino,itens){
+  const cab=`ROMANEIO ${origem} → ${destino}\n${new Date().toLocaleDateString("pt-BR")}\n`;
+  const blocos=itens.map(it=>(
+`*MARCA:* ${it.marca||""}
+*NOME DO PRODUTO:* ${it.nome_produto||""}
+*CÓDIGO DO PRODUTO:* ${it.codigo_produto||""}
+*ENDEREÇO:* ${it.endereco||""}
+*QUANTIDADE ENVIADA:* ${gradeTexto(it.grade)} (total ${somaGrade(it.grade)})`
+  )).join("\n\n");
+  return cab+"\n"+blocos;
+}
+
+/* ---- grade reutilizável ---- */
+function GradeInput({grade,onChange}){
+  const set=(t,v)=>{ const n={...grade}; const q=Math.max(0,Number(v)||0); if(q>0)n[t]=q; else delete n[t]; onChange(n); };
+  return (
+    <div className="grade">
+      {GRADE.map(t=>(
+        <div className={"gc"+((grade[t]>0)?" on":"")} key={t}>
+          <span>{t}</span>
+          <input type="number" min="0" inputMode="numeric" value={grade[t]||""} placeholder="0" onChange={e=>set(t,e.target.value)}/>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ============================================================ APP */
+function App(){
+  const [theme,setTheme]=useState(localStorage.getItem("qv_theme")||"claro");
+  const [view,setView]=useState("home");     // home | enviar | conferir | historico
+  const [rota,setRota]=useState({origem:"SP",destino:"Petrolina"}); // sentido atual
+  const [nome,setNome]=useState(localStorage.getItem("qv_nome")||"");
+  const [toast,setToast]=useState("");
+
+  useEffect(()=>{document.documentElement.setAttribute("data-theme",theme);localStorage.setItem("qv_theme",theme);},[theme]);
+  useEffect(()=>{localStorage.setItem("qv_nome",nome);},[nome]);
+  const flash=(m)=>{setToast(m);setTimeout(()=>setToast(""),2000);};
+
+  const titulos={home:"QVestido",enviar:"Novo romaneio",conferir:"Conferência",historico:"Histórico"};
+
+  return (
+    <div className="wrap">
+      <div className="nav">
+        <div className="lead">
+          {view==="home"
+            ? <div><h1>QVestido</h1><div className="sub">Romaneios · SP ⇄ Petrolina</div></div>
+            : <button className="back" onClick={()=>setView("home")}><I.back/> Início</button>}
+        </div>
+        <div className="themes">
+          {THEMES.map(t=><button key={t.id} className={"dot"+(theme===t.id?" on":"")} title={t.id} style={{background:t.cor}} onClick={()=>setTheme(t.id)}/>)}
+        </div>
+      </div>
+
+      {view!=="home" && <div className="largetitle">{titulos[view]}</div>}
+
+      {view==="home" && <Home nome={nome} setNome={setNome} go={setView} setRota={setRota}/>}
+      {view==="enviar" && <Enviar nome={nome} rota={rota} flash={flash} voltar={()=>setView("home")}/>}
+      {view==="conferir" && <Conferir nome={nome} rota={rota} flash={flash}/>}
+      {view==="historico" && <Historico flash={flash}/>}
+
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
+/* ---------------- HOME ---------------- */
+function Home({nome,setNome,go,setRota}){
+  const abrir=(v,origem,destino)=>{ if(setRota&&origem)setRota({origem,destino}); go(v); };
+  return (
+    <div>
+      <div className="card">
+        <h2>Quem está usando</h2>
+        <input value={nome} onChange={e=>setNome(e.target.value)} placeholder="Seu nome"/>
+      </div>
+
+      <div className="card">
+        <h2>São Paulo</h2>
+        <div className="tiles">
+          <button className="tile" onClick={()=>abrir("enviar","SP","Petrolina")}>
+            <div className="ico" style={{background:"rgba(255,159,10,.15)"}}>📦</div>
+            <div className="tx"><h3>Enviar pra Petrolina</h3><p>Montar romaneio de saída</p></div>
+            <I.chevron style={{color:"var(--muted)"}}/>
+          </button>
+          <button className="tile" onClick={()=>abrir("conferir","Petrolina","SP")}>
+            <div className="ico" style={{background:"rgba(52,199,89,.15)"}}>✅</div>
+            <div className="tx"><h3>Conferir o que chegou de Petrolina</h3><p>Receber e sinalizar divergência</p></div>
+            <I.chevron style={{color:"var(--muted)"}}/>
+          </button>
+        </div>
+      </div>
+
+      <div className="card">
+        <h2>Petrolina</h2>
+        <div className="tiles">
+          <button className="tile" onClick={()=>abrir("enviar","Petrolina","SP")}>
+            <div className="ico" style={{background:"rgba(255,159,10,.15)"}}>📮</div>
+            <div className="tx"><h3>Enviar pra SP</h3><p>Montar romaneio de saída</p></div>
+            <I.chevron style={{color:"var(--muted)"}}/>
+          </button>
+          <button className="tile" onClick={()=>abrir("conferir","SP","Petrolina")}>
+            <div className="ico" style={{background:"rgba(52,199,89,.15)"}}>📥</div>
+            <div className="tx"><h3>Conferir o que chegou de SP</h3><p>Receber e sinalizar divergência</p></div>
+            <I.chevron style={{color:"var(--muted)"}}/>
+          </button>
+        </div>
+      </div>
+
+      <div className="card">
+        <h2>Geral</h2>
+        <button className="tile" onClick={()=>go("historico")}>
+          <div className="ico" style={{background:"rgba(10,132,255,.14)"}}>🗂️</div>
+          <div className="tx"><h3>Histórico & relatórios</h3><p>Buscar, filtrar por data e baixar planilha</p></div>
+          <I.chevron style={{color:"var(--muted)"}}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- ENVIAR ---------------- */
+const ITEM_VAZIO={marca:"",nome_produto:"",codigo_produto:"",endereco:"",grade:{},link:""};
+function Enviar({nome,rota,flash,voltar}){
+  const [itens,setItens]=useState([]);
+  const [obs,setObs]=useState("");
+  const [form,setForm]=useState({...ITEM_VAZIO});
+  const [buscando,setBuscando]=useState(false);
+  const [enviando,setEnviando]=useState(false);
+  const [criado,setCriado]=useState(null);
+  const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+
+  async function puxar(){
+    if(!form.link.trim())return;
+    setBuscando(true);
+    try{
+      const {dados}=await api({action:"parseLink",url:form.link.trim()});
+      setForm(f=>({...f,marca:dados.marca||f.marca,nome_produto:dados.nome_produto||f.nome_produto,codigo_produto:dados.codigo_produto||f.codigo_produto}));
+      flash("Dados puxados do link ✨");
+    }catch(e){flash("Não rolou: "+e.message);}
+    setBuscando(false);
+  }
+  function addItem(){
+    if(!form.nome_produto.trim() && !form.codigo_produto.trim()){flash("Preenche nome ou código.");return;}
+    if(somaGrade(form.grade)===0){flash("Preenche a quantidade de 1 tamanho.");return;}
+    setItens(l=>[...l,{...form}]); setForm({...ITEM_VAZIO});
+  }
+  const removeItem=(i)=>setItens(l=>l.filter((_,x)=>x!==i));
+
+  async function enviar(){
+    if(!itens.length){flash("Adiciona 1 item.");return;}
+    setEnviando(true);
+    try{
+      const {id}=await api({action:"createRomaneio",origem:rota.origem,destino:rota.destino,criado_por:nome,observacoes:obs,itens});
+      setCriado({id,wpp:romaneioWhatsapp(rota.origem,rota.destino,itens)});
+      flash("Romaneio enviado! 🎉");
+    }catch(e){flash("Erro: "+e.message);}
+    setEnviando(false);
+  }
+  const copiar=(t)=>{navigator.clipboard.writeText(t);flash("Copiado!");};
+
+  if(criado){
+    return (
+      <div>
+        <div className="card">
+          <h2>Enviado ✅</h2>
+          <div className="rw" style={{cursor:"default",padding:"2px 0"}}>
+            <div className="ico" style={{width:38,height:38,borderRadius:11,background:"rgba(52,199,89,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🎉</div>
+            <div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rota.origem} → {rota.destino}</div></div>
+          </div>
+          <div className="wpp">{criado.wpp}</div>
+          <div className="row2" style={{marginTop:12}}>
+            <button className="btn primary" onClick={()=>copiar(criado.wpp)}><I.copy/> Copiar texto</button>
+            <button className="btn ghost" onClick={()=>{setCriado(null);setItens([]);setObs("");}}>Novo</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="card">
+        <h2>{rota.origem} → {rota.destino} · adicionar peça</h2>
+        <label>Link da peça</label>
+        <div className="row2">
+          <input value={form.link} onChange={e=>set("link",e.target.value)} placeholder="Cole o link do produto"/>
+          <button className="btn primary" style={{flex:"0 0 auto"}} onClick={puxar} disabled={buscando}>{buscando?"…":"Puxar"}</button>
+        </div>
+        <div className="row2">
+          <div><label>Marca</label><input value={form.marca} onChange={e=>set("marca",e.target.value)}/></div>
+          <div><label>Código</label><input value={form.codigo_produto} onChange={e=>set("codigo_produto",e.target.value)}/></div>
+        </div>
+        <label>Nome do produto</label>
+        <input value={form.nome_produto} onChange={e=>set("nome_produto",e.target.value)}/>
+        <label>Endereço</label>
+        <input value={form.endereco} onChange={e=>set("endereco",e.target.value)} placeholder="Ex: A-12"/>
+        <label>Quantidade por tamanho <span style={{color:"var(--accent)"}}>(total {somaGrade(form.grade)})</span></label>
+        <GradeInput grade={form.grade} onChange={g=>set("grade",g)}/>
+        <button className="btn tint block" style={{marginTop:14}} onClick={addItem}>+ Adicionar ao romaneio</button>
+      </div>
+
+      <div className="card">
+        <h2>Itens ({itens.length})</h2>
+        {itens.length===0 && <div className="empty"><div className="big">🧺</div><p>Nenhum item ainda</p></div>}
+        {itens.map((it,i)=>(
+          <div className="item" key={i}>
+            <div style={{display:"flex",justifyContent:"space-between",gap:10}}>
+              <div style={{minWidth:0}}>
+                <div className="tt">{it.nome_produto||"(sem nome)"}</div>
+                <div className="mt">{it.marca} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+                <div className="mt"><b>{gradeTexto(it.grade)}</b> · total {somaGrade(it.grade)}un</div>
+              </div>
+              <button className="btn ghost sm" style={{flex:"0 0 auto"}} onClick={()=>removeItem(i)}>Remover</button>
+            </div>
+          </div>
+        ))}
+        <label>Observações</label>
+        <textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/>
+        <button className="btn primary block" style={{marginTop:14}} onClick={enviar} disabled={enviando}>{enviando?"Enviando…":`Enviar pra ${rota.destino}`}</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- CONFERIR ---------------- */
+function Conferir({nome,rota,flash}){
+  const [lista,setLista]=useState(null);
+  const [aberto,setAberto]=useState(null);
+  const [conf,setConf]=useState({});
+  const [salvando,setSalvando]=useState(false);
+  const [resultado,setResultado]=useState(null);
+  const [q,setQ]=useState("");
+
+  useEffect(()=>{carregar();},[]);
+  async function carregar(){
+    setLista(null);
+    try{ const {romaneios}=await api({action:"listRomaneios",status:"enviado",origem:rota.origem,destino:rota.destino}); setLista(romaneios); }
+    catch(e){flash("Erro: "+e.message);setLista([]);}
+  }
+  async function abrir(id){
+    try{
+      const {romaneio}=await api({action:"getRomaneio",id});
+      const ini={}; romaneio.itens.forEach(it=>{ini[it.id]={grade_conferida:{...parseGrade(it.grade_enviada)},status_item:"ok",observacao_item:""};});
+      setConf(ini);setAberto(romaneio);setResultado(null);
+    }catch(e){flash("Erro: "+e.message);}
+  }
+  const setItem=(id,k,v)=>setConf(c=>({...c,[id]:{...c[id],[k]:v}}));
+
+  async function finalizar(){
+    setSalvando(true);
+    try{
+      const itens=aberto.itens.map(it=>({id:it.id,grade_conferida:conf[it.id].grade_conferida||{},status_item:conf[it.id].status_item,observacao_item:conf[it.id].observacao_item||""}));
+      const {romaneio}=await api({action:"conferir",id:aberto.id,conferido_por:nome,itens});
+      setResultado(romaneio);flash("Conferência salva ✅");
+    }catch(e){flash("Erro: "+e.message);}
+    setSalvando(false);
+  }
+  function relatorio(rom){
+    const divs=rom.itens.filter(it=>it.status_item&&it.status_item!=="ok");
+    if(!divs.length) return "Conferido sem divergências ✅";
+    const linhas=divs.map(it=>(
+`• ${it.nome_produto} (cód ${it.codigo_produto||"—"})
+  enviado:   ${gradeTexto(parseGrade(it.grade_enviada))}
+  conferido: ${gradeTexto(parseGrade(it.grade_conferida))}${it.observacao_item?("\n  obs: "+it.observacao_item):""}`
+    )).join("\n\n");
+    return `⚠️ DIVERGÊNCIAS — ${rom.id}\n${rom.origem} → ${rom.destino}\nConferido por ${rom.conferido_por}\n\n${linhas}`;
+  }
+  const copiar=(t)=>{navigator.clipboard.writeText(t);flash("Copiado!");};
+
+  if(resultado){
+    const rel=relatorio(resultado); const temDiv=resultado.status==="divergencia";
+    return (
+      <div>
+        <button className="back" onClick={()=>{setAberto(null);setResultado(null);carregar();}} style={{marginBottom:8}}><I.back/> Lista</button>
+        <div className="card">
+          <h2>Finalizado</h2>
+          <span className={"chip "+(temDiv?"divergencia":"conferido")}>{temDiv?"⚠️ Com divergência":"✓ Tudo certo"}</span>
+          <div className="wpp">{rel}</div>
+          <div className="row2" style={{marginTop:12}}>
+            <button className="btn primary" onClick={()=>copiar(rel)}><I.copy/> Copiar</button>
+            <button className="btn ghost" onClick={()=>baixar(`conferencia-${resultado.id}.txt`,rel)}><I.download/> Baixar</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if(aberto){
+    return (
+      <div>
+        <button className="back" onClick={()=>setAberto(null)} style={{marginBottom:8}}><I.back/> Romaneios</button>
+        <div className="card">
+          <h2>Conferindo {aberto.id}</h2>
+          <div className="mt" style={{color:"var(--muted)",fontSize:13}}>{aberto.origem} → {aberto.destino} · por {aberto.criado_por||"—"} · {fmtData(aberto.data_criacao)}</div>
+        </div>
+        {aberto.itens.map(it=>{
+          const c=conf[it.id]; const gEnv=parseGrade(it.grade_enviada);
+          const dif=GRADE.some(t=>(Number(gEnv[t])||0)!==(Number(c.grade_conferida[t])||0));
+          return (
+            <div className="card" key={it.id}>
+              <div className="item" style={{background:"var(--field)",marginBottom:12}}>
+                <div className="tt">{it.nome_produto||"(sem nome)"}</div>
+                <div className="mt">{it.marca} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+                <div className="mt">enviado: <b>{gradeTexto(gEnv)}</b> · total {somaGrade(gEnv)}</div>
+              </div>
+              <label>Recebido por tamanho <span style={{color:"var(--accent)"}}>(total {somaGrade(c.grade_conferida)})</span></label>
+              <GradeInput grade={c.grade_conferida} onChange={g=>setItem(it.id,"grade_conferida",g)}/>
+              <label>Situação</label>
+              <div className="seg">
+                <button className={c.status_item==="ok"?"on":""} onClick={()=>setItem(it.id,"status_item","ok")}>✓ OK</button>
+                <button className={c.status_item==="divergencia"?"on":""} onClick={()=>setItem(it.id,"status_item","divergencia")}>⚠️ Divergência</button>
+              </div>
+              {dif && c.status_item==="ok" && <div className="aviso">Grade diferente da enviada — marque divergência se for o caso.</div>}
+              {c.status_item==="divergencia" &&
+                <div><label>O que houve?</label>
+                <input value={c.observacao_item} onChange={e=>setItem(it.id,"observacao_item",e.target.value)} placeholder="Ex: faltou 1 no P, peça errada, avariada"/></div>}
+            </div>
+          );
+        })}
+        <button className="btn primary block" onClick={finalizar} disabled={salvando}>{salvando?"Salvando…":"Finalizar conferência"}</button>
+      </div>
+    );
+  }
+
+  const filtrada=(lista||[]).filter(r=>{
+    if(!q.trim())return true; const s=q.toLowerCase();
+    return String(r.id).toLowerCase().includes(s)||String(r.criado_por||"").toLowerCase().includes(s);
+  });
+  return (
+    <div>
+      <div style={{fontSize:14,color:"var(--muted)",fontWeight:600,margin:"0 2px 12px"}}>Chegando de {rota.origem} → {rota.destino}</div>
+      <div className="search"><span className="mag"><I.mag/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar por código ou pessoa"/></div>
+      {lista===null && <div className="spin"/>}
+      {lista && filtrada.length===0 && <div className="empty"><div className="big">🎉</div><p>Nada pendente por aqui</p></div>}
+      {lista && filtrada.length>0 &&
+        <div className="rows">
+          {filtrada.map(r=>(
+            <button className="rw" key={r.id} onClick={()=>abrir(r.id)}>
+              <div className="ico" style={{width:36,height:36,borderRadius:11,background:"rgba(255,159,10,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flex:"0 0 auto"}}>📦</div>
+              <div className="tx"><div className="tt">{r.id}</div><div className="mt">{r.criado_por||"—"} · {fmtData(r.data_criacao)}</div></div>
+              <span className="chip enviado">enviado</span>
+              <I.chevron style={{color:"var(--muted)"}}/>
+            </button>
+          ))}
+        </div>}
+      <button className="btn ghost block" style={{marginTop:14}} onClick={carregar}>Atualizar</button>
+    </div>
+  );
+}
+
+/* ---------------- HISTÓRICO + RELATÓRIOS ---------------- */
+function Historico({flash}){
+  const [dados,setDados]=useState(null);
+  const [q,setQ]=useState("");
+  const [status,setStatus]=useState("todos");
+  const [de,setDe]=useState(""); const [ate,setAte]=useState("");
+
+  useEffect(()=>{carregar();},[]);
+  async function carregar(){
+    setDados(null);
+    try{ const {romaneios}=await api({action:"listRomaneios"}); setDados(romaneios); }
+    catch(e){flash("Erro: "+e.message);setDados([]);}
+  }
+
+  const filtrada=useMemo(()=>{
+    return (dados||[]).filter(r=>{
+      if(status!=="todos" && String(r.status)!==status) return false;
+      if(de && ymd(r.data_criacao)<de) return false;
+      if(ate && ymd(r.data_criacao)>ate) return false;
+      if(q.trim()){ const s=q.toLowerCase();
+        if(!(String(r.id).toLowerCase().includes(s)||String(r.criado_por||"").toLowerCase().includes(s)||String(r.origem+"→"+r.destino).toLowerCase().includes(s))) return false; }
+      return true;
+    });
+  },[dados,status,de,ate,q]);
+
+  const stats=useMemo(()=>({
+    total:filtrada.length,
+    conf:filtrada.filter(r=>r.status==="conferido").length,
+    div:filtrada.filter(r=>r.status==="divergencia").length,
+  }),[filtrada]);
+
+  async function baixarXlsx(){
+    try{
+      // busca itens de cada romaneio filtrado
+      const linhas=[];
+      for(const r of filtrada){
+        const {romaneio}=await api({action:"getRomaneio",id:r.id});
+        (romaneio.itens||[]).forEach(it=>{
+          linhas.push({
+            Romaneio:r.id, Data:fmtDia(r.data_criacao), Sentido:`${r.origem} → ${r.destino}`,
+            Status:r.status, Enviou:r.criado_por, Conferiu:r.conferido_por,
+            Marca:it.marca, Produto:it.nome_produto, Codigo:it.codigo_produto, Endereco:it.endereco,
+            "Grade enviada":gradeTexto(parseGrade(it.grade_enviada)), "Total env":somaGrade(parseGrade(it.grade_enviada)),
+            "Grade conferida":gradeTexto(parseGrade(it.grade_conferida)), "Total conf":somaGrade(parseGrade(it.grade_conferida)),
+            "Situação item":it.status_item, Obs:it.observacao_item,
+          });
+        });
+      }
+      if(!linhas.length){flash("Nada pra exportar.");return;}
+      const ws=XLSX.utils.json_to_sheet(linhas);
+      const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Romaneios");
+      XLSX.writeFile(wb,`romaneios_${new Date().toISOString().slice(0,10)}.xlsx`);
+      flash("Planilha baixada 📊");
+    }catch(e){flash("Erro ao exportar: "+e.message);}
+  }
+
+  function baixarRelatorio(){
+    if(!filtrada.length){flash("Nada no período.");return;}
+    const per=(de||ate)?`Período: ${de||"início"} a ${ate||"hoje"}\n`:"";
+    const linhas=filtrada.map(r=>`${fmtDia(r.data_criacao)} · ${r.id} · ${r.origem}→${r.destino} · ${String(r.status).toUpperCase()} · env ${r.criado_por||"—"}${r.conferido_por?(" · conf "+r.conferido_por):""}`).join("\n");
+    const txt=`RELATÓRIO DE ROMANEIOS — QVestido\n${per}Total: ${stats.total} | Conferidos: ${stats.conf} | Divergências: ${stats.div}\n\n${linhas}`;
+    baixar(`relatorio_${new Date().toISOString().slice(0,10)}.txt`,txt);
+    flash("Relatório baixado 📄");
+  }
+
+  return (
+    <div>
+      <div className="stat">
+        <div className="b"><div className="n">{stats.total}</div><div className="l">Total</div></div>
+        <div className="b"><div className="n" style={{color:"var(--ok)"}}>{stats.conf}</div><div className="l">Conferidos</div></div>
+        <div className="b"><div className="n" style={{color:"var(--erro)"}}>{stats.div}</div><div className="l">Diverg.</div></div>
+      </div>
+
+      <div className="search"><span className="mag"><I.mag/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar código, pessoa ou sentido"/></div>
+
+      <div className="seg">
+        {[["todos","Todos"],["enviado","Enviados"],["conferido","Conferidos"],["divergencia","Diverg."]].map(([v,l])=>(
+          <button key={v} className={status===v?"on":""} onClick={()=>setStatus(v)}>{l}</button>
+        ))}
+      </div>
+
+      <div className="card">
+        <div className="datebar">
+          <div><label>De</label><input type="date" value={de} onChange={e=>setDe(e.target.value)}/></div>
+          <div><label>Até</label><input type="date" value={ate} onChange={e=>setAte(e.target.value)}/></div>
+        </div>
+        <div className="row2" style={{marginTop:14}}>
+          <button className="btn tint" onClick={baixarRelatorio}><I.download/> Relatório</button>
+          <button className="btn primary" onClick={baixarXlsx}><I.download/> Planilha</button>
+        </div>
+      </div>
+
+      {dados===null && <div className="spin"/>}
+      {dados && filtrada.length===0 && <div className="empty"><div className="big">🔍</div><p>Nenhum romaneio no filtro</p></div>}
+      {dados && filtrada.length>0 &&
+        <div className="rows">
+          {filtrada.map(r=>(
+            <div className="rw" key={r.id} style={{cursor:"default"}}>
+              <div className="tx">
+                <div className="tt">{r.id} <span style={{fontWeight:500,color:"var(--muted)",fontSize:13}}>· {r.origem}→{r.destino}</span></div>
+                <div className="mt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div>
+              </div>
+              <span className={"chip "+r.status}>{r.status}</span>
+            </div>
+          ))}
+        </div>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
