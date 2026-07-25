@@ -8,17 +8,22 @@
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Ionicons: ícones estilo iOS (feitos pelo time do Ionic, baseados no SF Symbols) -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
 <style>
   :root{
+    color-scheme:light;
     --bg:#f2f2f7; --bg2:#ffffff; --card:#ffffff; --text:#1c1c1e; --muted:#8e8e93;
     --sep:#e5e5ea; --accent:#e8879e; --accent-ink:#ffffff; --chip:#f2eef0;
     --ok:#34c759; --warn:#ff9f0a; --erro:#ff3b30; --blue:#0a84ff; --field:#f2f2f7;
     --shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.05);
   }
   [data-theme="escuro"]{
-    --bg:#000000; --bg2:#1c1c1e; --card:#1c1c1e; --text:#f5f5f7; --muted:#98989f;
-    --sep:#2c2c2e; --accent:#ff8fab; --accent-ink:#1c1c1e; --chip:#2c2c2e; --field:#2c2c2e;
-    --shadow:0 1px 3px rgba(0,0,0,.4);
+    color-scheme:dark;
+    --bg:#000000; --bg2:#1c1c1e; --card:#1c1c1e; --text:#ffffff; --muted:#a0a0a8;
+    --sep:#38383a; --accent:#ff8fab; --accent-ink:#1c1c1e; --chip:#2c2c2e; --field:#2c2c2e;
+    --shadow:0 1px 3px rgba(0,0,0,.5);
   }
   [data-theme="rosa"]{
     --bg:#fff2f6; --bg2:#ffffff; --card:#ffffff; --text:#4a2f38; --muted:#c095a3;
@@ -129,6 +134,18 @@
   .stat .b{flex:1;background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--shadow);text-align:center}
   .stat .b .n{font-size:22px;font-weight:800;letter-spacing:-.03em}
   .stat .b .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
+  /* botão de ícone (lixeira etc) */
+  .iconbtn{background:none;border:none;cursor:pointer;padding:6px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;flex:0 0 auto}
+  .iconbtn:active{background:var(--field)}
+  /* sheet / modal estilo iOS */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);display:flex;align-items:flex-end;justify-content:center;z-index:100;padding:14px;animation:fade .18s ease}
+  .sheet{background:var(--card);border-radius:22px;padding:20px;width:100%;max-width:420px;box-shadow:0 -4px 40px rgba(0,0,0,.3);animation:up .22s cubic-bezier(.2,.9,.3,1)}
+  .sheet h2{font-size:18px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;text-transform:none;color:var(--text)}
+  .sheet p{font-size:13.5px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  @media(min-width:480px){.overlay{align-items:center}.sheet{animation:pop .2s ease}}
+  @keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
@@ -139,18 +156,21 @@ const { useState, useEffect, useMemo } = React;
 /* ============================================================
    COLE AQUI a URL /exec da implantação do Apps Script:
    ============================================================ */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVWWtSlUM07XTT0AjLUmzUwR5Pt-QK5rl9Kc-Cb80FRFDCwT8MclXcpZXEtjZiMChg8Q/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyr1K1TTAhX04wYYO36TF5hllZ7juoQ2itreXa3zBPoN38NRCzavh8yRhTthDmiOzePYw/exec";
 
 const GRADE = ["XPP/34","PP/36","P/38","M/40","G/42","GG/44","G1/46","G2/48","G3/50","G4/52"];
 const THEMES = [ {id:"claro",cor:"#e8879e"}, {id:"escuro",cor:"#1c1c1e"}, {id:"rosa",cor:"#e26d90"} ];
 
-/* ---- ícones SF-style (SVG stroke) ---- */
+/* ---- ícones estilo iOS via Ionicons (web component <ion-icon>) ---- */
+function ion(name,size){
+  return function(p){ p=p||{}; return <ion-icon name={name} style={{fontSize:size+"px",...(p.style||{})}} />; };
+}
 const I = {
-  chevron:(p)=><svg width="9" height="15" viewBox="0 0 9 15" fill="none" {...p}><path d="M1.5 1.5 7 7.5 1.5 13.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  back:(p)=><svg width="12" height="19" viewBox="0 0 12 19" fill="none" {...p}><path d="M10 1.5 2.5 9.5 10 17.5" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  mag:(p)=><svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...p}><circle cx="7" cy="7" r="5.2" stroke="currentColor" strokeWidth="1.8"/><path d="M11 11l3.2 3.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  download:(p)=><svg width="17" height="17" viewBox="0 0 17 17" fill="none" {...p}><path d="M8.5 1.5v9m0 0L5 7m3.5 3.5L12 7" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/><path d="M2.5 11.5v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round"/></svg>,
-  copy:(p)=><svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...p}><rect x="5" y="5" width="9" height="9" rx="2.2" stroke="currentColor" strokeWidth="1.7"/><path d="M11 5V3.8A2 2 0 009 1.8H3.8A2 2 0 001.8 3.8V9a2 2 0 002 2H5" stroke="currentColor" strokeWidth="1.7"/></svg>,
+  chevron: ion("chevron-forward",15),
+  back:    ion("chevron-back",22),
+  mag:     ion("search-outline",17),
+  download:ion("download-outline",18),
+  copy:    ion("copy-outline",17),
 };
 
 async function api(payload){
@@ -193,6 +213,36 @@ function GradeInput({grade,onChange}){
           <input type="number" min="0" inputMode="numeric" value={grade[t]||""} placeholder="0" onChange={e=>set(t,e.target.value)}/>
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ---- sheet de senha (confirmar exclusão) ---- */
+function SenhaSheet({titulo,aviso,confirmLabel,onConfirm,onCancel}){
+  const [senha,setSenha]=useState("");
+  const [erro,setErro]=useState("");
+  const [ocupado,setOcupado]=useState(false);
+  async function confirmar(){
+    setOcupado(true); setErro("");
+    try{ await onConfirm(senha); }
+    catch(e){ setErro(e.message||"Erro"); setOcupado(false); }
+  }
+  return (
+    <div className="overlay" onClick={onCancel}>
+      <div className="sheet" onClick={e=>e.stopPropagation()}>
+        <h2>{titulo}</h2>
+        {aviso && <p>{aviso}</p>}
+        <input type="password" value={senha} autoFocus placeholder="Senha"
+          onChange={e=>{setSenha(e.target.value);setErro("");}}
+          onKeyDown={e=>{if(e.key==="Enter")confirmar();}}/>
+        {erro && <div className="aviso">{erro}</div>}
+        <div className="row2" style={{marginTop:14}}>
+          <button className="btn ghost" onClick={onCancel}>Cancelar</button>
+          <button className="btn primary" style={{background:"var(--erro)",color:"#fff"}} onClick={confirmar} disabled={ocupado}>
+            {ocupado?"…":(confirmLabel||"Confirmar")}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -250,12 +300,12 @@ function Home({nome,setNome,go,setRota}){
         <h2>São Paulo</h2>
         <div className="tiles">
           <button className="tile" onClick={()=>abrir("enviar","SP","Petrolina")}>
-            <div className="ico" style={{background:"rgba(255,159,10,.15)"}}>📦</div>
+            <div className="ico" style={{background:"rgba(255,159,10,.15)"}}><ion-icon name="cube" style={{color:"#ff9f0a"}}/></div>
             <div className="tx"><h3>Enviar pra Petrolina</h3><p>Montar romaneio de saída</p></div>
             <I.chevron style={{color:"var(--muted)"}}/>
           </button>
           <button className="tile" onClick={()=>abrir("conferir","Petrolina","SP")}>
-            <div className="ico" style={{background:"rgba(52,199,89,.15)"}}>✅</div>
+            <div className="ico" style={{background:"rgba(52,199,89,.15)"}}><ion-icon name="checkmark-circle" style={{color:"#34c759"}}/></div>
             <div className="tx"><h3>Conferir o que chegou de Petrolina</h3><p>Receber e sinalizar divergência</p></div>
             <I.chevron style={{color:"var(--muted)"}}/>
           </button>
@@ -266,12 +316,12 @@ function Home({nome,setNome,go,setRota}){
         <h2>Petrolina</h2>
         <div className="tiles">
           <button className="tile" onClick={()=>abrir("enviar","Petrolina","SP")}>
-            <div className="ico" style={{background:"rgba(255,159,10,.15)"}}>📮</div>
+            <div className="ico" style={{background:"rgba(255,159,10,.15)"}}><ion-icon name="cube" style={{color:"#ff9f0a"}}/></div>
             <div className="tx"><h3>Enviar pra SP</h3><p>Montar romaneio de saída</p></div>
             <I.chevron style={{color:"var(--muted)"}}/>
           </button>
           <button className="tile" onClick={()=>abrir("conferir","SP","Petrolina")}>
-            <div className="ico" style={{background:"rgba(52,199,89,.15)"}}>📥</div>
+            <div className="ico" style={{background:"rgba(52,199,89,.15)"}}><ion-icon name="checkmark-circle" style={{color:"#34c759"}}/></div>
             <div className="tx"><h3>Conferir o que chegou de SP</h3><p>Receber e sinalizar divergência</p></div>
             <I.chevron style={{color:"var(--muted)"}}/>
           </button>
@@ -281,7 +331,7 @@ function Home({nome,setNome,go,setRota}){
       <div className="card">
         <h2>Geral</h2>
         <button className="tile" onClick={()=>go("historico")}>
-          <div className="ico" style={{background:"rgba(10,132,255,.14)"}}>🗂️</div>
+          <div className="ico" style={{background:"rgba(10,132,255,.14)"}}><ion-icon name="documents" style={{color:"#0a84ff"}}/></div>
           <div className="tx"><h3>Histórico & relatórios</h3><p>Buscar, filtrar por data e baixar planilha</p></div>
           <I.chevron style={{color:"var(--muted)"}}/>
         </button>
@@ -336,7 +386,7 @@ function Enviar({nome,rota,flash,voltar}){
         <div className="card">
           <h2>Enviado ✅</h2>
           <div className="rw" style={{cursor:"default",padding:"2px 0"}}>
-            <div className="ico" style={{width:38,height:38,borderRadius:11,background:"rgba(52,199,89,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🎉</div>
+            <div className="ico" style={{width:38,height:38,borderRadius:11,background:"rgba(52,199,89,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}><ion-icon name="checkmark-circle" style={{color:"#34c759"}}/></div>
             <div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rota.origem} → {rota.destino}</div></div>
           </div>
           <div className="wpp">{criado.wpp}</div>
@@ -373,7 +423,7 @@ function Enviar({nome,rota,flash,voltar}){
 
       <div className="card">
         <h2>Itens ({itens.length})</h2>
-        {itens.length===0 && <div className="empty"><div className="big">🧺</div><p>Nenhum item ainda</p></div>}
+        {itens.length===0 && <div className="empty"><div className="big"><ion-icon name="cube-outline" style={{color:"var(--muted)"}}/></div><p>Nenhum item ainda</p></div>}
         {itens.map((it,i)=>(
           <div className="item" key={i}>
             <div style={{display:"flex",justifyContent:"space-between",gap:10}}>
@@ -438,6 +488,19 @@ function Conferir({nome,rota,flash}){
     return `⚠️ DIVERGÊNCIAS — ${rom.id}\n${rom.origem} → ${rom.destino}\nConferido por ${rom.conferido_por}\n\n${linhas}`;
   }
   const copiar=(t)=>{navigator.clipboard.writeText(t);flash("Copiado!");};
+  function baixarConfXlsx(rom){
+    const linhas=(rom.itens||[]).map(it=>({
+      Produto:it.nome_produto, Codigo:it.codigo_produto, Marca:it.marca, Endereco:it.endereco,
+      "Grade enviada":gradeTexto(parseGrade(it.grade_enviada)), "Total env":somaGrade(parseGrade(it.grade_enviada)),
+      "Grade conferida":gradeTexto(parseGrade(it.grade_conferida)), "Total conf":somaGrade(parseGrade(it.grade_conferida)),
+      "Situação":it.status_item, Obs:it.observacao_item,
+    }));
+    if(!linhas.length){flash("Nada pra exportar.");return;}
+    const ws=XLSX.utils.json_to_sheet(linhas);
+    const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Conferência");
+    XLSX.writeFile(wb,`conferencia-${rom.id}.xlsx`);
+    flash("Planilha baixada 📊");
+  }
 
   if(resultado){
     const rel=relatorio(resultado); const temDiv=resultado.status==="divergencia";
@@ -450,7 +513,7 @@ function Conferir({nome,rota,flash}){
           <div className="wpp">{rel}</div>
           <div className="row2" style={{marginTop:12}}>
             <button className="btn primary" onClick={()=>copiar(rel)}><I.copy/> Copiar</button>
-            <button className="btn ghost" onClick={()=>baixar(`conferencia-${resultado.id}.txt`,rel)}><I.download/> Baixar</button>
+            <button className="btn ghost" onClick={()=>baixarConfXlsx(resultado)}><I.download/> Baixar xlsx</button>
           </div>
         </div>
       </div>
@@ -503,12 +566,12 @@ function Conferir({nome,rota,flash}){
       <div style={{fontSize:14,color:"var(--muted)",fontWeight:600,margin:"0 2px 12px"}}>Chegando de {rota.origem} → {rota.destino}</div>
       <div className="search"><span className="mag"><I.mag/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar por código ou pessoa"/></div>
       {lista===null && <div className="spin"/>}
-      {lista && filtrada.length===0 && <div className="empty"><div className="big">🎉</div><p>Nada pendente por aqui</p></div>}
+      {lista && filtrada.length===0 && <div className="empty"><div className="big"><ion-icon name="checkmark-done-circle-outline" style={{color:"#34c759"}}/></div><p>Nada pendente por aqui</p></div>}
       {lista && filtrada.length>0 &&
         <div className="rows">
           {filtrada.map(r=>(
             <button className="rw" key={r.id} onClick={()=>abrir(r.id)}>
-              <div className="ico" style={{width:36,height:36,borderRadius:11,background:"rgba(255,159,10,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flex:"0 0 auto"}}>📦</div>
+              <div className="ico" style={{width:36,height:36,borderRadius:11,background:"rgba(255,159,10,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flex:"0 0 auto"}}><ion-icon name="cube" style={{color:"#ff9f0a"}}/></div>
               <div className="tx"><div className="tt">{r.id}</div><div className="mt">{r.criado_por||"—"} · {fmtData(r.data_criacao)}</div></div>
               <span className="chip enviado">enviado</span>
               <I.chevron style={{color:"var(--muted)"}}/>
@@ -526,6 +589,15 @@ function Historico({flash}){
   const [q,setQ]=useState("");
   const [status,setStatus]=useState("todos");
   const [de,setDe]=useState(""); const [ate,setAte]=useState("");
+  const [del,setDel]=useState(null); // romaneio marcado pra excluir
+
+  async function confirmarDelete(senha){
+    // a senha é conferida no servidor (Apps Script). Se estiver errada, o backend devolve erro.
+    await api({action:"deleteRomaneio",id:del.id,senha});
+    setDel(null);
+    flash("Romaneio excluído 🗑️");
+    carregar();
+  }
 
   useEffect(()=>{carregar();},[]);
   async function carregar(){
@@ -578,11 +650,24 @@ function Historico({flash}){
 
   function baixarRelatorio(){
     if(!filtrada.length){flash("Nada no período.");return;}
-    const per=(de||ate)?`Período: ${de||"início"} a ${ate||"hoje"}\n`:"";
-    const linhas=filtrada.map(r=>`${fmtDia(r.data_criacao)} · ${r.id} · ${r.origem}→${r.destino} · ${String(r.status).toUpperCase()} · env ${r.criado_por||"—"}${r.conferido_por?(" · conf "+r.conferido_por):""}`).join("\n");
-    const txt=`RELATÓRIO DE ROMANEIOS — QVestido\n${per}Total: ${stats.total} | Conferidos: ${stats.conf} | Divergências: ${stats.div}\n\n${linhas}`;
-    baixar(`relatorio_${new Date().toISOString().slice(0,10)}.txt`,txt);
-    flash("Relatório baixado 📄");
+    // Aba 1: resumo (1 linha por romaneio)
+    const resumo=filtrada.map(r=>({
+      Data:fmtDia(r.data_criacao), Romaneio:r.id, Sentido:`${r.origem} → ${r.destino}`,
+      Status:r.status, Enviou:r.criado_por||"", Conferiu:r.conferido_por||"",
+    }));
+    // Aba 2: totais
+    const totais=[
+      {Indicador:"Total de romaneios", Valor:stats.total},
+      {Indicador:"Conferidos",         Valor:stats.conf},
+      {Indicador:"Com divergência",    Valor:stats.div},
+      {Indicador:"Período de",         Valor:de||"início"},
+      {Indicador:"Período até",        Valor:ate||"hoje"},
+    ];
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(resumo),"Relatório");
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(totais),"Totais");
+    XLSX.writeFile(wb,`relatorio_${new Date().toISOString().slice(0,10)}.xlsx`);
+    flash("Relatório baixado 📊");
   }
 
   return (
@@ -613,7 +698,7 @@ function Historico({flash}){
       </div>
 
       {dados===null && <div className="spin"/>}
-      {dados && filtrada.length===0 && <div className="empty"><div className="big">🔍</div><p>Nenhum romaneio no filtro</p></div>}
+      {dados && filtrada.length===0 && <div className="empty"><div className="big"><ion-icon name="search-outline" style={{color:"var(--muted)"}}/></div><p>Nenhum romaneio no filtro</p></div>}
       {dados && filtrada.length>0 &&
         <div className="rows">
           {filtrada.map(r=>(
@@ -623,9 +708,20 @@ function Historico({flash}){
                 <div className="mt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div>
               </div>
               <span className={"chip "+r.status}>{r.status}</span>
+              <button className="iconbtn" title="Excluir romaneio" onClick={()=>setDel(r)}>
+                <ion-icon name="trash-outline" style={{fontSize:"19px",color:"var(--erro)"}}/>
+              </button>
             </div>
           ))}
         </div>}
+
+      {del && <SenhaSheet
+        titulo="Excluir romaneio?"
+        aviso={`${del.id} · ${del.origem}→${del.destino}. Isso apaga o romaneio e todos os itens dele — não dá pra desfazer. Digite a senha pra confirmar.`}
+        confirmLabel="Excluir"
+        onCancel={()=>setDel(null)}
+        onConfirm={confirmarDelete}
+      />}
     </div>
   );
 }
