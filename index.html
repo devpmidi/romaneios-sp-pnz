@@ -8,7 +8,6 @@
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- Ionicons: ícones estilo iOS (feitos pelo time do Ionic, baseados no SF Symbols) -->
 <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
 <style>
@@ -38,7 +37,6 @@
     font-feature-settings:"cv02","cv03","cv04","cv11";
   }
   .wrap{max-width:600px;margin:0 auto;padding:8px 14px 80px}
-  /* NAV BAR estilo iOS */
   .nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);
     backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
     display:flex;align-items:center;justify-content:space-between;gap:8px;
@@ -51,12 +49,9 @@
   .dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--sep);cursor:pointer;padding:0;transition:transform .15s}
   .dot:active{transform:scale(.9)}
   .dot.on{border-color:var(--text)}
-  /* large title */
   .largetitle{font-size:32px;font-weight:800;letter-spacing:-.03em;margin:6px 2px 14px}
-  /* CARDS */
   .card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
   .card h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin:0 0 12px}
-  /* form fields */
   label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px;font-weight:600}
   input,textarea,select{
     width:100%;padding:12px 13px;border:none;border-radius:12px;background:var(--field);
@@ -65,7 +60,6 @@
   input::placeholder,textarea::placeholder{color:var(--muted)}
   input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:0}
   textarea{resize:vertical}
-  /* buttons */
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
     padding:13px 18px;border-radius:14px;border:none;cursor:pointer;
     font-size:16px;font-weight:600;font-family:inherit;letter-spacing:-.01em;transition:transform .12s,opacity .12s}
@@ -76,7 +70,6 @@
   .btn.block{width:100%}
   .btn:disabled{opacity:.45;cursor:default}
   .btn.sm{padding:8px 12px;font-size:14px;border-radius:11px}
-  /* home tiles */
   .tiles{display:flex;flex-direction:column;gap:12px}
   .tile{display:flex;align-items:center;gap:14px;background:var(--card);border:none;border-radius:18px;
     padding:18px;cursor:pointer;box-shadow:var(--shadow);text-align:left;width:100%;transition:transform .12s}
@@ -85,7 +78,6 @@
   .tile .tx{flex:1;min-width:0}
   .tile h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em}
   .tile p{margin:2px 0 0;color:var(--muted);font-size:13px}
-  /* list rows */
   .rows{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
   .rw{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:.5px solid var(--sep);background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;transition:background .1s}
   .rw:last-child{border-bottom:none}
@@ -93,7 +85,6 @@
   .rw .tx{flex:1;min-width:0}
   .rw .tt{font-size:16px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .rw .mt{font-size:13px;color:var(--muted);margin-top:2px}
-  /* chips / badges */
   .chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--chip);color:var(--muted)}
   .chip.enviado{background:rgba(255,159,10,.15);color:var(--warn)}
   .chip.conferido{background:rgba(52,199,89,.16);color:var(--ok)}
@@ -101,7 +92,6 @@
   .item{border-radius:14px;padding:13px;margin-bottom:10px;background:var(--field)}
   .item .tt{font-weight:600;font-size:15px;letter-spacing:-.02em}
   .item .mt{font-size:12.5px;color:var(--muted);margin-top:3px}
-  /* search + segmented */
   .search{position:relative;margin-bottom:12px}
   .search input{padding-left:36px;background:var(--card);box-shadow:var(--shadow)}
   .search .mag{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
@@ -111,14 +101,12 @@
   .datebar{display:flex;gap:8px;align-items:flex-end}
   .datebar>div{flex:1}
   .datebar label{margin-top:0}
-  /* grade */
   .grade{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:5px}
   .gc{border-radius:11px;padding:6px 4px 7px;text-align:center;background:var(--field);border:1.5px solid transparent}
   .gc.on{border-color:var(--accent);background:var(--chip)}
   .gc span{display:block;font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:3px}
   .gc input{padding:5px 2px;text-align:center;font-weight:700;font-size:15px;background:var(--card)}
   @media(max-width:480px){.grade{grid-template-columns:repeat(4,1fr)}}
-  /* misc */
   .wpp{white-space:pre-wrap;font-size:13px;line-height:1.55;background:var(--field);border-radius:14px;padding:14px;margin-top:12px;font-family:ui-monospace,"SF Mono",Menlo,monospace}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(30,30,32,.92);color:#fff;
     padding:12px 20px;border-radius:30px;font-size:14px;font-weight:600;z-index:99;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
@@ -134,10 +122,8 @@
   .stat .b{flex:1;background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--shadow);text-align:center}
   .stat .b .n{font-size:22px;font-weight:800;letter-spacing:-.03em}
   .stat .b .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
-  /* botão de ícone (lixeira etc) */
   .iconbtn{background:none;border:none;cursor:pointer;padding:6px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;flex:0 0 auto}
   .iconbtn:active{background:var(--field)}
-  /* sheet / modal estilo iOS */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);display:flex;align-items:flex-end;justify-content:center;z-index:100;padding:14px;animation:fade .18s ease}
   .sheet{background:var(--card);border-radius:22px;padding:20px;width:100%;max-width:420px;box-shadow:0 -4px 40px rgba(0,0,0,.3);animation:up .22s cubic-bezier(.2,.9,.3,1)}
   .sheet h2{font-size:18px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;text-transform:none;color:var(--text)}
@@ -146,6 +132,8 @@
   @keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:translateY(0);opacity:1}}
   @media(min-width:480px){.overlay{align-items:center}.sheet{animation:pop .2s ease}}
   @keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:scale(1);opacity:1}}
+  .editinfo{font-size:12.5px;color:var(--muted);margin-top:8px;font-weight:500;display:flex;align-items:center;gap:6px}
+  .editinfo.bloq{color:var(--erro)}
 </style>
 </head>
 <body>
@@ -156,12 +144,15 @@ const { useState, useEffect, useMemo } = React;
 /* ============================================================
    COLE AQUI a URL /exec da implantação do Apps Script:
    ============================================================ */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyr1K1TTAhX04wYYO36TF5hllZ7juoQ2itreXa3zBPoN38NRCzavh8yRhTthDmiOzePYw/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHAnafzNdpKPuTm4apfaPV_q6htiQKS5WBaKtSLO6K00PSviXiiMlPwZZUqYIiyAwF4w/exec";
 
 const GRADE = ["XPP/34","PP/36","P/38","M/40","G/42","GG/44","G1/46","G2/48","G3/50","G4/52"];
 const THEMES = [ {id:"claro",cor:"#e8879e"}, {id:"escuro",cor:"#1c1c1e"}, {id:"rosa",cor:"#e26d90"} ];
 
-/* ---- ícones estilo iOS via Ionicons (web component <ion-icon>) ---- */
+/* regra de edição */
+const MAX_EDICOES = 2;
+const JANELA_MS = 48*60*60*1000; // 48h
+
 function ion(name,size){
   return function(p){ p=p||{}; return <ion-icon name={name} style={{fontSize:size+"px",...(p.style||{})}} />; };
 }
@@ -171,6 +162,7 @@ const I = {
   mag:     ion("search-outline",17),
   download:ion("download-outline",18),
   copy:    ion("copy-outline",17),
+  edit:    ion("create-outline",17),
 };
 
 async function api(payload){
@@ -181,14 +173,35 @@ async function api(payload){
   return data;
 }
 
-/* ---- helpers ---- */
 function parseGrade(g){ if(!g) return {}; if(typeof g==="object") return g; try{return JSON.parse(g)||{}}catch(e){return {}} }
 function somaGrade(g){ return Object.values(g||{}).reduce((a,b)=>a+(Number(b)||0),0); }
 function gradeTexto(g){ const e=Object.entries(g||{}).filter(([_,q])=>Number(q)>0); return e.length? e.map(([t,q])=>`${t}:${q}`).join(" ") : "—"; }
 function fmtData(v){ if(!v) return ""; const d=new Date(v); if(isNaN(d)) return String(v); return d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
 function fmtDia(v){ const d=new Date(v); if(isNaN(d)) return ""; return d.toLocaleDateString("pt-BR"); }
 function ymd(v){ const d=new Date(v); if(isNaN(d)) return ""; return d.toISOString().slice(0,10); }
-function baixar(nome,texto,tipo){ const b=new Blob([texto],{type:tipo||"text/plain;charset=utf-8"}); const u=URL.createObjectURL(b); const a=document.createElement("a"); a.href=u; a.download=nome; a.click(); URL.revokeObjectURL(u); }
+
+/* ---- calcula estado da edição a partir do romaneio ---- */
+function estadoEdicao(r){
+  const qtd = Number(r.qtd_edicoes)||0;
+  const primeira = r.data_primeira_edicao ? new Date(r.data_primeira_edicao) : null;
+  let dentroJanela = true;
+  let restante = 0;
+  if(primeira && !isNaN(primeira)){
+    const passou = Date.now() - primeira.getTime();
+    dentroJanela = passou < JANELA_MS;
+    restante = Math.max(0, JANELA_MS - passou);
+  }
+  // se a janela já passou, o contador "reinicia" na próxima edição
+  const usadas = dentroJanela ? qtd : 0;
+  const podeEditar = r.status==="enviado" && usadas < MAX_EDICOES;
+  return { podeEditar, usadas, restante, dentroJanela, temPrimeira: !!primeira };
+}
+function fmtRestante(ms){
+  if(ms<=0) return "0h";
+  const h=Math.floor(ms/3600000); const m=Math.floor((ms%3600000)/60000);
+  if(h>=1) return `${h}h${m>0?(" "+m+"min"):""}`;
+  return `${m}min`;
+}
 
 function romaneioWhatsapp(origem,destino,itens){
   const cab=`ROMANEIO ${origem} → ${destino}\n${new Date().toLocaleDateString("pt-BR")}\n`;
@@ -202,7 +215,6 @@ function romaneioWhatsapp(origem,destino,itens){
   return cab+"\n"+blocos;
 }
 
-/* ---- grade reutilizável ---- */
 function GradeInput({grade,onChange}){
   const set=(t,v)=>{ const n={...grade}; const q=Math.max(0,Number(v)||0); if(q>0)n[t]=q; else delete n[t]; onChange(n); };
   return (
@@ -217,7 +229,6 @@ function GradeInput({grade,onChange}){
   );
 }
 
-/* ---- sheet de senha (confirmar exclusão) ---- */
 function SenhaSheet({titulo,aviso,confirmLabel,onConfirm,onCancel}){
   const [senha,setSenha]=useState("");
   const [erro,setErro]=useState("");
@@ -250,8 +261,8 @@ function SenhaSheet({titulo,aviso,confirmLabel,onConfirm,onCancel}){
 /* ============================================================ APP */
 function App(){
   const [theme,setTheme]=useState(localStorage.getItem("qv_theme")||"claro");
-  const [view,setView]=useState("home");     // home | enviar | conferir | historico
-  const [rota,setRota]=useState({origem:"SP",destino:"Petrolina"}); // sentido atual
+  const [view,setView]=useState("home");
+  const [rota,setRota]=useState({origem:"SP",destino:"Petrolina"});
   const [nome,setNome]=useState(localStorage.getItem("qv_nome")||"");
   const [toast,setToast]=useState("");
 
@@ -279,7 +290,7 @@ function App(){
       {view==="home" && <Home nome={nome} setNome={setNome} go={setView} setRota={setRota}/>}
       {view==="enviar" && <Enviar nome={nome} rota={rota} flash={flash} voltar={()=>setView("home")}/>}
       {view==="conferir" && <Conferir nome={nome} rota={rota} flash={flash}/>}
-      {view==="historico" && <Historico flash={flash}/>}
+      {view==="historico" && <Historico nome={nome} flash={flash}/>}
 
       {toast && <div className="toast">{toast}</div>}
     </div>
@@ -332,7 +343,7 @@ function Home({nome,setNome,go,setRota}){
         <h2>Geral</h2>
         <button className="tile" onClick={()=>go("historico")}>
           <div className="ico" style={{background:"rgba(10,132,255,.14)"}}><ion-icon name="documents" style={{color:"#0a84ff"}}/></div>
-          <div className="tx"><h3>Histórico & relatórios</h3><p>Buscar, filtrar por data e baixar planilha</p></div>
+          <div className="tx"><h3>Histórico & relatórios</h3><p>Buscar, filtrar por data, editar e baixar planilha</p></div>
           <I.chevron style={{color:"var(--muted)"}}/>
         </button>
       </div>
@@ -340,16 +351,21 @@ function Home({nome,setNome,go,setRota}){
   );
 }
 
-/* ---------------- ENVIAR ---------------- */
+/* ---------------- ENVIAR (também usado para EDITAR) ---------------- */
 const ITEM_VAZIO={marca:"",nome_produto:"",codigo_produto:"",endereco:"",grade:{},link:""};
-function Enviar({nome,rota,flash,voltar}){
-  const [itens,setItens]=useState([]);
-  const [obs,setObs]=useState("");
+function Enviar({nome,rota,flash,voltar,editar,onEditado}){
+  const modoEdicao = !!editar; // {id, itens, origem, destino, obs}
+  const [itens,setItens]=useState(()=> modoEdicao ? (editar.itensIniciais||[]) : []);
+  const [obs,setObs]=useState(modoEdicao ? (editar.obs||"") : "");
   const [form,setForm]=useState({...ITEM_VAZIO});
   const [buscando,setBuscando]=useState(false);
   const [enviando,setEnviando]=useState(false);
   const [criado,setCriado]=useState(null);
+  const [pedirSenha,setPedirSenha]=useState(false);
   const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+
+  const rOrigem = modoEdicao ? editar.origem : rota.origem;
+  const rDestino = modoEdicao ? editar.destino : rota.destino;
 
   async function puxar(){
     if(!form.link.trim())return;
@@ -372,12 +388,26 @@ function Enviar({nome,rota,flash,voltar}){
     if(!itens.length){flash("Adiciona 1 item.");return;}
     setEnviando(true);
     try{
-      const {id}=await api({action:"createRomaneio",origem:rota.origem,destino:rota.destino,criado_por:nome,observacoes:obs,itens});
-      setCriado({id,wpp:romaneioWhatsapp(rota.origem,rota.destino,itens)});
+      const {id}=await api({action:"createRomaneio",origem:rOrigem,destino:rDestino,criado_por:nome,observacoes:obs,itens});
+      setCriado({id,wpp:romaneioWhatsapp(rOrigem,rDestino,itens)});
       flash("Romaneio enviado! 🎉");
     }catch(e){flash("Erro: "+e.message);}
     setEnviando(false);
   }
+
+  /* EDIÇÃO: pede senha, valida no backend (2x / 48h) */
+  async function salvarEdicao(senha){
+    if(!itens.length) throw new Error("O romaneio precisa de pelo menos 1 item.");
+    const payloadItens=itens.map(it=>({
+      marca:it.marca,nome_produto:it.nome_produto,codigo_produto:it.codigo_produto,
+      endereco:it.endereco,grade:it.grade
+    }));
+    const {romaneio}=await api({action:"editRomaneio",id:editar.id,editado_por:nome,observacoes:obs,itens:payloadItens,senha});
+    setPedirSenha(false);
+    flash("Romaneio atualizado ✏️");
+    if(onEditado) onEditado(romaneio);
+  }
+
   const copiar=(t)=>{navigator.clipboard.writeText(t);flash("Copiado!");};
 
   if(criado){
@@ -387,7 +417,7 @@ function Enviar({nome,rota,flash,voltar}){
           <h2>Enviado ✅</h2>
           <div className="rw" style={{cursor:"default",padding:"2px 0"}}>
             <div className="ico" style={{width:38,height:38,borderRadius:11,background:"rgba(52,199,89,.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}><ion-icon name="checkmark-circle" style={{color:"#34c759"}}/></div>
-            <div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rota.origem} → {rota.destino}</div></div>
+            <div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rOrigem} → {rDestino}</div></div>
           </div>
           <div className="wpp">{criado.wpp}</div>
           <div className="row2" style={{marginTop:12}}>
@@ -401,8 +431,18 @@ function Enviar({nome,rota,flash,voltar}){
 
   return (
     <div>
+      {modoEdicao &&
+        <div className="card" style={{background:"var(--chip)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,fontWeight:700}}>
+            <I.edit style={{color:"var(--accent)"}}/> Editando {editar.id}
+          </div>
+          <div className="mt" style={{color:"var(--muted)",fontSize:13,marginTop:4}}>
+            {rOrigem} → {rDestino} · edição {editar.usadas+1} de {2}
+          </div>
+        </div>}
+
       <div className="card">
-        <h2>{rota.origem} → {rota.destino} · adicionar peça</h2>
+        <h2>{rOrigem} → {rDestino} · adicionar peça</h2>
         <label>Link da peça</label>
         <div className="row2">
           <input value={form.link} onChange={e=>set("link",e.target.value)} placeholder="Cole o link do produto"/>
@@ -438,8 +478,18 @@ function Enviar({nome,rota,flash,voltar}){
         ))}
         <label>Observações</label>
         <textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/>
-        <button className="btn primary block" style={{marginTop:14}} onClick={enviar} disabled={enviando}>{enviando?"Enviando…":`Enviar pra ${rota.destino}`}</button>
+        {modoEdicao
+          ? <button className="btn primary block" style={{marginTop:14}} onClick={()=>setPedirSenha(true)}>Salvar alterações</button>
+          : <button className="btn primary block" style={{marginTop:14}} onClick={enviar} disabled={enviando}>{enviando?"Enviando…":`Enviar pra ${rDestino}`}</button>}
       </div>
+
+      {pedirSenha && <SenhaSheet
+        titulo="Confirmar edição"
+        aviso={`Você está editando ${editar.id}. Cada romaneio pode ser editado ${2}x dentro de 48h a partir da 1ª edição. Digite a senha pra salvar.`}
+        confirmLabel="Salvar"
+        onCancel={()=>setPedirSenha(false)}
+        onConfirm={salvarEdicao}
+      />}
     </div>
   );
 }
@@ -453,6 +503,9 @@ function Conferir({nome,rota,flash}){
   const [resultado,setResultado]=useState(null);
   const [q,setQ]=useState("");
 
+  // chave estável por item: usa id do backend; se vier vazio/duplicado, cai no índice
+  const chaveItem=(it,i)=> (it && it.id!=null && String(it.id).trim()!=="") ? "id:"+it.id : "idx:"+i;
+
   useEffect(()=>{carregar();},[]);
   async function carregar(){
     setLista(null);
@@ -462,23 +515,30 @@ function Conferir({nome,rota,flash}){
   async function abrir(id){
     try{
       const {romaneio}=await api({action:"getRomaneio",id});
-      const ini={}; romaneio.itens.forEach(it=>{ini[it.id]={grade_conferida:{...parseGrade(it.grade_enviada)},status_item:"ok",observacao_item:""};});
+      const ini={};
+      (romaneio.itens||[]).forEach((it,i)=>{
+        const k=chaveItem(it,i);
+        ini[k]={grade_conferida:{...parseGrade(it.grade_enviada)},status_item:"ok",observacao_item:""};
+      });
       setConf(ini);setAberto(romaneio);setResultado(null);
     }catch(e){flash("Erro: "+e.message);}
   }
-  const setItem=(id,k,v)=>setConf(c=>({...c,[id]:{...c[id],[k]:v}}));
+  const setItem=(k,campo,v)=>setConf(c=>({...c,[k]:{...c[k],[campo]:v}}));
 
   async function finalizar(){
     setSalvando(true);
     try{
-      const itens=aberto.itens.map(it=>({id:it.id,grade_conferida:conf[it.id].grade_conferida||{},status_item:conf[it.id].status_item,observacao_item:conf[it.id].observacao_item||""}));
+      const itens=(aberto.itens||[]).map((it,i)=>{
+        const k=chaveItem(it,i); const c=conf[k]||{};
+        return {id:it.id,grade_conferida:c.grade_conferida||{},status_item:c.status_item||"ok",observacao_item:c.observacao_item||""};
+      });
       const {romaneio}=await api({action:"conferir",id:aberto.id,conferido_por:nome,itens});
       setResultado(romaneio);flash("Conferência salva ✅");
     }catch(e){flash("Erro: "+e.message);}
     setSalvando(false);
   }
   function relatorio(rom){
-    const divs=rom.itens.filter(it=>it.status_item&&it.status_item!=="ok");
+    const divs=(rom.itens||[]).filter(it=>it.status_item&&it.status_item!=="ok");
     if(!divs.length) return "Conferido sem divergências ✅";
     const linhas=divs.map(it=>(
 `• ${it.nome_produto} (cód ${it.codigo_produto||"—"})
@@ -528,27 +588,29 @@ function Conferir({nome,rota,flash}){
           <h2>Conferindo {aberto.id}</h2>
           <div className="mt" style={{color:"var(--muted)",fontSize:13}}>{aberto.origem} → {aberto.destino} · por {aberto.criado_por||"—"} · {fmtData(aberto.data_criacao)}</div>
         </div>
-        {aberto.itens.map(it=>{
-          const c=conf[it.id]; const gEnv=parseGrade(it.grade_enviada);
-          const dif=GRADE.some(t=>(Number(gEnv[t])||0)!==(Number(c.grade_conferida[t])||0));
+        {(aberto.itens||[]).map((it,i)=>{
+          const k=chaveItem(it,i);
+          const c=conf[k]||{grade_conferida:{},status_item:"ok",observacao_item:""};
+          const gEnv=parseGrade(it.grade_enviada);
+          const dif=GRADE.some(t=>(Number(gEnv[t])||0)!==(Number((c.grade_conferida||{})[t])||0));
           return (
-            <div className="card" key={it.id}>
+            <div className="card" key={k}>
               <div className="item" style={{background:"var(--field)",marginBottom:12}}>
                 <div className="tt">{it.nome_produto||"(sem nome)"}</div>
                 <div className="mt">{it.marca} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
                 <div className="mt">enviado: <b>{gradeTexto(gEnv)}</b> · total {somaGrade(gEnv)}</div>
               </div>
               <label>Recebido por tamanho <span style={{color:"var(--accent)"}}>(total {somaGrade(c.grade_conferida)})</span></label>
-              <GradeInput grade={c.grade_conferida} onChange={g=>setItem(it.id,"grade_conferida",g)}/>
+              <GradeInput grade={c.grade_conferida||{}} onChange={g=>setItem(k,"grade_conferida",g)}/>
               <label>Situação</label>
               <div className="seg">
-                <button className={c.status_item==="ok"?"on":""} onClick={()=>setItem(it.id,"status_item","ok")}>✓ OK</button>
-                <button className={c.status_item==="divergencia"?"on":""} onClick={()=>setItem(it.id,"status_item","divergencia")}>⚠️ Divergência</button>
+                <button className={c.status_item==="ok"?"on":""} onClick={()=>setItem(k,"status_item","ok")}>✓ OK</button>
+                <button className={c.status_item==="divergencia"?"on":""} onClick={()=>setItem(k,"status_item","divergencia")}>⚠️ Divergência</button>
               </div>
               {dif && c.status_item==="ok" && <div className="aviso">Grade diferente da enviada — marque divergência se for o caso.</div>}
               {c.status_item==="divergencia" &&
                 <div><label>O que houve?</label>
-                <input value={c.observacao_item} onChange={e=>setItem(it.id,"observacao_item",e.target.value)} placeholder="Ex: faltou 1 no P, peça errada, avariada"/></div>}
+                <input value={c.observacao_item||""} onChange={e=>setItem(k,"observacao_item",e.target.value)} placeholder="Ex: faltou 1 no P, peça errada, avariada"/></div>}
             </div>
           );
         })}
@@ -583,16 +645,16 @@ function Conferir({nome,rota,flash}){
   );
 }
 
-/* ---------------- HISTÓRICO + RELATÓRIOS ---------------- */
-function Historico({flash}){
+/* ---------------- HISTÓRICO + RELATÓRIOS + EDIÇÃO ---------------- */
+function Historico({nome,flash}){
   const [dados,setDados]=useState(null);
   const [q,setQ]=useState("");
   const [status,setStatus]=useState("todos");
   const [de,setDe]=useState(""); const [ate,setAte]=useState("");
-  const [del,setDel]=useState(null); // romaneio marcado pra excluir
+  const [del,setDel]=useState(null);
+  const [editando,setEditando]=useState(null); // {id, itensIniciais, origem, destino, obs, usadas}
 
   async function confirmarDelete(senha){
-    // a senha é conferida no servidor (Apps Script). Se estiver errada, o backend devolve erro.
     await api({action:"deleteRomaneio",id:del.id,senha});
     setDel(null);
     flash("Romaneio excluído 🗑️");
@@ -604,6 +666,25 @@ function Historico({flash}){
     setDados(null);
     try{ const {romaneios}=await api({action:"listRomaneios"}); setDados(romaneios); }
     catch(e){flash("Erro: "+e.message);setDados([]);}
+  }
+
+  async function abrirEdicao(r){
+    const est=estadoEdicao(r);
+    if(!est.podeEditar){
+      if(r.status!=="enviado"){flash("Só dá pra editar romaneio ainda não conferido.");return;}
+      flash("Limite de 2 edições em 48h atingido.");return;
+    }
+    try{
+      const {romaneio}=await api({action:"getRomaneio",id:r.id});
+      const itensIniciais=(romaneio.itens||[]).map(it=>({
+        marca:it.marca||"",nome_produto:it.nome_produto||"",codigo_produto:it.codigo_produto||"",
+        endereco:it.endereco||"",grade:parseGrade(it.grade_enviada),link:""
+      }));
+      setEditando({
+        id:romaneio.id, itensIniciais, origem:romaneio.origem, destino:romaneio.destino,
+        obs:romaneio.observacoes||"", usadas:est.usadas
+      });
+    }catch(e){flash("Erro: "+e.message);}
   }
 
   const filtrada=useMemo(()=>{
@@ -625,7 +706,6 @@ function Historico({flash}){
 
   async function baixarXlsx(){
     try{
-      // busca itens de cada romaneio filtrado
       const linhas=[];
       for(const r of filtrada){
         const {romaneio}=await api({action:"getRomaneio",id:r.id});
@@ -650,12 +730,10 @@ function Historico({flash}){
 
   function baixarRelatorio(){
     if(!filtrada.length){flash("Nada no período.");return;}
-    // Aba 1: resumo (1 linha por romaneio)
     const resumo=filtrada.map(r=>({
       Data:fmtDia(r.data_criacao), Romaneio:r.id, Sentido:`${r.origem} → ${r.destino}`,
       Status:r.status, Enviou:r.criado_por||"", Conferiu:r.conferido_por||"",
     }));
-    // Aba 2: totais
     const totais=[
       {Indicador:"Total de romaneios", Valor:stats.total},
       {Indicador:"Conferidos",         Valor:stats.conf},
@@ -668,6 +746,22 @@ function Historico({flash}){
     XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(totais),"Totais");
     XLSX.writeFile(wb,`relatorio_${new Date().toISOString().slice(0,10)}.xlsx`);
     flash("Relatório baixado 📊");
+  }
+
+  /* se está editando, mostra o formulário reaproveitando Enviar */
+  if(editando){
+    return (
+      <div>
+        <button className="back" onClick={()=>setEditando(null)} style={{marginBottom:8}}><I.back/> Histórico</button>
+        <Enviar
+          nome={nome}
+          rota={{origem:editando.origem,destino:editando.destino}}
+          flash={flash}
+          editar={editando}
+          onEditado={()=>{ setEditando(null); carregar(); }}
+        />
+      </div>
+    );
   }
 
   return (
@@ -701,18 +795,28 @@ function Historico({flash}){
       {dados && filtrada.length===0 && <div className="empty"><div className="big"><ion-icon name="search-outline" style={{color:"var(--muted)"}}/></div><p>Nenhum romaneio no filtro</p></div>}
       {dados && filtrada.length>0 &&
         <div className="rows">
-          {filtrada.map(r=>(
-            <div className="rw" key={r.id} style={{cursor:"default"}}>
+          {filtrada.map(r=>{
+            const est=estadoEdicao(r);
+            return (
+            <div className="rw" key={r.id} style={{cursor:"default",flexWrap:"wrap"}}>
               <div className="tx">
                 <div className="tt">{r.id} <span style={{fontWeight:500,color:"var(--muted)",fontSize:13}}>· {r.origem}→{r.destino}</span></div>
                 <div className="mt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div>
+                {r.status==="enviado" && est.temPrimeira && est.dentroJanela &&
+                  <div className={"editinfo"+(est.podeEditar?"":" bloq")}>
+                    <ion-icon name="time-outline"/> {est.usadas}/2 edições · {est.podeEditar?("restam "+fmtRestante(est.restante)):"limite atingido"}
+                  </div>}
               </div>
               <span className={"chip "+r.status}>{r.status}</span>
+              {r.status==="enviado" && est.podeEditar &&
+                <button className="iconbtn" title="Editar romaneio" onClick={()=>abrirEdicao(r)}>
+                  <ion-icon name="create-outline" style={{fontSize:"19px",color:"var(--blue)"}}/>
+                </button>}
               <button className="iconbtn" title="Excluir romaneio" onClick={()=>setDel(r)}>
                 <ion-icon name="trash-outline" style={{fontSize:"19px",color:"var(--erro)"}}/>
               </button>
             </div>
-          ))}
+          );})}
         </div>}
 
       {del && <SenhaSheet
