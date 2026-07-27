@@ -1168,7 +1168,7 @@ function Historico({nome,flash}){
     try{
       const {romaneio}=await api({action:"getRomaneio",id:r.id});
       const itensIniciais=(romaneio.itens||[]).map(it=>({marca:it.marca||"",nome_produto:it.nome_produto||"",codigo_produto:it.codigo_produto||"",endereco:it.endereco||"",grade:parseGrade(it.grade_enviada),link:""}));
-      setEditando({id:romaneio.id,itensIniciais,origem:romaneio.origem,destino:romaneio.destino,obs:romaneio.observacoes||"",usadas:est.usadas});
+      setEditando({id:romaneio.id,itensIniciais,origem:romaneio.origem,destino:romaneio.destino,obs:romaneio.observacoes||"",usadas:0});
     }catch(e){flash("Erro: "+e.message);}
   }
 
