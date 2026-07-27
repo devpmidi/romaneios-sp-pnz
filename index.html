@@ -1251,7 +1251,6 @@ function Historico({nome,flash}){
       {dados && filtrada.length>0 &&
         <div className="rows">
           {filtrada.map(r=>{
-            const est=estadoEdicao(r);
             const marcado=sel.has(r.id);
             return (
             <div className={"rw"+(marcado?" selected":"")} key={r.id} style={{cursor:"default",flexWrap:"wrap"}}>
@@ -1262,13 +1261,9 @@ function Historico({nome,flash}){
               <div className="tx">
                 <div className="tt">{r.id} <span style={{fontWeight:500,color:"var(--muted)",fontSize:13}}>· {r.origem}→{r.destino}</span></div>
                 <div className="mt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div>
-                {r.status==="enviado" && est.temPrimeira && est.dentroJanela &&
-                  <div className={"editinfo"+(est.podeEditar?"":" bloq")}>
-                    <ion-icon name="time-outline"/> {est.usadas}/2 edições · {est.podeEditar?("restam "+fmtRestante(est.restante)):"limite atingido"}
-                  </div>}
               </div>
               <span className={"chip "+r.status}>{r.status}</span>
-              {r.status==="enviado" && est.podeEditar &&
+              {r.status==="enviado" &&
                 <button className="iconbtn" title="Editar romaneio" onClick={()=>abrirEdicao(r)}><ion-icon name="create-outline" style={{fontSize:"19px",color:"var(--accent)"}}/></button>}
               <button className="iconbtn" title="Excluir romaneio" onClick={()=>setDel(r)}><ion-icon name="trash-outline" style={{fontSize:"19px",color:"var(--erro)"}}/></button>
             </div>
