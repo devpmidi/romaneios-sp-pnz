@@ -271,7 +271,7 @@ const { useState, useEffect, useMemo } = React;
 /* ============================================================
    COLE AQUI a URL /exec da implantação do Apps Script:
    ============================================================ */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-igPgxP16VhJtV05STgxI_XchoXn-_UWoAcTyWoz1-1kV7DT8-vTYTigFQTOhTt6XhA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQ35jHOKkdGoLYIOP44EPmb-r_51czrdnnI-Tl-CTSZfKHQlZh2Z2MXDYdUSu4StI2jw/exec";
 
 const LOGO_URL = "https://recursos.qvestido.com.br/i/SVG-diversos/logo.svg";
 const GRADE = ["XPP/34","PP/36","P/38","M/40","G/42","GG/44","G1/46","G2/48","G3/50","G4/52"];
@@ -1164,8 +1164,7 @@ function Historico({nome,flash}){
   async function confirmarDelete(senha){ await api({action:"deleteRomaneio",id:del.id,senha}); setDel(null); flash("Romaneio excluído 🗑️"); carregar(); }
 
   async function abrirEdicao(r){
-    const est=estadoEdicao(r);
-    if(!est.podeEditar){ if(r.status!=="enviado"){flash("Só dá pra editar romaneio ainda não conferido.");return;} flash("Limite de 2 edições em 48h atingido.");return; }
+    if(r.status!=="enviado"){flash("Só dá pra editar romaneio ainda não conferido.");return;}
     try{
       const {romaneio}=await api({action:"getRomaneio",id:r.id});
       const itensIniciais=(romaneio.itens||[]).map(it=>({marca:it.marca||"",nome_produto:it.nome_produto||"",codigo_produto:it.codigo_produto||"",endereco:it.endereco||"",grade:parseGrade(it.grade_enviada),link:""}));
