@@ -227,6 +227,29 @@
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);
     padding:12px 22px;border-radius:30px;font-size:14px;font-weight:600;z-index:120;box-shadow:0 12px 30px rgba(0,0,0,.28)}
 
+  /* barra de seleção da lista */
+  .selbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);
+    border-radius:13px;padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow)}
+  .selbar .selinfo{flex:1;min-width:120px;font-size:13.5px}
+  .ck2{display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:inherit;
+    font-size:13.5px;font-weight:600;color:var(--text);padding:4px 2px}
+  .ck2 .box,.rowcheck{width:21px;height:21px;border-radius:6px;border:1.5px solid var(--sep);flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;color:#fff;transition:all .12s;background:var(--field)}
+  .ck2.on .box{background:var(--accent);border-color:var(--accent)}
+  .rowcheck{cursor:pointer;padding:0}
+  .rowcheck:hover{border-color:var(--accent)}
+  .rowcheck.on{background:var(--accent);border-color:var(--accent)}
+  .rw.selected{background:var(--accent-soft)}
+  [data-theme="escuro"] .rw.selected{background:var(--accent-soft)}
+
+  /* avulsos */
+  .avtexto{font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
+  .avmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .avtag{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.01em}
+  .avloc{display:inline-flex;align-items:center;gap:3px;font-size:12px;color:var(--muted);font-weight:600}
+  .avdata{font-size:11.5px;color:var(--faint)}
+  .rw.avdone{opacity:.72}
+
   .backdrop{display:none}
   /* ---------- MOBILE ---------- */
   @media(max-width:860px){
@@ -248,7 +271,7 @@ const { useState, useEffect, useMemo } = React;
 /* ============================================================
    COLE AQUI a URL /exec da implantação do Apps Script:
    ============================================================ */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHAnafzNdpKPuTm4apfaPV_q6htiQKS5WBaKtSLO6K00PSviXiiMlPwZZUqYIiyAwF4w/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-igPgxP16VhJtV05STgxI_XchoXn-_UWoAcTyWoz1-1kV7DT8-vTYTigFQTOhTt6XhA/exec";
 
 const LOGO_URL = "https://recursos.qvestido.com.br/i/SVG-diversos/logo.svg";
 const GRADE = ["XPP/34","PP/36","P/38","M/40","G/42","GG/44","G1/46","G2/48","G3/50","G4/52"];
@@ -397,8 +420,8 @@ function EditItemSheet({item,onSave,onCancel,flash}){
 }
 
 /* ---------------- SELETOR DE PLANILHAS (download) ---------------- */
-function DownloadSheet({romaneios,onCancel,flash}){
-  const [sel,setSel]=useState(()=>new Set(romaneios.map(r=>r.id)));
+function DownloadSheet({romaneios,preSel,onCancel,flash}){
+  const [sel,setSel]=useState(()=> (preSel&&preSel.length)? new Set(preSel) : new Set(romaneios.map(r=>r.id)));
   const [modo,setModo]=useState("detalhado"); // detalhado = item a item; resumo = 1 linha por romaneio
   const [gerando,setGerando]=useState(false);
   const toggle=(id)=>setSel(s=>{const n=new Set(s); n.has(id)?n.delete(id):n.add(id); return n;});
@@ -514,6 +537,7 @@ function App(){
   const NAV=[
     {grp:"Geral",items:[
       {id:"dashboard",ic:"grid-outline",lb:"Dashboard"},
+      {id:"avulsos",ic:"reader-outline",lb:"Avulsos"},
       {id:"historico",ic:"albums-outline",lb:"Histórico & relatórios"},
     ]},
     {grp:"São Paulo",items:[
@@ -575,6 +599,7 @@ function App(){
         </div>
         <div className="content">
           {view==="dashboard" && <Dashboard flash={flash} irPara={abrir}/>}
+          {view==="avulsos" && <Avulsos nome={nome} flash={flash}/>}
           {view==="enviar" && <Enviar key={rota.origem+rota.destino} nome={nome} rota={rota} flash={flash}/>}
           {view==="conferir" && <Conferir key={rota.origem+rota.destino} nome={nome} rota={rota} flash={flash}/>}
           {view==="historico" && <Historico nome={nome} flash={flash}/>}
@@ -667,6 +692,147 @@ function Dashboard({flash,irPara}){
 
 function Head({eyebrow,titulo,sub}){
   return (<div className="pagehead"><div className="eyebrow">{eyebrow}</div><h1>{titulo}</h1>{sub&&<p>{sub}</p>}</div>);
+}
+
+/* ---------------- AVULSOS (anotações rápidas) ---------------- */
+const AV_LOCAIS = ["Petrolina","SP","Interno","—"];
+const AV_TAGS = ["sem cadastro","só Petrolina","só SP","conferir depois","outro"];
+function Avulsos({nome,flash}){
+  const [lista,setLista]=useState(null);
+  const [texto,setTexto]=useState("");
+  const [local,setLocal]=useState("Petrolina");
+  const [tag,setTag]=useState("sem cadastro");
+  const [qtd,setQtd]=useState("");
+  const [salvando,setSalvando]=useState(false);
+  const [filtro,setFiltro]=useState("abertos"); // abertos | feitos | todos
+  const [del,setDel]=useState(null);
+
+  useEffect(()=>{carregar();},[]);
+  async function carregar(){
+    setLista(null);
+    try{ const {avulsos}=await api({action:"listAvulsos"}); setLista(avulsos); }
+    catch(e){flash("Erro: "+e.message);setLista([]);}
+  }
+  async function adicionar(){
+    if(!texto.trim()){flash("Escreve o que quer anotar.");return;}
+    setSalvando(true);
+    try{
+      await api({action:"addAvulso",texto:texto.trim(),local,tag,quantidade:qtd,criado_por:nome});
+      setTexto("");setQtd("");
+      flash("Anotado ✍️");
+      carregar();
+    }catch(e){flash("Erro: "+e.message);}
+    setSalvando(false);
+  }
+  async function toggle(a){
+    // atualização otimista
+    setLista(l=>l.map(x=>x.id===a.id?{...x,feito:!x.feito}:x));
+    try{ await api({action:"toggleAvulso",id:a.id}); }
+    catch(e){ flash("Erro: "+e.message); carregar(); }
+  }
+  async function remover(a){
+    setDel(null);
+    setLista(l=>l.filter(x=>x.id!==a.id));
+    try{ await api({action:"deleteAvulso",id:a.id}); flash("Removido 🗑️"); }
+    catch(e){ flash("Erro: "+e.message); carregar(); }
+  }
+  async function limparFeitos(){
+    try{ const {deleted}=await api({action:"limparAvulsosFeitos"}); flash(`${deleted||0} concluído(s) limpo(s) 🧹`); carregar(); }
+    catch(e){ flash("Erro: "+e.message); }
+  }
+
+  const filtrada=useMemo(()=>{
+    const l=lista||[];
+    if(filtro==="abertos") return l.filter(a=>!a.feito);
+    if(filtro==="feitos")  return l.filter(a=>a.feito);
+    return l;
+  },[lista,filtro]);
+
+  const abertos=(lista||[]).filter(a=>!a.feito).length;
+  const feitos=(lista||[]).filter(a=>a.feito).length;
+
+  function tagCor(t){
+    if(t==="sem cadastro") return {bg:"var(--accent-soft)",fg:"var(--accent)"};
+    if(t==="só Petrolina") return {bg:"var(--warn-soft)",fg:"var(--warn)"};
+    if(t==="só SP")        return {bg:"var(--ok-soft)",fg:"var(--ok)"};
+    return {bg:"var(--field)",fg:"var(--muted)"};
+  }
+
+  return (
+    <div>
+      <Head eyebrow="Bloco rápido" titulo="Avulsos" sub="Anote peças soltas, sem cadastro, ou coisas que ficam só entre as lojas. É um bloquinho — não vira romaneio."/>
+
+      <div className="card">
+        <h2>Nova anotação</h2>
+        <label>O que é?</label>
+        <textarea rows="2" value={texto} onChange={e=>setTexto(e.target.value)}
+          onKeyDown={e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))adicionar();}}
+          placeholder="Ex: 3 vestidos Liz sem etiqueta que ficaram em Petrolina"/>
+        <div className="row2">
+          <div><label>Onde está / vai</label>
+            <select value={local} onChange={e=>setLocal(e.target.value)}>{AV_LOCAIS.map(x=><option key={x} value={x}>{x}</option>)}</select></div>
+          <div><label>Etiqueta</label>
+            <select value={tag} onChange={e=>setTag(e.target.value)}>{AV_TAGS.map(x=><option key={x} value={x}>{x}</option>)}</select></div>
+          <div style={{flex:"0 0 90px"}}><label>Qtd</label>
+            <input type="number" min="0" inputMode="numeric" value={qtd} onChange={e=>setQtd(e.target.value)} placeholder="—"/></div>
+        </div>
+        <button className="btn primary block" style={{marginTop:16}} onClick={adicionar} disabled={salvando}>{salvando?"Salvando…":"+ Anotar"}</button>
+      </div>
+
+      <div className="seg" style={{marginBottom:0}}>
+        {[["abertos",`Abertos (${abertos})`],["feitos",`Feitos (${feitos})`],["todos","Todos"]].map(([v,l])=>(
+          <button key={v} className={filtro===v?"on":""} onClick={()=>setFiltro(v)}>{l}</button>
+        ))}
+      </div>
+
+      {feitos>0 && filtro!=="abertos" &&
+        <div style={{textAlign:"right",margin:"10px 2px 0"}}>
+          <button className="btn ghost xs" onClick={limparFeitos}>🧹 Limpar concluídos</button>
+        </div>}
+
+      <div style={{marginTop:14}}>
+        {lista===null && <div className="spin"/>}
+        {lista && filtrada.length===0 &&
+          <div className="empty"><div className="big"><ion-icon name="reader-outline"/></div>
+            <p>{filtro==="feitos"?"Nada concluído ainda.":filtro==="abertos"?"Nenhuma anotação aberta. Tudo em dia! 🎀":"Nenhuma anotação por aqui."}</p></div>}
+        {lista && filtrada.length>0 &&
+          <div className="rows">
+            {filtrada.map(a=>{
+              const tc=tagCor(a.tag);
+              return (
+                <div className={"rw"+(a.feito?" avdone":"")} key={a.id} style={{cursor:"default",alignItems:"flex-start"}}>
+                  <button className={"rowcheck"+(a.feito?" on":"")} title="Marcar feito" style={{marginTop:2}} onClick={()=>toggle(a)}>
+                    {a.feito && <ion-icon name="checkmark" style={{fontSize:"14px"}}/>}
+                  </button>
+                  <div className="tx">
+                    <div className="avtexto" style={a.feito?{textDecoration:"line-through",color:"var(--muted)"}:{}}>
+                      {a.quantidade!=="" && a.quantidade!=null && <b>{a.quantidade}× </b>}{a.texto}
+                    </div>
+                    <div className="avmeta">
+                      {a.tag && <span className="avtag" style={{background:tc.bg,color:tc.fg}}>{a.tag}</span>}
+                      {a.local && a.local!=="—" && <span className="avloc"><ion-icon name="location-outline" style={{fontSize:"12px"}}/> {a.local}</span>}
+                      <span className="avdata">{fmtData(a.data_criacao)}{a.criado_por?(" · "+a.criado_por):""}</span>
+                    </div>
+                  </div>
+                  <button className="iconbtn" title="Remover" onClick={()=>setDel(a)}><ion-icon name="trash-outline" style={{fontSize:"18px",color:"var(--erro)"}}/></button>
+                </div>
+              );
+            })}
+          </div>}
+      </div>
+
+      {del && <div className="overlay" onClick={()=>setDel(null)}>
+        <div className="sheet" onClick={e=>e.stopPropagation()}>
+          <h2>Remover anotação?</h2>
+          <p className="desc">"{del.texto}" — isso apaga só essa anotação avulsa.</p>
+          <div className="row2" style={{marginTop:16}}>
+            <button className="btn ghost" onClick={()=>setDel(null)}>Cancelar</button>
+            <button className="btn danger" onClick={()=>remover(del)}>Remover</button>
+          </div>
+        </div>
+      </div>}
+    </div>
+  );
 }
 
 /* ---------------- ENVIAR ---------------- */
@@ -985,6 +1151,9 @@ function Historico({nome,flash}){
   const [del,setDel]=useState(null);
   const [editando,setEditando]=useState(null);
   const [baixar,setBaixar]=useState(false);
+  const [sel,setSel]=useState(()=>new Set()); // ids marcados na lista
+
+  const toggleSel=(id)=>setSel(s=>{const n=new Set(s); n.has(id)?n.delete(id):n.add(id); return n;});
 
   useEffect(()=>{carregar();},[]);
   async function carregar(){
@@ -1017,6 +1186,19 @@ function Historico({nome,flash}){
 
   const stats=useMemo(()=>({total:filtrada.length,conf:filtrada.filter(r=>r.status==="conferido").length,div:filtrada.filter(r=>r.status==="divergencia").length,env:filtrada.filter(r=>r.status==="enviado").length}),[filtrada]);
 
+  // seleção considerando só o que está visível no filtro atual
+  const idsVisiveis=useMemo(()=>filtrada.map(r=>r.id),[filtrada]);
+  const selVisiveis=useMemo(()=>idsVisiveis.filter(id=>sel.has(id)),[idsVisiveis,sel]);
+  const todosMarcados=idsVisiveis.length>0 && selVisiveis.length===idsVisiveis.length;
+  const marcarTodos=()=>setSel(s=>{const n=new Set(s); idsVisiveis.forEach(id=>n.add(id)); return n;});
+  const limparSel=()=>setSel(s=>{const n=new Set(s); idsVisiveis.forEach(id=>n.delete(id)); return n;});
+  // romaneios que vão pro download: os selecionados (ou todos do filtro, se nada marcado)
+  const paraBaixar=useMemo(()=>{
+    if(selVisiveis.length===0) return filtrada;
+    const set=new Set(selVisiveis);
+    return filtrada.filter(r=>set.has(r.id));
+  },[filtrada,selVisiveis]);
+
   if(editando){
     return <EditarRomaneio nome={nome} editar={editando} flash={flash} voltar={()=>setEditando(null)} onEditado={()=>{setEditando(null);carregar();}}/>;
   }
@@ -1044,9 +1226,26 @@ function Historico({nome,flash}){
         <div className="datebar">
           <div><label>De</label><input type="date" value={de} onChange={e=>setDe(e.target.value)}/></div>
           <div><label>Até</label><input type="date" value={ate} onChange={e=>setAte(e.target.value)}/></div>
-          <button className="btn primary" style={{flex:"0 0 auto"}} onClick={()=>setBaixar(true)}><I.download/> Baixar planilha</button>
         </div>
       </div>
+
+      {/* barra de seleção / ações da lista */}
+      {dados && filtrada.length>0 &&
+        <div className="selbar">
+          <button className={"ck2"+(todosMarcados?" on":"")} onClick={()=>todosMarcados?limparSel():marcarTodos()}>
+            <span className="box">{todosMarcados && <ion-icon name="checkmark" style={{fontSize:"13px"}}/>}</span>
+            {todosMarcados?"Desmarcar todos":"Marcar todos"}
+          </button>
+          <div className="selinfo">
+            {selVisiveis.length>0
+              ? <span><b>{selVisiveis.length}</b> selecionado{selVisiveis.length>1?"s":""}</span>
+              : <span style={{color:"var(--muted)"}}>Marque os que quiser, ou baixe todos do filtro</span>}
+          </div>
+          {selVisiveis.length>0 && <button className="btn ghost sm" onClick={limparSel}>Limpar</button>}
+          <button className="btn primary sm" onClick={()=>setBaixar(true)}>
+            <I.download/> Baixar {selVisiveis.length>0?`(${selVisiveis.length})`:"tudo"}
+          </button>
+        </div>}
 
       {dados===null && <div className="spin"/>}
       {dados && filtrada.length===0 && <div className="empty"><div className="big"><ion-icon name="search-outline"/></div><p>Nenhum romaneio nesse filtro.</p></div>}
@@ -1054,8 +1253,12 @@ function Historico({nome,flash}){
         <div className="rows">
           {filtrada.map(r=>{
             const est=estadoEdicao(r);
+            const marcado=sel.has(r.id);
             return (
-            <div className="rw" key={r.id} style={{cursor:"default",flexWrap:"wrap"}}>
+            <div className={"rw"+(marcado?" selected":"")} key={r.id} style={{cursor:"default",flexWrap:"wrap"}}>
+              <button className={"rowcheck"+(marcado?" on":"")} title="Selecionar" onClick={()=>toggleSel(r.id)}>
+                {marcado && <ion-icon name="checkmark" style={{fontSize:"14px"}}/>}
+              </button>
               <div className="mdot" style={{background:statusCor(r.status),width:9,height:9,borderRadius:"50%",flex:"0 0 auto"}}/>
               <div className="tx">
                 <div className="tt">{r.id} <span style={{fontWeight:500,color:"var(--muted)",fontSize:13}}>· {r.origem}→{r.destino}</span></div>
@@ -1073,7 +1276,7 @@ function Historico({nome,flash}){
           );})}
         </div>}
 
-      {baixar && <DownloadSheet romaneios={filtrada} flash={flash} onCancel={()=>setBaixar(false)}/>}
+      {baixar && <DownloadSheet romaneios={paraBaixar} preSel={selVisiveis} flash={flash} onCancel={()=>setBaixar(false)}/>}
       {del && <SenhaSheet
         titulo="Excluir romaneio?"
         aviso={`${del.id} · ${del.origem}→${del.destino}. Isso apaga o romaneio e todos os itens dele — não dá pra desfazer.`}
