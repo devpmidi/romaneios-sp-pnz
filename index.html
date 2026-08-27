@@ -56,210 +56,208 @@
 
 /* ---------- SIDEBAR ---------- */
 .side{
-width:238px;flex:0 0 238px;background:var(--sidebar);color:var(--side-text);
-display:flex;flex-direction:column;position:fixed;top:0;height:100vh;
+width:238px;flex:0 0 238px;background(--sidebar);color(--side-text);
+display;flex-direction;position;top:0;height:100vh;
 padding:0;z-index:40;
 }
 .side .brand{padding:26px 22px 20px;border-bottom:1px solid rgba(255,255,255,.07)}
-.side .brand img{width:132px;max-width:70%;height:auto;display:block;filter:brightness(0) invert(1);opacity:.96}
-.side .brand .tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--side-muted);margin-top:12px;font-weight:600}
-.side nav{padding:16px 12px;flex:1;overflow-y:auto}
-.side .grp{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--side-muted);font-weight:700;margin:18px 10px 7px}
-.side .grp + .navi{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:none;background:transparent;
-color:var(--side-text);padding:10px 12px;border-radius:11px;cursor:pointer;font-size:14.5px;font-weight:500;
-font-family:inherit;letter-spacing:-.01em;transition:all .14s;margin-bottom:1px}
-.navi{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:none;background:transparent;
-color:var(--side-text);padding:10px 12px;border-radius:11px;cursor:pointer;font-size:14.5px;font-weight:500;
-font-family:inherit;letter-spacing:-.01em;transition:all .14s;margin-bottom:1px}
-.navi ion-icon{font-size:19px;color:var(--side-muted);transition:all .14s}
-.navi:hover{background:rgba(255,255,255,.05)}
-.navi.on{background:var(--side-active);color:#fff;font-weight:600}
-.navi.on ion-icon{color:var(--accent)}
+.side .brand img{width:132px;max-width:70%;height;display;filter(0) invert(1);opacity:.96}
+.side .brand .tag{font-size:11px;letter-spacing:.14em;text-transform;color(--side-muted);margin-top:12px;font-weight:600}
+.side nav{padding:16px 12px;flex:1;overflow-y}
+.side .grp{font-size:10.5px;letter-spacing:.13em;text-transform;color(--side-muted);font-weight:700;margin:18px 10px 7px}
+.side .grp
+.navi{display;align-items;gap:12px;width:100%;text-align;border;background;
+color(--side-text);padding:10px 12px;border-radius:11px;cursor;font-size:14.5px;font-weight:500;
+font-family;letter-spacing:-.01em;transition .14s,color .14s;margin-bottom:1px}
+.navi ion-icon{font-size:19px;color(--side-muted);transition .14s}
+.navi{background(255,255,255,.05)}
+.navi.on{background(--side-active);color:#fff;font-weight:600}
+.navi.on ion-icon{color(--accent)}
 .side .who{padding:14px 16px;border-top:1px solid rgba(255,255,255,.07)}
-.side .who label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--side-muted);font-weight:700;margin-bottom:6px;display:block}
-.side .who input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:#fff;
-border-radius:10px;padding:9px 11px;font-size:14px;font-family:inherit}
-.side .who input::placeholder{color:var(--side-muted)}
-.side .themebar{display:flex;gap:7px;padding:12px 16px 18px}
-.dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.18);cursor:pointer;padding:0;transition:all .15s}
-.dot:hover{transform:scale(.9)} .dot.on{border-color:#fff}
+.side .who label{font-size:10.5px;letter-spacing:.1em;text-transform;color(--side-muted);font-weight:700;margin-bottom:6px;display}
+.side .who input{width:100%;background(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:#fff;
+border-radius:10px;padding:9px 11px;font-size:14px;font-family}
+.side .who input::placeholder{color(--side-muted)}
+.side .themebar{display;gap:7px;padding:12px 16px 18px}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.18);cursor;padding:0;transition .15s}
+.dot{transform(.9)} .dot.on{border-color:#fff}
 
 /* ---------- MAIN ---------- */
-.main{flex:1;min-width:0;display:flex;flex-direction:column;margin-left:238px}
-.topbar{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sidebar);color:#fff;position:sticky;top:0;z-index:30}
-.topbar img{height:26px;filter:brightness(0) invert(1)}
-.burger{background:transparent;border:none;color:#fff;font-size:26px;display:none;padding:2px;cursor:pointer}
+.main{flex:1;min-width:0;display;flex-direction}
+.topbar{display;align-items;gap:12px;padding:12px 16px;background(--sidebar);color:#fff;position;top:0;z-index:30}
+.topbar img{height:26px;filter(0) invert(1)}
+.burger{background;border;color:#fff;font-size:26px;display;padding:2px;cursor}
 .content{max-width:960px;width:100%;margin:0 auto;padding:34px 34px 90px}
 .pagehead{margin-bottom:26px}
-.pagehead .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.pagehead .eyebrow{font-size:11px;letter-spacing:.16em;text-transform;color(--accent);font-weight:700;margin-bottom:8px}
 .pagehead h1{font-size:40px;line-height:1.02;font-weight:600;margin:0;letter-spacing:-.02em}
-.pagehead p{color:var(--muted);font-size:15px;margin:9px 0 0;max-width:52ch}
+.pagehead p{color(--muted);font-size:15px;margin:9px 0 0;max-width:52ch}
 
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
-.card h2{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 16px}
-label{display:block;font-size:12.5px;color:var(--muted);margin:14px 0 6px;font-weight:600;letter-spacing:.01em}
+.card{background(--card);border:1px solid var(--line);border-radius(--radius);padding:22px;margin-bottom:18px;box-shadow(--shadow)}
+.card h2{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;text-transform;letter-spacing:.09em;color(--muted);margin:0 0 16px}
+label{display;font-size:12.5px;color(--muted);margin:14px 0 6px;font-weight:600;letter-spacing:.01em}
 input,textarea,select{
-width:100%;padding:11px 13px;border:1px solid var(--sep);border-radius:11px;background:var(--field);
-color:var(--text);font-size:15px;font-family:inherit;letter-spacing:-.01em;transition:all .14s;
+width:100%;padding:11px 13px;border:1px solid var(--sep);border-radius:11px;background(--field);
+color(--text);font-size:15px;font-family;letter-spacing:-.01em;transition .14s,box-shadow .14s;
 }
-input::placeholder,textarea::placeholder{color:var(--faint)}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-textarea{resize:vertical}
-select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238c7f83' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+input::placeholder,textarea::placeholder{color(--faint)}
+input,textarea,select{outline;border-color(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+textarea{resize}
+select{appearance;background-image("data/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238c7f83' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>");background-repeat;background-position 12px center;padding-right:34px}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-padding:12px 18px;border-radius:12px;border:1px solid transparent;cursor:pointer;
-font-size:14.5px;font-weight:600;font-family:inherit;letter-spacing:-.01em;transition:all .1s;white-space:nowrap}
-.btn:active{transform:scale(.98)}
-.btn.primary{background:var(--accent);color:var(--accent-ink)}
-.btn.primary:hover{opacity:.9}
-.btn.tint{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-soft)}
-.btn.ghost{background:var(--field);color:var(--text);border-color:var(--sep)}
-.btn.ghost:hover{border-color:var(--muted)}
-.btn.danger{background:var(--erro);color:#fff}
+.btn{display;align-items;justify-content;gap:8px;
+padding:12px 18px;border-radius:12px;border:1px solid transparent;cursor;
+font-size:14.5px;font-weight:600;font-family;letter-spacing:-.01em;transition .1s,opacity .12s,background .14s;white-space}
+.btn{transform(.98)}
+.btn.primary{background(--accent);color(--accent-ink)}
+.btn.primary
+.btn.tint{background(--accent-soft);color(--accent);border-color}
+.btn.ghost{background(--field);color(--text);border-color(--sep)}
+.btn.ghost{border-color(--muted)}
+.btn.danger{background(--erro);color:#fff}
 .btn.block{width:100%}
-.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn{opacity:.45;cursor}
 .btn.sm{padding:8px 13px;font-size:13px;border-radius:9px}
 .btn.xs{padding:6px 10px;font-size:12.5px;border-radius:8px}
 
-.row2{display:flex;gap:12px}.row2>*{flex:1;min-width:0}
-.rowtop{align-items:flex-start}
+.row2{display;gap:12px}.row2>*{flex:1;min-width:0}
+.rowtop{align-items}
 
 /* ---------- TILES ---------- */
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tile{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-padding:18px;cursor:pointer;box-shadow:var(--shadow);text-align:left;width:100%;transition:all .12s}
-.tile:hover{border-color:var(--accent);transform:translateY(-1px)}
-.tile:active{transform:scale(.99)}
-.tile .ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;flex:0 0 auto}
+.tiles{display;grid-template-columns:1fr 1fr;gap:14px}
+.tile{display;align-items;gap:14px;background(--card);border:1px solid var(--line);border-radius(--radius);
+padding:18px;cursor;box-shadow(--shadow);text-align;width:100%;transition .12s,border-color .14s}
+.tile{border-color(--accent);transform(-1px)}
+.tile{transform(.99)}
+.tile .ico{width:42px;height:42px;border-radius:12px;display;align-items;justify-content;font-size:21px;flex:0 0 auto}
 .tile .tx{flex:1;min-width:0}
 .tile h3{margin:0;font-family:"Inter";font-size:15.5px;font-weight:700;letter-spacing:-.01em}
-.tile p{margin:3px 0 0;color:var(--muted);font-size:12.5px;line-height:1.4}
+.tile p{margin:3px 0 0;color(--muted);font-size:12.5px;line-height:1.4}
 
 /* ---------- ROWS / LIST ---------- */
-.rows{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-.rw{display:flex;align-items:center;gap:13px;padding:15px 18px;cursor:pointer;border-bottom:1px solid var(--line);background:transparent;border-left:3px solid transparent;border-right:0;border-top:0;width:100%;text-align:left;transition:all .1s}
-.rw:hover{background:var(--field)}
-.rw.selected{background:var(--accent-soft)}
+.rows{background(--card);border:1px solid var(--line);border-radius(--radius);box-shadow(--shadow);overflow}
+.rw{display;align-items;gap:13px;padding:15px 18px;cursor;border-bottom:1px solid var(--line);background;border-left;border-right;border-top;width:100%;text-align;transition .1s}
+.rw
+.rw{background(--field)}
 .rw .tx{flex:1;min-width:0}
-.rw .tt{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rw .mt{font-size:12.5px;color:var(--muted);margin-top:2px}
+.rw .tt{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space;overflow;text-overflow}
+.rw .mt{font-size:12.5px;color(--muted);margin-top:2px}
 
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--field);color:var(--muted);letter-spacing:.01em;text-transform:uppercase}
-.chip.enviado{background:var(--warn-soft);color:var(--warn)}
-.chip.conferido{background:var(--ok-soft);color:var(--ok)}
-.chip.divergencia{background:var(--erro-soft);color:var(--erro)}
+.chip{display;align-items;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;background(--field);color(--muted);letter-spacing:.01em;text-transform}
+.chip.enviado{background(--warn-soft);color(--warn)}
+.chip.conferido{background(--ok-soft);color(--ok)}
+.chip.divergencia{background(--erro-soft);color(--erro)}
 
-.item{border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:11px;background:var(--panel)}
+.item{border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:11px;background(--panel)}
 .item .tt{font-weight:600;font-size:14.5px;letter-spacing:-.01em}
-.item .mt{font-size:12.5px;color:var(--muted);margin-top:3px}
+.item .mt{font-size:12.5px;color(--muted);margin-top:3px}
 
-.search{position:relative;margin-bottom:14px}
-.search input{padding-left:38px;background:var(--card)}
-.search .mag{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search{position;margin-bottom:14px}
+.search input{padding-left:38px;background(--card)}
+.search .mag{position;left:13px;top:50%;transform(-50%);color(--muted)}
 
-.seg{display:flex;background:var(--field);border-radius:11px;padding:3px;gap:3px;margin-bottom:14px;flex-wrap:wrap}
-.seg button{flex:1;min-width:70px;border:none;background:transparent;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit;transition:all .12s}
-.seg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.1);color:var(--accent)}
+.seg{display;background(--field);border-radius:11px;padding:3px;gap:3px;margin-bottom:14px;flex-wrap}
+.seg button{flex:1;min-width:70px;border;background;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color(--text);cursor;font-family;transition .12s}
+.seg button.on{background(--card);box-shadow:0 1px 3px rgba(0,0,0,.1);color(--accent)}
 
-.datebar{display:flex;gap:12px;align-items:flex-start}.datebar>div{flex:1}.datebar label{margin-top:0}
+.datebar{display;gap:12px;align-items}.datebar>div{flex:1}.datebar label{margin-top:0}
 
-.grade{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px}
-.gc{border-radius:11px;padding:7px 4px 8px;text-align:center;background:var(--field);border:1.5px solid transparent;transition:all .12s}
-.gc.on{border-color:var(--accent);background:var(--accent-soft)}
-.gc span{display:block;font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;letter-spacing:.02em}
-.gc input{padding:6px 2px;text-align:center;font-weight:700;font-size:15px;background:var(--card);border-color:var(--sep)}
-@media(max-width:520px){.grade{grid-template-columns:repeat(4,1fr)}}
+.grade{display;grid-template-columns(5,1fr);gap:8px;margin-top:6px}
+.gc{border-radius:11px;padding:7px 4px 8px;text-align;background(--field);border:1.5px solid transparent;transition .12s}
+.gc.on{border-color(--accent);background(--accent-soft)}
+.gc span{display;font-size:10px;font-weight:700;color(--muted);margin-bottom:4px;letter-spacing:.02em}
+.gc input{padding:6px 2px;text-align;font-weight:700;font-size:15px;background(--card);border-color(--sep)}
+@media(max-width:520px){.grade{grid-template-columns(4,1fr)}}
 
-.wpp{white-space:pre-wrap;font-size:12.5px;line-height:1.6;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;margin-top:14px;font-family:"SF Mono",Menlo,monospace}
-.aviso{font-size:12.5px;color:var(--erro);margin-top:8px;font-weight:500}
-.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+.wpp{white-space;font-size:12.5px;line-height:1.6;background(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;margin-top:14px;font-family,"SF Mono",Menlo,monospace}
+.aviso{font-size:12.5px;color(--erro);margin-top:8px;font-weight:500}
+.empty{text-align;padding:40px 16px;color(--muted)}
 .empty .big{font-size:38px;margin-bottom:10px;opacity:.6}
 .empty p{font-size:14px;margin:0}
-.spin{width:22px;height:22px;border:2.5px solid var(--sep);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;margin:34px auto}
-@keyframes sp{to{transform:rotate(360deg)}}
+.spin{width:22px;height:22px;border:2.5px solid var(--sep);border-top-color(--accent);border-radius:50%;animation .7s linear infinite;margin:34px auto}
+@keyframes sp{to{transform(360deg)}}
 
 /* ---------- DASHBOARD ---------- */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpis{display;grid-template-columns(4,1fr);gap:14px;margin-bottom:18px}
 @media(max-width:720px){.kpis{grid-template-columns:1fr 1fr}}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.kpi .k-ico{position:absolute;right:14px;top:14px;font-size:20px;opacity:.85}
+.kpi{background(--card);border:1px solid var(--line);border-radius(--radius);padding:18px;box-shadow(--shadow);position;overflow}
+.kpi .k-ico{position;right:14px;top:14px;font-size:20px;opacity:.85}
 .kpi .n{font-family:"Fraunces";font-size:34px;font-weight:600;letter-spacing:-.02em;line-height:1}
-.kpi .l{font-size:12px;color:var(--muted);font-weight:600;margin-top:6px;letter-spacing:.01em}
-.kpi .d{font-size:11.5px;color:var(--faint);margin-top:3px}
+.kpi .l{font-size:12px;color(--muted);font-weight:600;margin-top:6px;letter-spacing:.01em}
+.kpi .d{font-size:11.5px;color(--faint);margin-top:3px}
 
-.dashgrid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+.dashgrid{display;grid-template-columns:1.3fr 1fr;gap:18px}
 @media(max-width:820px){.dashgrid{grid-template-columns:1fr}}
-.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.bar-row .lbl{width:78px;flex:0 0 auto;font-size:13px;color:var(--muted);font-weight:600}
-.bar-track{flex:1;height:9px;background:var(--field);border-radius:6px;overflow:hidden}
-.bar-fill{height:100%;border-radius:6px;transition:.5s cubic-bezier(.2,.8,.2,1)}
-.bar-row .val{width:34px;flex:0 0 auto;text-align:right;font-weight:700;font-size:13.5px}
+.bar-row{display;align-items;gap:12px;margin-bottom:12px}
+.bar-row .lbl{width:78px;flex:0 0 auto;font-size:13px;color(--muted);font-weight:600}
+.bar-track{flex:1;height:9px;background(--field);border-radius:6px;overflow}
+.bar-fill{height:100%;border-radius:6px;transition .5s cubic-bezier(.2,.8,.2,1)}
+.bar-row .val{width:34px;flex:0 0 auto;text-align;font-weight:700;font-size:13.5px}
 
-.mini{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
-.mini:last-child{border-bottom:none}
+.mini{display;align-items;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+.mini
 .mini .mdot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
 .mini .mtx{flex:1;min-width:0}
-.mini .mtt{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini .mmt{font-size:11.5px;color:var(--muted)}
+.mini .mtt{font-size:13.5px;font-weight:600;white-space;overflow;text-overflow}
+.mini .mmt{font-size:11.5px;color(--muted)}
 
-.iconbtn{background:transparent;border:none;cursor:pointer;padding:7px;display:flex;align-items:center;justify-content:center;border-radius:9px;flex:0 0 auto;transition:all .12s}
-.iconbtn:hover{background:var(--field)}
+.iconbtn{background;border;cursor;padding:7px;display;align-items;justify-content;border-radius:9px;flex:0 0 auto;transition .12s}
+.iconbtn{background(--field)}
 
 /* ---------- OVERLAY / SHEET ---------- */
-.overlay{position:fixed;inset:0;background:rgba(30,18,22,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;animation:fade .18s ease}
-.sheet{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;width:100%;max-width:440px;box-shadow:0 24px 60px -20px rgba(0,0,0,.4);animation:pop .2s ease;max-height:90vh;overflow-y:auto}
-.sheet h2{font-family:"Fraunces";font-size:21px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px;text-transform:uppercase;color:var(--text)}
-.sheet p.desc{font-size:13.5px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.overlay{position;inset:0;background(30,18,22,.42);backdrop-filter(3px);-webkit-backdrop-filter(3px);display;align-items;justify-content;z-index:100;padding:16px;animation .18s ease}
+.sheet{background(--card);border:1px solid var(--line);border-radius:20px;padding:24px;width:100%;max-width:440px;box-shadow:0 24px 60px -20px rgba(0,0,0,.4);animation .2s ease;max-height:90vh;overflow-y}
+.sheet h2{font-family:"Fraunces";font-size:21px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px;text-transform;color(--text)}
+.sheet p.desc{font-size:13.5px;color(--muted);margin:0 0 16px;line-height:1.5}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes pop{from{transform:scale(.97);opacity:.5}to{transform:scale(1);opacity:1}}
+@keyframes pop{from{transform(.97);opacity:.5}to{transform(1);opacity:1}}
 
-.editinfo{font-size:12px;color:var(--muted);margin-top:8px;font-weight:500;display:flex;align-items:center;gap:6px;width:100%}
-.editinfo.bloq{color:var(--erro)}
+.editinfo{font-size:12px;color(--muted);margin-top:8px;font-weight:500;display;align-items;gap:6px;width:100%}
+.editinfo.bloq{color(--erro)}
 
 /* checklist download */
-.checklist{max-height:280px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:6px}
-.ck{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;cursor:pointer;transition:all .1s}
-.ck:hover{background:var(--field)}
-.ck .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--sep);flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .12s}
-.ck.on .box{background:var(--accent);border-color:var(--accent)}
+.checklist{max-height:280px;overflow-y;border:1px solid var(--line);border-radius:12px;padding:6px}
+.ck{display;align-items;gap:11px;padding:9px 10px;border-radius:9px;cursor;transition .1s}
+.ck{background(--field)}
+.ck .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--sep);flex:0 0 auto;display;align-items;justify-content;color:#fff;transition .12s}
+.ck.on .box{background(--accent);border-color(--accent)}
 .ck .cx{flex:1;min-width:0}
-.ck .ctt{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ck .cmt{font-size:11.5px;color:var(--muted)}
+.ck .ctt{font-size:13.5px;font-weight:600;white-space;overflow;text-overflow}
+.ck .cmt{font-size:11.5px;color(--muted)}
 
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);
+.toast{position;bottom:26px;left:50%;transform(-50%);background(--text);color(--bg);
 padding:12px 22px;border-radius:30px;font-size:14px;font-weight:600;z-index:120;box-shadow:0 12px 30px rgba(0,0,0,.28)}
 
 /* barra de seleção da lista */
-.selbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);
-border-radius:13px;padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow)}
+.selbar{display;align-items;gap:12px;flex-wrap;background(--card);border:1px solid var(--line);
+border-radius:13px;padding:10px 12px;margin-bottom:12px;box-shadow(--shadow)}
 .selbar .selinfo{flex:1;min-width:120px;font-size:13.5px}
-.ck2{display:flex;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;font-family:inherit;
-font-size:13.5px;font-weight:600;color:var(--text);padding:4px 2px}
+.ck2{display;align-items;gap:8px;background;border;cursor;font-family;
+font-size:13.5px;font-weight:600;color(--text);padding:4px 2px}
 .ck2 .box,.rowcheck{width:21px;height:21px;border-radius:6px;border:1.5px solid var(--sep);flex:0 0 auto;
-display:flex;align-items:center;justify-content:center;color:#fff;transition:all .12s;background:var(--field)}
-.ck2.on .box{background:var(--accent);border-color:var(--accent)}
-.rowcheck{cursor:pointer;padding:0}
-.rowcheck:hover{border-color:var(--accent)}
-.rowcheck.on{background:var(--accent);border-color:var(--accent)}
+display;align-items;justify-content;color:#fff;transition .12s;background(--field)}
+.ck2.on .box{background(--accent);border-color(--accent)}
+.rowcheck{cursor;padding:0}
+.rowcheck{border-color(--accent)}
+.rowcheck.on{background(--accent);border-color(--accent)}
+.rw.selected{background(--accent-soft)}
+[data-theme="escuro"] .rw.selected{background(--accent-soft)}
 
 /* avulsos */
 .avtexto{font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
-.avmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}
+.avmeta{display;align-items;gap:8px;flex-wrap;margin-top:6px}
 .avtag{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.01em}
-.avloc{display:flex;align-items:center;gap:3px;font-size:12px;color:var(--muted);font-weight:600}
-.avdata{font-size:11.5px;color:var(--faint)}
+.avloc{display;align-items;gap:3px;font-size:12px;color(--muted);font-weight:600}
+.avdata{font-size:11.5px;color(--faint)}
 .rw.avdone{opacity:.72}
 
-.backdrop{display:none}
+.backdrop{display}
 /* ---------- MOBILE ---------- */
 @media(max-width:860px){
-.side{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .24s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 60px rgba(0,0,0,.4)}
-.side.open{transform:translateX(0)}
-.main{margin-left:0}
-.topbar{display:flex}
-.burger{display:block}
-.backdrop.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:35}
+.side{position;left:0;top:0;transform(-100%);transition .24s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 60px rgba(0,0,0,.4)}
+.side.open{transform(0)}
+.topbar{display}
+.backdrop.show{display;position;inset:0;background(0,0,0,.4);z-index:35}
 .content{padding:22px 18px 90px}
 .pagehead h1{font-size:30px}
 .tiles{grid-template-columns:1fr}
@@ -275,7 +273,7 @@ const { useState, useEffect, useMemo } = React;
 /* ============================================================
 COLE AQUI a URL /exec da implantação do Apps Script:
 ============================================================ */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgohTL5G6nk-BguoL1eOc91W9CAQiySqmZ-gutV6zrEG0evpG0surYW3mO5C1-yVbaEg/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2XxS1BEHVF1Tvu80hqaQ41jASis_7f_OeWNALDqmyifM5x9WrLBfTV8GjQq7J6ex-0g/exec";
 
 const LOGO_URL = "https://recursos.qvestido.com.br/i/SVG-diversos/logo.svg";
 const GRADE = ["XPP/34","PP/36","P/38","M/40","G/42","GG/44","G1/46","G2/48","G3/50","G4/52"];
@@ -284,60 +282,7 @@ const THEMES = [ {id:"claro",cor:"#f5f2ee"}, {id:"escuro",cor:"#20161a"}, {id:"v
 const MAX_EDICOES = 2;
 const JANELA_MS = 486060*1000;
 
-/* ============================================================
-AUTOSAVE & RASCUNHOS — funções auxiliares
-============================================================ */
-const DRAFT_PREFIX = "qv_rascunho_";
-const DRAFT_EXPIRY = 7 * 24 * 60 * 60 * 1000;  // 7 dias
-
-function draftKey(origem, destino, editId) {
-  if (editId) return DRAFT_PREFIX + "edit_" + editId;
-  return DRAFT_PREFIX + origem + "_" + destino;
-}
-
-function autosaveDraft(origem, destino, itens, obs, form, editId) {
-  try {
-    const key = draftKey(origem, destino, editId);
-    const draft = {
-      origem, destino, itens, obs, form,
-      timestamp: Date.now(),
-      editId: editId || null
-    };
-    localStorage.setItem(key, JSON.stringify(draft));
-  } catch (e) {
-    console.warn("Erro ao salvar rascunho local:", e);
-  }
-}
-
-function getDraft(origem, destino, editId) {
-  try {
-    const key = draftKey(origem, destino, editId);
-    const stored = localStorage.getItem(key);
-    if (!stored) return null;
-    
-    const draft = JSON.parse(stored);
-    if (Date.now() - draft.timestamp > DRAFT_EXPIRY) {
-      localStorage.removeItem(key);
-      return null;
-    }
-    return draft;
-  } catch (e) {
-    return null;
-  }
-}
-
-function clearDraft(origem, destino, editId) {
-  try {
-    const key = draftKey(origem, destino, editId);
-    localStorage.removeItem(key);
-  } catch (e) {}
-}
-
-/* ============================================================
-FUNÇÕES AUXILIARES
-============================================================ */
-
-function ion(name,size){ return function(p){ p=p||{}; return <ion-icon name={name} style={{fontSize:size+"px",...(p.style||{})}} />; }; }
+function ion(name,size){ return function(p){ p=p||{}; return <ion-icon name={name} style={{fontSize+"px",...(p.style||{})}} />; }; }
 const I = {
 chevron: ion("chevron-forward",15), back: ion("chevron-back",20), mag: ion("search-outline",17),
 download: ion("download-outline",17), copy: ion("copy-outline",16), edit: ion("create-outline",16),
@@ -345,7 +290,7 @@ download: ion("download-outline",17), copy: ion("copy-outline",16), edit: ion("c
 
 async function api(payload){
 if(SCRIPT_URL.indexOf("COLE_A_URL")===0) throw new Error("Falta colar a SCRIPT_URL no topo do arquivo.");
-const res = await fetch(SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+const res = await fetch(SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body.stringify(payload)});
 const data = await res.json();
 if(!data.ok) throw new Error(data.erro||"Erro no servidor");
 return data;
@@ -353,7 +298,7 @@ return data;
 
 function parseGrade(g){ if(!g) return {}; if(typeof g==="object") return g; try{return JSON.parse(g)||{}}catch(e){return {}} }
 function somaGrade(g){ return Object.values(g||{}).reduce((a,b)=>a+(Number(b)||0),0); }
-function gradeTexto(g){ const e=Object.entries(g||{}).filter(([_,q])=>Number(q)>0); return e.length? e.map(([t,q])=>`${t}:${q}`).join(" ") : "—"; }
+function gradeTexto(g){ const e=Object.entries(g||{}).filter(([_,q])=>Number(q)>0); return e.length? e.map(([t,q])=>${t}:${q}).join(" ") : "—"; }
 function fmtData(v){ if(!v) return ""; const d=new Date(v); if(isNaN(d)) return String(v); return d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
 function fmtDia(v){ const d=new Date(v); if(isNaN(d)) return ""; return d.toLocaleDateString("pt-BR"); }
 function ymd(v){ const d=new Date(v); if(isNaN(d)) return ""; return d.toISOString().slice(0,10); }
@@ -367,20 +312,20 @@ const usadas = dentroJanela ? qtd : 0;
 const podeEditar = r.status==="enviado" && usadas < MAX_EDICOES;
 return { podeEditar, usadas, restante, dentroJanela, temPrimeira: !!primeira };
 }
-function fmtRestante(ms){ if(ms<=0) return "0h"; const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000); return h>=1?`${h}h${m>0?(" "+m+"min"):""}`:(`${m}min`); }
+function fmtRestante(ms){ if(ms<=0) return "0h"; const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000); return h>=1?${h}h${m>0?(" "+m+"min"):""}:${m}min; }
 
 function romaneioWhatsapp(origem,destino,itens){
-const cab=`ROMANEIO ${origem} → ${destino}\n${new Date().toLocaleDateString("pt-BR")}\n`;
+const cab=ROMANEIO ${origem} → ${destino}\n${new Date().toLocaleDateString("pt-BR")}\n;
 const blocos=itens.map(it=>(
-`*MARCA:* ${it.marca||""}
+*MARCA:* ${it.marca||""}
 *NOME DO PRODUTO:* ${it.nome_produto||""}
 *CÓDIGO DO PRODUTO:* ${it.codigo_produto||""}
 *ENDEREÇO:* ${it.endereco||""}
-*QUANTIDADE ENVIADA:* ${gradeTexto(it.grade)} (total ${somaGrade(it.grade)})`
+*QUANTIDADE ENVIADA:* ${gradeTexto(it.grade)} (total ${somaGrade(it.grade)})
 )).join("\n\n");
 return cab+"\n"+blocos;
 }
-function statusCor(s){ return s==="conferido"?"var(--ok)":s==="divergencia"?"var(--erro)":"var(--warn)"; }
+function statusCor(s){ return s==="conferido"?"var(--ok)"==="divergencia"?"var(--erro)":"var(--warn)"; }
 
 /* ---------------- GRADE INPUT ---------------- */
 function GradeInput({grade,onChange}){
@@ -421,7 +366,7 @@ onChange={e=>{setSenha(e.target.value);setErro("");}} onKeyDown={e=>{if(e.key===
 /* ---------------- ITEM FORM (usado p/ adicionar e editar item) ---------------- */
 const ITEM_VAZIO={marca:"",nome_produto:"",codigo_produto:"",endereco:"",grade:{},link:""};
 function ItemForm({valor,onChange,onPuxar,buscando}){
-const set=(k,v)=>onChange({...valor,[k]:v});
+const set=(k,v)=>onChange({...valor,[k]});
 return (
 <div>
 <label>Link da peça</label>
@@ -450,8 +395,8 @@ const [buscando,setBuscando]=useState(false);
 async function puxar(){
 if(!f.link||!f.link.trim())return;
 setBuscando(true);
-try{ const {dados}=await api({action:"parseLink",url:f.link.trim()});
-setF(v=>({...v,marca:dados.marca||v.marca,nome_produto:dados.nome_produto||v.nome_produto,codigo_produto:dados.codigo_produto||v.codigo_produto}));
+try{ const {dados}=await api({action:"parseLink",url.link.trim()});
+setF(v=>({...v,marca.marca||v.marca,nome_produto.nome_produto||v.nome_produto,codigo_produto.codigo_produto||v.codigo_produto}));
 flash&&flash("Dados puxados ✨");
 }catch(e){flash&&flash("Não rolou: "+e.message);}
 setBuscando(false);
@@ -473,6 +418,108 @@ return (
 </div>
 </div>
 </div>
+);
+}
+
+/* ---------------- SELETOR DE PLANILHAS (download) ---------------- */
+function DownloadSheet({romaneios,preSel,onCancel,flash}){
+const [sel,setSel]=useState(()=> (preSel&&preSel.length)? new Set(preSel) : new Set(romaneios.map(r=>r.id)));
+const [modo,setModo]=useState("detalhado"); // detalhado = item a item; resumo = 1 linha por romaneio
+const [gerando,setGerando]=useState(false);
+const toggle=(id)=>setSel(s=>{const n=new Set(s); n.has(id)?n.delete(id).add(id); return n;});
+const todos=()=>setSel(new Set(romaneios.map(r=>r.id)));
+const nenhum=()=>setSel(new Set());
+
+async function baixar(){
+const escolhidos=romaneios.filter(r=>sel.has(r.id));
+if(!escolhidos.length){flash("Selecione ao menos 1 romaneio.");return;}
+setGerando(true);
+try{
+if(modo==="resumo"){
+const linhas=escolhidos.map(r=>({
+Romaneio.id, Data(r.data_criacao), Sentido:${r.origem} → ${r.destino},
+Status.status, Enviou.criado_por||"", Conferiu.conferido_por||"", Observações.observacoes||"",
+}));
+const ws=XLSX.utils.json_to_sheet(linhas);
+const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Resumo");
+XLSX.writeFile(wb,romaneios-resumo_${ymd(new Date())}.xlsx);
+} else {
+const wb=XLSX.utils.book_new();
+const geral=[];
+for(const r of escolhidos){
+const {romaneio}=await api({action:"getRomaneio",id.id});
+const linhas=(romaneio.itens||[]).map(it=>({
+Marca.marca, Produto.nome_produto, Codigo.codigo_produto, Endereco.endereco,
+"Grade enviada"(parseGrade(it.grade_enviada)), "Total env"(parseGrade(it.grade_enviada)),
+"Grade conferida"(parseGrade(it.grade_conferida)), "Total conf"(parseGrade(it.grade_conferida)),
+"Situação".status_item, Obs.observacao_item,
+}));
+linhas.forEach(l=>geral.push({Romaneio.id, Data(r.data_criacao), Sentido:${r.origem} → ${r.destino}, Status.status, ...l}));
+// uma aba por romaneio (nome da aba limitado a 31 chars)
+if(escolhidos.length<=15 && linhas.length){
+const ws=XLSX.utils.json_to_sheet(linhas);
+XLSX.utils.book_append_sheet(wb,ws,String(r.id).slice(0,31));
+}
+}
+if(geral.length){
+const wsG=XLSX.utils.json_to_sheet(geral);
+// deixa "Todos" como primeira aba
+wb.SheetNames.unshift("Todos"); wb.Sheets["Todos"]=wsG;
+}
+if(!wb.SheetNames.length){flash("Nada pra exportar.");setGerando(false);return;}
+XLSX.writeFile(wb,romaneios_${ymd(new Date())}.xlsx);
+}
+flash(Planilha baixada — ${escolhidos.length} romaneio(s) 📊);
+onCancel();
+}catch(e){flash("Erro ao exportar: "+e.message);}
+setGerando(false);
+}
+
+return (
+<div className="overlay" onClick={onCancel}>
+<div className="sheet" onClick={e=>e.stopPropagation()} style={{maxWidth:500}}>
+<h2>Baixar planilha</h2>
+<p className="desc">Escolha quais romaneios entram no arquivo e o formato.</p>
+
+    <label style={{marginTop:0}}>Formato</label>
+    <div className="seg" style={{marginBottom:14}}>
+      <button className={modo==="detalhado"?"on":""} onClick={()=>setModo("detalhado")}>Detalhado (item a item)</button>
+      <button className={modo==="resumo"?"on":""} onClick={()=>setModo("resumo")}>Resumo (1 linha por romaneio)</button>
+    </div>
+
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+      <label style={{margin:0}}>Romaneios ({sel.size}/{romaneios.length})</label>
+      <div style={{display:"flex",gap:6}}>
+        <button className="btn ghost xs" onClick={todos}>Todos</button>
+        <button className="btn ghost xs" onClick={nenhum}>Nenhum</button>
+      </div>
+    </div>
+
+    <div className="checklist">
+      {romaneios.length===0 && <div className="empty" style={{padding:"22px"}}><p>Nenhum romaneio no filtro atual.</p></div>}
+      {romaneios.map(r=>{
+        const on=sel.has(r.id);
+        return (
+          <div className={"ck"+(on?" on":"")} key={r.id} onClick={()=>toggle(r.id)}>
+            <div className="box">{on && <ion-icon name="checkmark" style={{fontSize:"14px"}}/>}</div>
+            <div className="cx">
+              <div className="ctt">{r.id} · {r.origem}→{r.destino}</div>
+              <div className="cmt">{fmtDia(r.data_criacao)} · {r.status} · {r.criado_por||"—"}</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    {modo==="detalhado" && sel.size>15 && <div className="aviso" style={{color:"var(--muted)"}}>Mais de 15 selecionados: sai só a aba “Todos” consolidada (sem abas individuais).</div>}
+
+    <div className="row2" style={{marginTop:18}}>
+      <button className="btn ghost" onClick={onCancel}>Fechar</button>
+      <button className="btn primary" onClick={baixar} disabled={gerando}>{gerando?"Gerando…":<span style={{display:"inline-flex",alignItems:"center",gap:7}}><I.download/> Baixar {sel.size>0?`(${sel.size})`:""}</span>}</button>
+    </div>
+  </div>
+</div>
+
 );
 }
 
@@ -544,7 +591,7 @@ return (
 <input value={nome} onChange={e=>setNome(e.target.value)} placeholder="Seu nome"/>
 </div>
 <div className="themebar">
-{THEMES.map(t=><button key={t.id} className={"dot"+(theme===t.id?" on":"")} title={t.id} style={{background:t.cor}} onClick={()=>setTheme(t.id)}/>)}
+{THEMES.map(t=><button key={t.id} className={"dot"+(theme===t.id?" on":"")} title={t.id} style={{background.cor}} onClick={()=>setTheme(t.id)}/>)}
 </div>
 </aside>
 
@@ -568,9 +615,233 @@ return (
 );
 }
 
-/* ============================================================
-ENVIAR — COM AUTOSAVE E RASCUNHO
-============================================================ */
+/* ---------------- DASHBOARD ---------------- */
+function Dashboard({flash,irPara}){
+const [dados,setDados]=useState(null);
+useEffect(()=>{(async()=>{
+try{ const {romaneios}=await api({action:"listRomaneios"}); setDados(romaneios); }
+catch(e){flash("Erro: "+e.message);setDados([]);}
+})();},[]);
+
+const m=useMemo(()=>{
+const d=dados||[];
+const enviado=d.filter(r=>r.status==="enviado");
+const conferido=d.filter(r=>r.status==="conferido");
+const div=d.filter(r=>r.status==="divergencia");
+const spPe=d.filter(r=>r.origem==="SP").length;
+const peSp=d.filter(r=>r.origem==="Petrolina").length;
+const seteDias=Date.now()-7864e5;
+const recente=d.filter(r=>{const t=new Date(r.data_criacao).getTime();return !isNaN(t)&&t>=seteDias;}).length;
+const ultimos=[...d].sort((a,b)=>String(b.data_criacao).localeCompare(String(a.data_criacao))).slice(0,6);
+const taxaDiv = d.length? Math.round(div.length/d.length100):0;
+return {total.length,enviado,conferido,div,spPe,peSp,recente,ultimos,taxaDiv};
+},[dados]);
+
+if(dados===null) return <div><Head eyebrow="Visão geral" titulo="Dashboard" sub="Carregando os números…"/><div className="spin"/></div>;
+
+const maxDir=Math.max(1,m.spPe,m.peSp);
+return (
+<div>
+<Head eyebrow="Visão geral" titulo="Dashboard" sub="Um panorama rápido dos romaneios entre São Paulo e Petrolina."/>
+
+  <div className="kpis">
+    <div className="kpi"><ion-icon className="k-ico" name="albums-outline" style={{color:"var(--accent)"}}/><div className="n">{m.total}</div><div className="l">Romaneios</div><div className="d">{m.recente} nos últimos 7 dias</div></div>
+    <div className="kpi"><ion-icon className="k-ico" name="cube-outline" style={{color:"var(--warn)"}}/><div className="n" style={{color:"var(--warn)"}}>{m.enviado.length}</div><div className="l">Aguardando conferência</div><div className="d">em trânsito ou parados</div></div>
+    <div className="kpi"><ion-icon className="k-ico" name="checkmark-done-outline" style={{color:"var(--ok)"}}/><div className="n" style={{color:"var(--ok)"}}>{m.conferido.length}</div><div className="l">Conferidos ok</div><div className="d">sem divergência</div></div>
+    <div className="kpi"><ion-icon className="k-ico" name="alert-circle-outline" style={{color:"var(--erro)"}}/><div className="n" style={{color:"var(--erro)"}}>{m.div.length}</div><div className="l">Com divergência</div><div className="d">{m.taxaDiv}% do total</div></div>
+  </div>
+
+  <div className="dashgrid">
+    <div className="card">
+      <h2>Pendentes de conferência</h2>
+      {m.enviado.length===0 && <div className="empty" style={{padding:"26px"}}><div className="big"><ion-icon name="checkmark-done-circle-outline" style={{color:"var(--ok)"}}/></div><p>Tudo conferido. Nada parado.</p></div>}
+      {m.enviado.slice(0,6).map(r=>(
+        <div className="mini" key={r.id}>
+          <div className="mdot" style={{background:"var(--warn)"}}/>
+          <div className="mtx"><div className="mtt">{r.id} · {r.origem}→{r.destino}</div><div className="mmt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div></div>
+          <span className="chip enviado">enviado</span>
+        </div>
+      ))}
+      {m.enviado.length>6 && <button className="btn ghost block sm" style={{marginTop:12}} onClick={()=>irPara("historico")}>Ver todos no histórico</button>}
+    </div>
+
+    <div className="card">
+      <h2>Fluxo por origem</h2>
+      <div className="bar-row"><div className="lbl">SP → PE</div><div className="bar-track"><div className="bar-fill" style={{width:(m.spPe/maxDir*100)+"%",background:"var(--accent)"}}/></div><div className="val">{m.spPe}</div></div>
+      <div className="bar-row"><div className="lbl">PE → SP</div><div className="bar-track"><div className="bar-fill" style={{width:(m.peSp/maxDir*100)+"%",background:"var(--gold)"}}/></div><div className="val">{m.peSp}</div></div>
+      <div style={{height:1,background:"var(--line)",margin:"16px 0"}}/>
+      <h2>Situação geral</h2>
+      {[["Conferidos",m.conferido.length,"var(--ok)"],["Enviados",m.enviado.length,"var(--warn)"],["Divergências",m.div.length,"var(--erro)"]].map(([l,v,c])=>(
+        <div className="bar-row" key={l}><div className="lbl" style={{width:96}}>{l}</div><div className="bar-track"><div className="bar-fill" style={{width:(v/Math.max(1,m.total)*100)+"%",background:c}}/></div><div className="val">{v}</div></div>
+      ))}
+    </div>
+  </div>
+
+  <div className="card">
+    <h2>Últimos romaneios</h2>
+    {m.ultimos.length===0 && <div className="empty" style={{padding:"22px"}}><p>Nenhum romaneio ainda.</p></div>}
+    <div className="rows" style={{boxShadow:"none",border:"none"}}>
+      {m.ultimos.map(r=>(
+        <div className="rw" key={r.id} style={{cursor:"default",paddingLeft:0,paddingRight:0}}>
+          <div className="mdot" style={{background:statusCor(r.status),width:9,height:9,borderRadius:"50%",flex:"0 0 auto"}}/>
+          <div className="tx"><div className="tt">{r.id} <span style={{fontWeight:500,color:"var(--muted)",fontSize:13}}>· {r.origem}→{r.destino}</span></div><div className="mt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div></div>
+          <span className={"chip "+r.status}>{r.status}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+);
+}
+
+function Head({eyebrow,titulo,sub}){
+return (<div className="pagehead"><div className="eyebrow">{eyebrow}</div><h1>{titulo}</h1>{sub&&<p>{sub}</p>}</div>);
+}
+
+/* ---------------- AVULSOS (anotações rápidas) ---------------- */
+const AV_LOCAIS = ["Petrolina","SP","Interno","—"];
+const AV_TAGS = ["sem cadastro","só Petrolina","só SP","conferir depois","outro"];
+function Avulsos({nome,flash}){
+const [lista,setLista]=useState(null);
+const [texto,setTexto]=useState("");
+const [local,setLocal]=useState("Petrolina");
+const [tag,setTag]=useState("sem cadastro");
+const [qtd,setQtd]=useState("");
+const [salvando,setSalvando]=useState(false);
+const [filtro,setFiltro]=useState("abertos"); // abertos | feitos | todos
+const [del,setDel]=useState(null);
+
+useEffect(()=>{carregar();},[]);
+async function carregar(){
+setLista(null);
+try{ const {avulsos}=await api({action:"listAvulsos"}); setLista(avulsos); }
+catch(e){flash("Erro: "+e.message);setLista([]);}
+}
+async function adicionar(){
+if(!texto.trim()){flash("Escreve o que quer anotar.");return;}
+setSalvando(true);
+try{
+await api({action:"addAvulso",texto.trim(),local,tag,quantidade,criado_por});
+setTexto("");setQtd("");
+flash("Anotado ✍️");
+carregar();
+}catch(e){flash("Erro: "+e.message);}
+setSalvando(false);
+}
+async function toggle(a){
+// atualização otimista
+setLista(l=>l.map(x=>x.id===a.id?{...x,feito:!x.feito}));
+try{ await api({action:"toggleAvulso",id.id}); }
+catch(e){ flash("Erro: "+e.message); carregar(); }
+}
+async function remover(a){
+setDel(null);
+setLista(l=>l.filter(x=>x.id!==a.id));
+try{ await api({action:"deleteAvulso",id.id}); flash("Removido 🗑️"); }
+catch(e){ flash("Erro: "+e.message); carregar(); }
+}
+async function limparFeitos(){
+try{ const {deleted}=await api({action:"limparAvulsosFeitos"}); flash(${deleted||0} concluído(s) limpo(s) 🧹); carregar(); }
+catch(e){ flash("Erro: "+e.message); }
+}
+
+const filtrada=useMemo(()=>{
+const l=lista||[];
+if(filtro==="abertos") return l.filter(a=>!a.feito);
+if(filtro==="feitos")  return l.filter(a=>a.feito);
+return l;
+},[lista,filtro]);
+
+const abertos=(lista||[]).filter(a=>!a.feito).length;
+const feitos=(lista||[]).filter(a=>a.feito).length;
+
+function tagCor(t){
+if(t==="sem cadastro") return {bg:"var(--accent-soft)",fg:"var(--accent)"};
+if(t==="só Petrolina") return {bg:"var(--warn-soft)",fg:"var(--warn)"};
+if(t==="só SP")        return {bg:"var(--ok-soft)",fg:"var(--ok)"};
+return {bg:"var(--field)",fg:"var(--muted)"};
+}
+
+return (
+<div>
+<Head eyebrow="Bloco rápido" titulo="Avulsos" sub="Anote peças soltas, sem cadastro, ou coisas que ficam só entre as lojas. É um bloquinho — não vira romaneio."/>
+
+  <div className="card">
+    <h2>Nova anotação</h2>
+    <label>O que é?</label>
+    <textarea rows="2" value={texto} onChange={e=>setTexto(e.target.value)}
+      onKeyDown={e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))adicionar();}}
+      placeholder="Ex: 3 vestidos Liz sem etiqueta que ficaram em Petrolina"/>
+    <div className="row2">
+      <div><label>Onde está / vai</label>
+        <select value={local} onChange={e=>setLocal(e.target.value)}>{AV_LOCAIS.map(x=><option key={x} value={x}>{x}</option>)}</select></div>
+      <div><label>Etiqueta</label>
+        <select value={tag} onChange={e=>setTag(e.target.value)}>{AV_TAGS.map(x=><option key={x} value={x}>{x}</option>)}</select></div>
+      <div style={{flex:"0 0 90px"}}><label>Qtd</label>
+        <input type="number" min="0" inputMode="numeric" value={qtd} onChange={e=>setQtd(e.target.value)} placeholder="—"/></div>
+    </div>
+    <button className="btn primary block" style={{marginTop:16}} onClick={adicionar} disabled={salvando}>{salvando?"Salvando…":"+ Anotar"}</button>
+  </div>
+
+  <div className="seg" style={{marginBottom:0}}>
+    {[["abertos",`Abertos (${abertos})`],["feitos",`Feitos (${feitos})`],["todos","Todos"]].map(([v,l])=>(
+      <button key={v} className={filtro===v?"on":""} onClick={()=>setFiltro(v)}>{l}</button>
+    ))}
+  </div>
+
+  {feitos>0 && filtro!=="abertos" &&
+    <div style={{textAlign:"right",margin:"10px 2px 0"}}>
+      <button className="btn ghost xs" onClick={limparFeitos}>🧹 Limpar concluídos</button>
+    </div>}
+
+  <div style={{marginTop:14}}>
+    {lista===null && <div className="spin"/>}
+    {lista && filtrada.length===0 &&
+      <div className="empty"><div className="big"><ion-icon name="reader-outline"/></div>
+        <p>{filtro==="feitos"?"Nada concluído ainda.":filtro==="abertos"?"Nenhuma anotação aberta. Tudo em dia! 🎀":"Nenhuma anotação por aqui."}</p></div>}
+    {lista && filtrada.length>0 &&
+      <div className="rows">
+        {filtrada.map(a=>{
+          const tc=tagCor(a.tag);
+          return (
+            <div className={"rw"+(a.feito?" avdone":"")} key={a.id} style={{cursor:"default",alignItems:"flex-start"}}>
+              <button className={"rowcheck"+(a.feito?" on":"")} title="Marcar feito" style={{marginTop:2}} onClick={()=>toggle(a)}>
+                {a.feito && <ion-icon name="checkmark" style={{fontSize:"14px"}}/>}
+              </button>
+              <div className="tx">
+                <div className="avtexto" style={a.feito?{textDecoration:"line-through",color:"var(--muted)"}:{}}>
+                  {a.quantidade!=="" && a.quantidade!=null && <b>{a.quantidade}× </b>}{a.texto}
+                </div>
+                <div className="avmeta">
+                  {a.tag && <span className="avtag" style={{background:tc.bg,color:tc.fg}}>{a.tag}</span>}
+                  {a.local && a.local!=="—" && <span className="avloc"><ion-icon name="location-outline" style={{fontSize:"12px"}}/> {a.local}</span>}
+                  <span className="avdata">{fmtData(a.data_criacao)}{a.criado_por?(" · "+a.criado_por):""}</span>
+                </div>
+              </div>
+              <button className="iconbtn" title="Remover" onClick={()=>setDel(a)}><ion-icon name="trash-outline" style={{fontSize:"18px",color:"var(--erro)"}}/></button>
+            </div>
+          );
+        })}
+      </div>}
+  </div>
+
+  {del && <div className="overlay" onClick={()=>setDel(null)}>
+    <div className="sheet" onClick={e=>e.stopPropagation()}>
+      <h2>Remover anotação?</h2>
+      <p className="desc">"{del.texto}" — isso apaga só essa anotação avulsa.</p>
+      <div className="row2" style={{marginTop:16}}>
+        <button className="btn ghost" onClick={()=>setDel(null)}>Cancelar</button>
+        <button className="btn danger" onClick={()=>remover(del)}>Remover</button>
+      </div>
+    </div>
+  </div>}
+</div>
+
+);
+}
+
+/* ---------------- ENVIAR ---------------- */
 function Enviar({nome,rota,flash}){
 const [itens,setItens]=useState([]);
 const [obs,setObs]=useState("");
@@ -578,127 +849,52 @@ const [form,setForm]=useState({...ITEM_VAZIO});
 const [buscando,setBuscando]=useState(false);
 const [enviando,setEnviando]=useState(false);
 const [criado,setCriado]=useState(null);
-const [editIdx,setEditIdx]=useState(null);
-const [mostrarRascunho,setMostrarRascunho]=useState(false);
-const [salvandoRascunho,setSalvandoRascunho]=useState(false);
+const [editIdx,setEditIdx]=useState(null); // índice do item em edição
 
 const rOrigem=rota.origem, rDestino=rota.destino;
-
-// AUTOSAVE cada 5s
-useEffect(()=>{
-const timer=setInterval(()=>{
-autosaveDraft(rOrigem, rDestino, itens, obs, form);
-}, 5000);
-return ()=>clearInterval(timer);
-},[rOrigem, rDestino, itens, obs, form]);
-
-// RECUPERAÇÃO DE RASCUNHO
-useEffect(()=>{
-const draft=getDraft(rOrigem, rDestino);
-if(draft && (draft.itens.length>0 || draft.obs.trim())){
-setMostrarRascunho(draft);
-}
-},[rOrigem, rDestino]);
-
-function recuperarRascunho(draft){
-setItens(draft.itens);
-setObs(draft.obs);
-setForm(draft.form);
-setMostrarRascunho(false);
-flash("Rascunho restaurado ✨");
-}
-
-function descartarRascunho(){
-clearDraft(rOrigem, rDestino);
-setMostrarRascunho(false);
-}
-
-async function salvarRascunho(){
-if(!itens.length){flash("Adiciona 1 item pra salvar como rascunho.");return;}
-setSalvandoRascunho(true);
-try{
-const {id}=await api({action:"saveRascunho",origem:rOrigem,destino:rDestino,criado_por:nome,observacoes:obs,itens});
-flash("Rascunho salvo no servidor! 💾");
-clearDraft(rOrigem, rDestino);
-}catch(e){
-flash("Erro ao salvar rascunho: "+e.message);
-}
-setSalvandoRascunho(false);
-}
 
 async function puxar(){
 if(!form.link.trim())return;
 setBuscando(true);
-try{
-const {dados}=await api({action:"parseLink",url:form.link.trim()});
-setForm(f=>({...f,marca:dados.marca||f.marca,nome_produto:dados.nome_produto||f.nome_produto,codigo_produto:dados.codigo_produto||f.codigo_produto}));
+try{ const {dados}=await api({action:"parseLink",url.link.trim()});
+setForm(f=>({...f,marca.marca||f.marca,nome_produto.nome_produto||f.nome_produto,codigo_produto.codigo_produto||f.codigo_produto}));
 flash("Dados puxados do link ✨");
-}catch(e){
-flash("Não rolou: "+e.message);
-}
+}catch(e){flash("Não rolou: "+e.message);}
 setBuscando(false);
 }
-
 function addItem(){
-if(!form.nome_produto.trim() && !form.codigo_produto.trim()){
-flash("Preenche nome ou código.");
-return;
+if(!form.nome_produto.trim() && !form.codigo_produto.trim()){flash("Preenche nome ou código.");return;}
+if(somaGrade(form.grade)===0){flash("Preenche a quantidade de 1 tamanho.");return;}
+setItens(l=>[...l,{...form}]); setForm({...ITEM_VAZIO});
 }
-if(somaGrade(form.grade)===0){
-flash("Preenche a quantidade de 1 tamanho.");
-return;
-}
-setItens(l=>[...l,{...form}]);
-setForm({...ITEM_VAZIO});
-}
-
 const removeItem=(i)=>setItens(l=>l.filter((_,x)=>x!==i));
-function salvarEdicaoItem(novo){
-setItens(l=>l.map((it,i)=>i===editIdx?novo));
-setEditIdx(null);
-flash("Peça atualizada ✏️");
-}
+function salvarEdicaoItem(novo){ setItens(l=>l.map((it,i)=>i===editIdx?novo)); setEditIdx(null); flash("Peça atualizada ✏️"); }
 
 async function enviar(){
-if(!itens.length){
-flash("Adiciona 1 item.");
-return;
-}
+if(!itens.length){flash("Adiciona 1 item.");return;}
 setEnviando(true);
 try{
-const {id}=await api({action:"createRomaneio",origem:rOrigem,destino:rDestino,criado_por:nome,observacoes:obs,itens});
-setCriado({id,wpp:romaneioWhatsapp(rOrigem,rDestino,itens)});
+const {id}=await api({action:"createRomaneio",origem,destino,criado_por,observacoes,itens});
+setCriado({id,wpp(rOrigem,rDestino,itens)});
 flash("Romaneio enviado! 🎉");
-clearDraft(rOrigem, rDestino);
-}catch(e){
-flash("Erro: "+e.message);
-}
+}catch(e){flash("Erro: "+e.message);}
 setEnviando(false);
 }
-
-const copiar=(t)=>{
-navigator.clipboard.writeText(t);
-flash("Copiado!");
-};
+const copiar=(t)=>{navigator.clipboard.writeText(t);flash("Copiado!");};
 
 if(criado){
 return (
 <div>
-<Head eyebrow={`${rOrigem} → ${rDestino}`} titulo="Romaneio enviado" sub="Copie o texto pra mandar no WhatsApp de quem recebe."/>
+<Head eyebrow={${rOrigem} → ${rDestino}} titulo="Romaneio enviado" sub="Copie o texto pra mandar no WhatsApp de quem recebe."/>
 <div className="card">
 <div className="rw" style={{cursor:"default",padding:"2px 0"}}>
-<div className="ico" style={{width:40,height:40,borderRadius:12,background:"var(--ok-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:21}}>
-<ion-icon name="checkmark-circle" style={{color:"var(--ok)"}}/>
-</div>
-<div className="tx">
-<div className="tt">{criado.id}</div>
-<div className="mt">{rOrigem} → {rDestino}</div>
-</div>
+<div className="ico" style={{width:40,height:40,borderRadius:12,background:"var(--ok-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:21}}><ion-icon name="checkmark-circle" style={{color:"var(--ok)"}}/></div>
+<div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rOrigem} → {rDestino}</div></div>
 </div>
 <div className="wpp">{criado.wpp}</div>
 <div className="row2" style={{marginTop:14}}>
 <button className="btn primary" onClick={()=>copiar(criado.wpp)}><I.copy/> Copiar texto</button>
-<button className="btn ghost" onClick={()=>{setCriado(null);setItens([]);setObs("");setForm({...ITEM_VAZIO});}} >Novo romaneio</button>
+<button className="btn ghost" onClick={()=>{setCriado(null);setItens([]);setObs("");}}>Novo romaneio</button>
 </div>
 </div>
 </div>
@@ -707,80 +903,389 @@ return (
 
 return (
 <div>
-<Head eyebrow="Novo romaneio" titulo={`Enviar pra ${rDestino}`} 
-sub={`Monte a lista de peças que saem de ${rOrigem}. Você pode editar cada peça antes de enviar.`}/>
+<Head eyebrow="Novo romaneio" titulo={Enviar pra ${rDestino}} sub={Monte a lista de peças que saem de ${rOrigem}. Você pode editar cada peça antes de enviar.}/>
 
-{mostrarRascunho && (
-<div className="card" style={{background:"var(--ok-soft)",border:"1px solid var(--ok)"}}>
-<div style={{display:"flex",alignItems:"center",gap:12}}>
-<div style={{fontSize:20}}><ion-icon name="document-outline"/></div>
-<div style={{flex:1}}>
-<div className="tt" style={{color:"var(--ok)"}}>Rascunho encontrado</div>
-<div className="mt" style={{color:"var(--ok)"}}>{mostrarRascunho.itens.length} peça(s) · salvo em {fmtData(mostrarRascunho.timestamp)}</div>
-</div>
-<div style={{display:"flex",gap:8}}>
-<button className="btn ghost xs" onClick={descartarRascunho}>Descartar</button>
-<button className="btn primary xs" onClick={()=>recuperarRascunho(mostrarRascunho)}>Restaurar</button>
-</div>
-</div>
-</div>
-)}
+  <div className="card">
+    <h2>Adicionar peça</h2>
+    <ItemForm valor={form} onChange={setForm} onPuxar={puxar} buscando={buscando}/>
+    <button className="btn tint block" style={{marginTop:16}} onClick={addItem}>+ Adicionar ao romaneio</button>
+  </div>
 
+  <div className="card">
+    <h2>Peças no romaneio ({itens.length})</h2>
+    {itens.length===0 && <div className="empty"><div className="big"><ion-icon name="cube-outline"/></div><p>Nenhuma peça ainda. Adicione acima.</p></div>}
+    {itens.map((it,i)=>(
+      <div className="item" key={i}>
+        <div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start"}}>
+          <div style={{minWidth:0}}>
+            <div className="tt">{it.nome_produto||"(sem nome)"}</div>
+            <div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+            <div className="mt"><b>{gradeTexto(it.grade)}</b> · total {somaGrade(it.grade)} un</div>
+          </div>
+          <div style={{display:"flex",gap:6,flex:"0 0 auto"}}>
+            <button className="btn ghost xs" onClick={()=>setEditIdx(i)}><I.edit/> Editar</button>
+            <button className="btn ghost xs" onClick={()=>removeItem(i)}>Remover</button>
+          </div>
+        </div>
+      </div>
+    ))}
+    <label>Observações</label>
+    <textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/>
+    <button className="btn primary block" style={{marginTop:16}} onClick={enviar} disabled={enviando}>{enviando?"Enviando…":`Enviar pra ${rDestino}`}</button>
+  </div>
+
+  {editIdx!==null && <EditItemSheet item={itens[editIdx]} flash={flash} onCancel={()=>setEditIdx(null)} onSave={salvarEdicaoItem}/>}
+</div>
+
+);
+}
+
+/* ---------------- CONFERIR ---------------- */
+function Conferir({nome,rota,flash}){
+const [lista,setLista]=useState(null);
+const [aberto,setAberto]=useState(null);
+const [conf,setConf]=useState({});
+const [salvando,setSalvando]=useState(false);
+const [resultado,setResultado]=useState(null);
+const [q,setQ]=useState("");
+const chaveItem=(it,i)=> (it && it.id!=null && String(it.id).trim()!=="") ? "id:"+it.id : "idx:"+i;
+
+useEffect(()=>{carregar();},[]);
+async function carregar(){
+setLista(null);
+try{ const {romaneios}=await api({action:"listRomaneios",status:"enviado",origem.origem,destino.destino}); setLista(romaneios); }
+catch(e){flash("Erro: "+e.message);setLista([]);}
+}
+async function abrir(id){
+try{
+const {romaneio}=await api({action:"getRomaneio",id});
+const ini={};
+(romaneio.itens||[]).forEach((it,i)=>{ const k=chaveItem(it,i); ini[k]={grade_conferida:{...parseGrade(it.grade_enviada)},status_item:"ok",observacao_item:""}; });
+setConf(ini);setAberto(romaneio);setResultado(null);
+}catch(e){flash("Erro: "+e.message);}
+}
+const setItem=(k,campo,v)=>setConf(c=>({...c,[k]:{...c[k],[campo]}}));
+
+async function finalizar(){
+setSalvando(true);
+try{
+const itens=(aberto.itens||[]).map((it,i)=>{ const k=chaveItem(it,i); const c=conf[k]||{}; return {id.id,grade_conferida.grade_conferida||{},status_item.status_item||"ok",observacao_item.observacao_item||""}; });
+const {romaneio}=await api({action:"conferir",id.id,conferido_por,itens});
+setResultado(romaneio);flash("Conferência salva ✅");
+}catch(e){flash("Erro: "+e.message);}
+setSalvando(false);
+}
+function relatorio(rom){
+const divs=(rom.itens||[]).filter(it=>it.status_item&&it.status_item!=="ok");
+if(!divs.length) return "Conferido sem divergências ✅";
+const linhas=divs.map(it=>(
+• ${it.nome_produto} (cód ${it.codigo_produto||"—"})
+  enviado:   ${gradeTexto(parseGrade(it.grade_enviada))}
+  conferido: ${gradeTexto(parseGrade(it.grade_conferida))}${it.observacao_item?("\n  obs: "+it.observacao_item):""}
+)).join("\n\n");
+return ⚠️ DIVERGÊNCIAS — ${rom.id}\n${rom.origem} → ${rom.destino}\nConferido por ${rom.conferido_por}\n\n${linhas};
+}
+const copiar=(t)=>{navigator.clipboard.writeText(t);flash("Copiado!");};
+function baixarConfXlsx(rom){
+const linhas=(rom.itens||[]).map(it=>({
+Produto.nome_produto, Codigo.codigo_produto, Marca.marca, Endereco.endereco,
+"Grade enviada"(parseGrade(it.grade_enviada)), "Total env"(parseGrade(it.grade_enviada)),
+"Grade conferida"(parseGrade(it.grade_conferida)), "Total conf"(parseGrade(it.grade_conferida)),
+"Situação".status_item, Obs.observacao_item,
+}));
+if(!linhas.length){flash("Nada pra exportar.");return;}
+const ws=XLSX.utils.json_to_sheet(linhas); const wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,"Conferência"); XLSX.writeFile(wb,conferencia-${rom.id}.xlsx); flash("Planilha baixada 📊");
+}
+
+if(resultado){
+const rel=relatorio(resultado); const temDiv=resultado.status==="divergencia";
+return (
+<div>
+<button className="btn ghost sm" onClick={()=>{setAberto(null);setResultado(null);carregar();}} style={{marginBottom:14}}><I.back/> Voltar à lista</button>
+<Head eyebrow="Conferência" titulo="Finalizado" sub={${resultado.id} · ${resultado.origem} → ${resultado.destino}}/>
 <div className="card">
-<h2>Adicionar peça</h2>
-<ItemForm valor={form} onChange={setForm} onPuxar={puxar} buscando={buscando}/>
-<button className="btn tint block" style={{marginTop:16}} onClick={addItem}>+ Adicionar ao romaneio</button>
-</div>
-
-<div className="card">
-<h2>Peças no romaneio ({itens.length})</h2>
-{itens.length===0 && (
-<div className="empty">
-<div className="big"><ion-icon name="cube-outline"/></div>
-<p>Nenhuma peça ainda. Adicione acima.</p>
-</div>
-)}
-{itens.map((it,i)=>(
-<div className="item" key={i}>
-<div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start"}}>
-<div style={{minWidth:0}}>
-<div className="tt">{it.nome_produto||"(sem nome)"}</div>
-<div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
-<div className="mt"><b>{gradeTexto(it.grade)}</b> · total {somaGrade(it.grade)} un</div>
-</div>
-<div style={{display:"flex",gap:6,flex:"0 0 auto"}}>
-<button className="btn ghost xs" onClick={()=>setEditIdx(i)}><I.edit/> Editar</button>
-<button className="btn ghost xs" onClick={()=>removeItem(i)}>Remover</button>
+<span className={"chip "+(temDiv?"divergencia":"conferido")}>{temDiv?"⚠️ Com divergência":"✓ Tudo certo"}</span>
+<div className="wpp">{rel}</div>
+<div className="row2" style={{marginTop:14}}>
+<button className="btn primary" onClick={()=>copiar(rel)}><I.copy/> Copiar</button>
+<button className="btn ghost" onClick={()=>baixarConfXlsx(resultado)}><I.download/> Baixar xlsx</button>
 </div>
 </div>
-</div>
-))}
-<label>Observações</label>
-<textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/>
-
-<div className="row2" style={{marginTop:16,gap:12}}>
-<button className="btn tint" style={{flex:1}} onClick={salvarRascunho} disabled={salvandoRascunho||itens.length===0}>
-{salvandoRascunho?"Salvando…":"💾 Salvar como rascunho"}
-</button>
-<button className="btn primary" style={{flex:1}} onClick={enviar} disabled={enviando}>
-{enviando?"Enviando…":`Enviar pra ${rDestino}`}
-</button>
-</div>
-</div>
-
-{editIdx!==null && <EditItemSheet item={itens[editIdx]} flash={flash} onCancel={()=>setEditIdx(null)} onSave={salvarEdicaoItem}/>}
 </div>
 );
 }
 
-/* Stubs para os outros componentes (adaptados do original) */
-function Dashboard({flash,irPara}){return <div><Head eyebrow="Visão geral" titulo="Dashboard"/><p style={{color:"var(--muted)"}}>Dashboard em desenvolvimento...</p></div>;}
-function Avulsos({nome,flash}){return <div><Head eyebrow="Bloco rápido" titulo="Avulsos"/><p style={{color:"var(--muted)"}}>Avulsos em desenvolvimento...</p></div>;}
-function Conferir({nome,rota,flash}){return <div><Head eyebrow="Conferência" titulo="Conferir"/><p style={{color:"var(--muted)"}}>Conferência em desenvolvimento...</p></div>;}
-function Historico({nome,flash}){return <div><Head eyebrow="Relatórios" titulo="Histórico"/><p style={{color:"var(--muted)"}}>Histórico em desenvolvimento...</p></div>;}
+if(aberto){
+return (
+<div>
+<button className="btn ghost sm" onClick={()=>setAberto(null)} style={{marginBottom:14}}><I.back/> Romaneios</button>
+<Head eyebrow="Conferência" titulo={Conferindo ${aberto.id}} sub={${aberto.origem} → ${aberto.destino} · por ${aberto.criado_por||"—"} · ${fmtData(aberto.data_criacao)}}/>
+{(aberto.itens||[]).map((it,i)=>{
+const k=chaveItem(it,i);
+const c=conf[k]||{grade_conferida:{},status_item:"ok",observacao_item:""};
+const gEnv=parseGrade(it.grade_enviada);
+const dif=GRADE.some(t=>(Number(gEnv[t])||0)!==(Number((c.grade_conferida||{})[t])||0));
+return (
+<div className="card" key={k}>
+<div className="item" style={{marginBottom:14}}>
+<div className="tt">{it.nome_produto||"(sem nome)"}</div>
+<div className="mt">{it.marca} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+<div className="mt">enviado: <b>{gradeTexto(gEnv)}</b> · total {somaGrade(gEnv)}</div>
+</div>
+<label>Recebido por tamanho <span style={{color:"var(--accent)"}}>(total {somaGrade(c.grade_conferida)})</span></label>
+<GradeInput grade={c.grade_conferida||{}} onChange={g=>setItem(k,"grade_conferida",g)}/>
+<label>Situação</label>
+<div className="seg">
+<button className={c.status_item==="ok"?"on":""} onClick={()=>setItem(k,"status_item","ok")}>✓ OK</button>
+<button className={c.status_item==="divergencia"?"on":""} onClick={()=>setItem(k,"status_item","divergencia")}>⚠️ Divergência</button>
+</div>
+{dif && c.status_item==="ok" && <div className="aviso">Grade diferente da enviada — marque divergência se for o caso.</div>}
+{c.status_item==="divergencia" &&
+<div><label>O que houve?</label>
+<input value={c.observacao_item||""} onChange={e=>setItem(k,"observacao_item",e.target.value)} placeholder="Ex: faltou 1 no P, peça errada, avariada"/></div>}
+</div>
+);
+})}
+<button className="btn primary block" onClick={finalizar} disabled={salvando}>{salvando?"Salvando…":"Finalizar conferência"}</button>
+</div>
+);
+}
 
-function Head({eyebrow,titulo,sub}){
-return (<div className="pagehead"><div className="eyebrow">{eyebrow}</div><h1>{titulo}</h1>{sub&&<p>{sub}</p>}</div>);
+const filtrada=(lista||[]).filter(r=>{ if(!q.trim())return true; const s=q.toLowerCase(); return String(r.id).toLowerCase().includes(s)||String(r.criado_por||"").toLowerCase().includes(s); });
+return (
+<div>
+<Head eyebrow="Conferência" titulo={Chegando de ${rota.origem}} sub={Romaneios enviados de ${rota.origem} pra ${rota.destino} aguardando conferência.}/>
+<div className="search"><span className="mag"><I.mag/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar por código ou pessoa"/></div>
+{lista===null && <div className="spin"/>}
+{lista && filtrada.length===0 && <div className="empty"><div className="big"><ion-icon name="checkmark-done-circle-outline" style={{color:"var(--ok)"}}/></div><p>Nada pendente por aqui.</p></div>}
+{lista && filtrada.length>0 &&
+<div className="rows">
+{filtrada.map(r=>(
+<button className="rw" key={r.id} onClick={()=>abrir(r.id)}>
+<div className="ico" style={{width:38,height:38,borderRadius:11,background:"var(--warn-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flex:"0 0 auto"}}><ion-icon name="cube" style={{color:"var(--warn)"}}/></div>
+<div className="tx"><div className="tt">{r.id}</div><div className="mt">{r.criado_por||"—"} · {fmtData(r.data_criacao)}</div></div>
+<span className="chip enviado">enviado</span>
+<I.chevron style={{color:"var(--muted)"}}/>
+</button>
+))}
+</div>}
+<button className="btn ghost block" style={{marginTop:14}} onClick={carregar}>Atualizar</button>
+</div>
+);
+}
+
+/* ---------------- EDITAR ROMANEIO (reaproveita fluxo do backend) ---------------- */
+function EditarRomaneio({nome,editar,flash,voltar,onEditado}){
+const [itens,setItens]=useState(editar.itensIniciais||[]);
+const [obs,setObs]=useState(editar.obs||"");
+const [form,setForm]=useState({...ITEM_VAZIO});
+const [buscando,setBuscando]=useState(false);
+const [pedirSenha,setPedirSenha]=useState(false);
+const [editIdx,setEditIdx]=useState(null);
+const rOrigem=editar.origem, rDestino=editar.destino;
+
+async function puxar(){
+if(!form.link.trim())return; setBuscando(true);
+try{ const {dados}=await api({action:"parseLink",url.link.trim()});
+setForm(f=>({...f,marca.marca||f.marca,nome_produto.nome_produto||f.nome_produto,codigo_produto.codigo_produto||f.codigo_produto}));
+flash("Dados puxados ✨");
+}catch(e){flash("Não rolou: "+e.message);} setBuscando(false);
+}
+function addItem(){
+if(!form.nome_produto.trim() && !form.codigo_produto.trim()){flash("Preenche nome ou código.");return;}
+if(somaGrade(form.grade)===0){flash("Preenche a quantidade de 1 tamanho.");return;}
+setItens(l=>[...l,{...form}]); setForm({...ITEM_VAZIO});
+}
+const removeItem=(i)=>setItens(l=>l.filter((_,x)=>x!==i));
+function salvarEdicaoItem(novo){ setItens(l=>l.map((it,i)=>i===editIdx?novo)); setEditIdx(null); flash("Peça atualizada ✏️"); }
+
+async function salvarEdicao(senha){
+if(!itens.length) throw new Error("O romaneio precisa de pelo menos 1 item.");
+const payloadItens=itens.map(it=>({marca.marca,nome_produto.nome_produto,codigo_produto.codigo_produto,endereco.endereco,grade.grade}));
+const {romaneio}=await api({action:"editRomaneio",id.id,editado_por,observacoes,itens,senha});
+setPedirSenha(false); flash("Romaneio atualizado ✏️"); if(onEditado) onEditado(romaneio);
+}
+
+return (
+<div>
+<button className="btn ghost sm" onClick={voltar} style={{marginBottom:14}}><I.back/> Histórico</button>
+<Head eyebrow={Editando · ${rOrigem} → ${rDestino}} titulo={Editar ${editar.id}} sub={Edição ${editar.usadas+1} de ${MAX_EDICOES}. Cada romaneio pode ser editado ${MAX_EDICOES}× em 48h a partir da 1ª edição.}/>
+
+  <div className="card">
+    <h2>Adicionar peça</h2>
+    <ItemForm valor={form} onChange={setForm} onPuxar={puxar} buscando={buscando}/>
+    <button className="btn tint block" style={{marginTop:16}} onClick={addItem}>+ Adicionar ao romaneio</button>
+  </div>
+
+  <div className="card">
+    <h2>Peças no romaneio ({itens.length})</h2>
+    {itens.length===0 && <div className="empty"><div className="big"><ion-icon name="cube-outline"/></div><p>Nenhuma peça.</p></div>}
+    {itens.map((it,i)=>(
+      <div className="item" key={i}>
+        <div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start"}}>
+          <div style={{minWidth:0}}>
+            <div className="tt">{it.nome_produto||"(sem nome)"}</div>
+            <div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+            <div className="mt"><b>{gradeTexto(it.grade)}</b> · total {somaGrade(it.grade)} un</div>
+          </div>
+          <div style={{display:"flex",gap:6,flex:"0 0 auto"}}>
+            <button className="btn ghost xs" onClick={()=>setEditIdx(i)}><I.edit/> Editar</button>
+            <button className="btn ghost xs" onClick={()=>removeItem(i)}>Remover</button>
+          </div>
+        </div>
+      </div>
+    ))}
+    <label>Observações</label>
+    <textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/>
+    <button className="btn primary block" style={{marginTop:16}} onClick={()=>setPedirSenha(true)}>Salvar alterações</button>
+  </div>
+
+  {editIdx!==null && <EditItemSheet item={itens[editIdx]} flash={flash} onCancel={()=>setEditIdx(null)} onSave={salvarEdicaoItem}/>}
+  {pedirSenha && <SenhaSheet
+    titulo="Confirmar edição"
+    aviso={`Você está editando ${editar.id}. Digite a senha pra salvar.`}
+    confirmLabel="Salvar" onCancel={()=>setPedirSenha(false)} onConfirm={salvarEdicao}/>}
+</div>
+
+);
+}
+
+/* ---------------- HISTÓRICO ---------------- */
+function Historico({nome,flash}){
+const [dados,setDados]=useState(null);
+const [q,setQ]=useState(""); const [status,setStatus]=useState("todos");
+const [de,setDe]=useState(""); const [ate,setAte]=useState("");
+const [del,setDel]=useState(null);
+const [editando,setEditando]=useState(null);
+const [baixar,setBaixar]=useState(false);
+const [sel,setSel]=useState(()=>new Set()); // ids marcados na lista
+
+const toggleSel=(id)=>setSel(s=>{const n=new Set(s); n.has(id)?n.delete(id).add(id); return n;});
+
+useEffect(()=>{carregar();},[]);
+async function carregar(){
+setDados(null);
+try{ const {romaneios}=await api({action:"listRomaneios"}); setDados(romaneios); }
+catch(e){flash("Erro: "+e.message);setDados([]);}
+}
+async function confirmarDelete(senha){ await api({action:"deleteRomaneio",id.id,senha}); setDel(null); flash("Romaneio excluído 🗑️"); carregar(); }
+
+async function abrirEdicao(r){
+if(r.status!=="enviado"){flash("Só dá pra editar romaneio ainda não conferido.");return;}
+try{
+const {romaneio}=await api({action:"getRomaneio",id.id});
+const itensIniciais=(romaneio.itens||[]).map(it=>({marca.marca||"",nome_produto.nome_produto||"",codigo_produto.codigo_produto||"",endereco.endereco||"",grade(it.grade_enviada),link:""}));
+setEditando({id.id,itensIniciais,origem.origem,destino.destino,obs.observacoes||"",usadas:0});
+}catch(e){flash("Erro: "+e.message);}
+}
+
+const filtrada=useMemo(()=>{
+return (dados||[]).filter(r=>{
+if(status!=="todos" && String(r.status)!==status) return false;
+if(de && ymd(r.data_criacao)<de) return false;
+if(ate && ymd(r.data_criacao)>ate) return false;
+if(q.trim()){ const s=q.toLowerCase();
+if(!(String(r.id).toLowerCase().includes(s)||String(r.criado_por||"").toLowerCase().includes(s)||String(r.origem+"→"+r.destino).toLowerCase().includes(s))) return false; }
+return true;
+});
+},[dados,status,de,ate,q]);
+
+const stats=useMemo(()=>({total.length,conf.filter(r=>r.status==="conferido").length,div.filter(r=>r.status==="divergencia").length,env.filter(r=>r.status==="enviado").length}),[filtrada]);
+
+// seleção considerando só o que está visível no filtro atual
+const idsVisiveis=useMemo(()=>filtrada.map(r=>r.id),[filtrada]);
+const selVisiveis=useMemo(()=>idsVisiveis.filter(id=>sel.has(id)),[idsVisiveis,sel]);
+const todosMarcados=idsVisiveis.length>0 && selVisiveis.length===idsVisiveis.length;
+const marcarTodos=()=>setSel(s=>{const n=new Set(s); idsVisiveis.forEach(id=>n.add(id)); return n;});
+const limparSel=()=>setSel(s=>{const n=new Set(s); idsVisiveis.forEach(id=>n.delete(id)); return n;});
+// romaneios que vão pro download: os selecionados (ou todos do filtro, se nada marcado)
+const paraBaixar=useMemo(()=>{
+if(selVisiveis.length===0) return filtrada;
+const set=new Set(selVisiveis);
+return filtrada.filter(r=>set.has(r.id));
+},[filtrada,selVisiveis]);
+
+if(editando){
+return <EditarRomaneio nome={nome} editar={editando} flash={flash} voltar={()=>setEditando(null)} onEditado={()=>{setEditando(null);carregar();}}/>;
+}
+
+return (
+<div>
+<Head eyebrow="Relatórios" titulo="Histórico" sub="Filtre por status ou data, edite romaneios ainda não conferidos e baixe as planilhas que quiser."/>
+
+  <div className="kpis" style={{gridTemplateColumns:"repeat(4,1fr)"}}>
+    <div className="kpi"><div className="n">{stats.total}</div><div className="l">No filtro</div></div>
+    <div className="kpi"><div className="n" style={{color:"var(--warn)"}}>{stats.env}</div><div className="l">Enviados</div></div>
+    <div className="kpi"><div className="n" style={{color:"var(--ok)"}}>{stats.conf}</div><div className="l">Conferidos</div></div>
+    <div className="kpi"><div className="n" style={{color:"var(--erro)"}}>{stats.div}</div><div className="l">Divergências</div></div>
+  </div>
+
+  <div className="search"><span className="mag"><I.mag/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar código, pessoa ou sentido"/></div>
+
+  <div className="seg">
+    {[["todos","Todos"],["enviado","Enviados"],["conferido","Conferidos"],["divergencia","Diverg."]].map(([v,l])=>(
+      <button key={v} className={status===v?"on":""} onClick={()=>setStatus(v)}>{l}</button>
+    ))}
+  </div>
+
+  <div className="card">
+    <div className="datebar">
+      <div><label>De</label><input type="date" value={de} onChange={e=>setDe(e.target.value)}/></div>
+      <div><label>Até</label><input type="date" value={ate} onChange={e=>setAte(e.target.value)}/></div>
+    </div>
+  </div>
+
+  {/* barra de seleção / ações da lista */}
+  {dados && filtrada.length>0 &&
+    <div className="selbar">
+      <button className={"ck2"+(todosMarcados?" on":"")} onClick={()=>todosMarcados?limparSel():marcarTodos()}>
+        <span className="box">{todosMarcados && <ion-icon name="checkmark" style={{fontSize:"13px"}}/>}</span>
+        {todosMarcados?"Desmarcar todos":"Marcar todos"}
+      </button>
+      <div className="selinfo">
+        {selVisiveis.length>0
+          ? <span><b>{selVisiveis.length}</b> selecionado{selVisiveis.length>1?"s":""}</span>
+          : <span style={{color:"var(--muted)"}}>Marque os que quiser, ou baixe todos do filtro</span>}
+      </div>
+      {selVisiveis.length>0 && <button className="btn ghost sm" onClick={limparSel}>Limpar</button>}
+      <button className="btn primary sm" onClick={()=>setBaixar(true)}>
+        <I.download/> Baixar {selVisiveis.length>0?`(${selVisiveis.length})`:"tudo"}
+      </button>
+    </div>}
+
+  {dados===null && <div className="spin"/>}
+  {dados && filtrada.length===0 && <div className="empty"><div className="big"><ion-icon name="search-outline"/></div><p>Nenhum romaneio nesse filtro.</p></div>}
+  {dados && filtrada.length>0 &&
+    <div className="rows">
+      {filtrada.map(r=>{
+        const marcado=sel.has(r.id);
+        return (
+        <div className={"rw"+(marcado?" selected":"")} key={r.id} style={{cursor:"default",flexWrap:"wrap"}}>
+          <button className={"rowcheck"+(marcado?" on":"")} title="Selecionar" onClick={()=>toggleSel(r.id)}>
+            {marcado && <ion-icon name="checkmark" style={{fontSize:"14px"}}/>}
+          </button>
+          <div className="mdot" style={{background:statusCor(r.status),width:9,height:9,borderRadius:"50%",flex:"0 0 auto"}}/>
+          <div className="tx">
+            <div className="tt">{r.id} <span style={{fontWeight:500,color:"var(--muted)",fontSize:13}}>· {r.origem}→{r.destino}</span></div>
+            <div className="mt">{fmtData(r.data_criacao)} · {r.criado_por||"—"}</div>
+          </div>
+          <span className={"chip "+r.status}>{r.status}</span>
+          {r.status==="enviado" &&
+            <button className="iconbtn" title="Editar romaneio" onClick={()=>abrirEdicao(r)}><ion-icon name="create-outline" style={{fontSize:"19px",color:"var(--accent)"}}/></button>}
+          <button className="iconbtn" title="Excluir romaneio" onClick={()=>setDel(r)}><ion-icon name="trash-outline" style={{fontSize:"19px",color:"var(--erro)"}}/></button>
+        </div>
+      );})}
+    </div>}
+
+  {baixar && <DownloadSheet romaneios={paraBaixar} preSel={selVisiveis} flash={flash} onCancel={()=>setBaixar(false)}/>}
+  {del && <SenhaSheet
+    titulo="Excluir romaneio?"
+    aviso={`${del.id} · ${del.origem}→${del.destino}. Isso apaga o romaneio e todos os itens dele — não dá pra desfazer.`}
+    confirmLabel="Excluir" danger onCancel={()=>setDel(null)} onConfirm={confirmarDelete}/>}
+</div>
+
+);
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
