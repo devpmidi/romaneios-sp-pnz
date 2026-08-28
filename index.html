@@ -190,6 +190,31 @@
       try{return JSON.parse(g)||{}}catch(e){return {}}
     }
     function somaGrade(g){return Object.values(g||{}).reduce((a,b)=>a+(Number(b)||0),0)}
+    const DRAFT_PREFIX="qv_romaneio_rascunho_";
+    const DRAFT_VERSION=1;
+    function draftKey(tipo,rota){
+      return DRAFT_PREFIX+tipo+"_"+String(rota.origem||"")+"_"+String(rota.destino||"");
+    }
+    function loadDraft(tipo,rota){
+      try{
+        const raw=localStorage.getItem(draftKey(tipo,rota));
+        if(!raw)return null;
+        const d=JSON.parse(raw);
+        return d&&d.version===DRAFT_VERSION?d:null;
+      }catch(e){return null}
+    }
+    function saveDraft(tipo,rota,data){
+      try{
+        localStorage.setItem(draftKey(tipo,rota),JSON.stringify({
+          version:DRAFT_VERSION,savedAt:new Date().toISOString(),...data
+        }));
+        return true;
+      }catch(e){return false}
+    }
+    function clearDraft(tipo,rota){
+      try{localStorage.removeItem(draftKey(tipo,rota))}catch(e){}
+    }
+
     function gradeTexto(g){
       const e=Object.entries(g||{}).filter(([_,q])=>Number(q)>0);
       return e.length?e.map(([t,q])=>`${t}:${q}`).join(" "):"—";
@@ -499,39 +524,188 @@
     }
 
     function Enviar({nome,rota,flash}){
-      const [itens,setItens]=useState([]),[obs,setObs]=useState(""),[form,setForm]=useState({...ITEM_VAZIO}),[buscando,setBuscando]=useState(false),[enviando,setEnviando]=useState(false),[criado,setCriado]=useState(null),[editIdx,setEditIdx]=useState(null);
+      const draftInicial=useMemo(()=>loadDraft("enviar",rota),[rota.origem,rota.destino]);
+      const [itens,setItens]=useState(()=>draftInicial?.itens||[]);
+      const [obs,setObs]=useState(()=>draftInicial?.obs||"");
+      const [form,setForm]=useState(()=>draftInicial?.form||{...ITEM_VAZIO});
+      const [buscando,setBuscando]=useState(false),[enviando,setEnviando]=useState(false),[criado,setCriado]=useState(null),[editIdx,setEditIdx]=useState(null);
+      const [autoSalvo,setAutoSalvo]=useState(!!draftInicial);
       const {origem:rOrigem,destino:rDestino}=rota;
-      async function puxar(){if(!form.link.trim())return;setBuscando(true);try{const {dados}=await api({action:"parseLink",url:form.link.trim()});setForm(f=>({...f,marca:dados.marca||f.marca,nome_produto:dados.nome_produto||f.nome_produto,codigo_produto:dados.codigo_produto||f.codigo_produto}));flash("Dados puxados do link ✨")}catch(e){flash("Não rolou: "+e.message)}setBuscando(false)}
-      function addItem(){if(!form.nome_produto.trim()&&!form.codigo_produto.trim()){flash("Preenche nome ou código.");return}if(somaGrade(form.grade)===0){flash("Preenche a quantidade de 1 tamanho.");return}setItens(l=>[...l,{...form}]);setForm({...ITEM_VAZIO})}
+
+      const salvarRascunho=()=>{
+        const ok=saveDraft("enviar",rota,{itens,obs,form});
+        if(ok){setAutoSalvo(true);flash("Rascunho salvo.");}
+        else flash("Não foi possível salvar o rascunho.");
+      };
+
+      useEffect(()=>{
+        const timer=setTimeout(()=>{
+          const temConteudo=itens.length>0||obs.trim()!==""||form.link||form.nome_produto||form.codigo_produto||form.marca||form.endereco||somaGrade(form.grade)>0;
+          if(temConteudo){
+            saveDraft("enviar",rota,{itens,obs,form});
+            setAutoSalvo(true);
+          }
+        },700);
+        return ()=>clearTimeout(timer);
+      },[itens,obs,form,rota.origem,rota.destino]);
+
+      async function puxar(){
+        if(!form.link.trim())return;
+        setBuscando(true);
+        try{
+          const {dados}=await api({action:"parseLink",url:form.link.trim()});
+          setForm(f=>({...f,marca:dados.marca||f.marca,nome_produto:dados.nome_produto||f.nome_produto,codigo_produto:dados.codigo_produto||f.codigo_produto}));
+          flash("Dados puxados do link ✨");
+        }catch(e){flash("Não rolou: "+e.message)}
+        setBuscando(false)
+      }
+      function addItem(){
+        if(!form.nome_produto.trim()&&!form.codigo_produto.trim()){flash("Preenche nome ou código.");return}
+        if(somaGrade(form.grade)===0){flash("Preenche a quantidade de 1 tamanho.");return}
+        setItens(l=>[...l,{...form}]);setForm({...ITEM_VAZIO})
+      }
       const removeItem=i=>setItens(l=>l.filter((_,x)=>x!==i));
       const salvarEdicaoItem=novo=>{setItens(l=>l.map((it,i)=>i===editIdx?novo:it));setEditIdx(null);flash("Peça atualizada ✏️")};
+
       async function enviar(){
-        if(!itens.length){flash("Adiciona 1 item.");return}setEnviando(true);
-        try{const {id}=await api({action:"createRomaneio",origem:rOrigem,destino:rDestino,criado_por:nome,observacoes:obs,itens});setCriado({id,wpp:romaneioWhatsapp(rOrigem,rDestino,itens)});flash("Romaneio enviado! 🎉")}catch(e){flash("Erro: "+e.message)}setEnviando(false)
+        if(!itens.length){flash("Adiciona 1 item.");return}
+        setEnviando(true);
+        try{
+          const {id}=await api({action:"createRomaneio",origem:rOrigem,destino:rDestino,criado_por:nome,observacoes:obs,itens});
+          clearDraft("enviar",rota);
+          setAutoSalvo(false);
+          setCriado({id,wpp:romaneioWhatsapp(rOrigem,rDestino,itens)});
+          flash("Romaneio enviado! 🎉")
+        }catch(e){flash("Erro: "+e.message)}
+        setEnviando(false)
       }
       const copiar=t=>{navigator.clipboard?.writeText(t);flash("Copiado!")};
-      if(criado)return <div><Head eyebrow={`${rOrigem} → ${rDestino}`} titulo="Romaneio enviado" sub="Copie o texto pra mandar no WhatsApp de quem recebe."/><div className="card"><div className="rw" style={{cursor:"default",padding:"2px 0"}}><div className="ico" style={{width:40,height:40,borderRadius:12,background:"var(--ok-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:21}}><I name="checkmark-circle" style={{color:"var(--ok)"}}/></div><div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rOrigem} → {rDestino}</div></div></div><div className="wpp">{criado.wpp}</div><div className="row2" style={{marginTop:14}}><button className="btn primary" onClick={()=>copiar(criado.wpp)}><I name="copy-outline"/> Copiar texto</button><button className="btn ghost" onClick={()=>{setCriado(null);setItens([]);setObs("")}}>Novo romaneio</button></div></div></div>;
-      return <div><Head eyebrow="Novo romaneio" titulo={`Enviar pra ${rDestino}`} sub={`Monte a lista de peças que saem de ${rOrigem}. Você pode editar cada peça antes de enviar.`}/>
-        <div className="card"><h2>Adicionar peça</h2><ItemForm valor={form} onChange={setForm} onPuxar={puxar} buscando={buscando}/><button className="btn tint block" style={{marginTop:16}} onClick={addItem}>+ Adicionar ao romaneio</button></div>
-        <div className="card"><h2>Peças no romaneio ({itens.length})</h2>{itens.length===0&&<div className="empty"><div className="big"><I name="cube-outline"/></div><p>Nenhuma peça ainda. Adicione acima.</p></div>}{itens.map((it,i)=><div className="item" key={i}><div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start"}}><div style={{minWidth:0}}><div className="tt">{it.nome_produto||"(sem nome)"}</div><div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div><div className="mt"><b>{gradeTexto(it.grade)}</b> · total {somaGrade(it.grade)} un</div></div><div style={{display:"flex",gap:6}}><button className="btn ghost xs" onClick={()=>setEditIdx(i)}><I name="create-outline" size={16}/> Editar</button><button className="btn ghost xs" onClick={()=>removeItem(i)}>Remover</button></div></div></div>)}<label>Observações</label><textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/><button className="btn primary block" style={{marginTop:16}} onClick={enviar} disabled={enviando}>{enviando?"Enviando…":`Enviar pra ${rDestino}`}</button></div>
+
+      if(criado)return <div>
+        <Head eyebrow={`${rOrigem} → ${rDestino}`} titulo="Romaneio enviado" sub="Copie o texto pra mandar no WhatsApp de quem recebe."/>
+        <div className="card">
+          <div className="rw" style={{cursor:"default",padding:"2px 0"}}>
+            <div className="ico" style={{width:40,height:40,borderRadius:12,background:"var(--ok-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:21}}><I name="checkmark-circle" style={{color:"var(--ok)"}}/></div>
+            <div className="tx"><div className="tt">{criado.id}</div><div className="mt">{rOrigem} → {rDestino}</div></div>
+          </div>
+          <div className="wpp">{criado.wpp}</div>
+          <div className="row2" style={{marginTop:14}}>
+            <button className="btn primary" onClick={()=>copiar(criado.wpp)}><I name="copy-outline"/> Copiar texto</button>
+            <button className="btn ghost" onClick={()=>{setCriado(null);setItens([]);setObs("");setForm({...ITEM_VAZIO});}}>Novo romaneio</button>
+          </div>
+        </div>
+      </div>;
+
+      return <div>
+        <Head eyebrow="Novo romaneio" titulo={`Enviar pra ${rDestino}`} sub={`Monte a lista de peças que saem de ${rOrigem}. Você pode editar cada peça antes de enviar.`}/>
+        <div className="card">
+          <h2>Adicionar peça</h2>
+          <ItemForm valor={form} onChange={setForm} onPuxar={puxar} buscando={buscando}/>
+          <button className="btn tint block" style={{marginTop:16}} onClick={addItem}>+ Adicionar ao romaneio</button>
+        </div>
+        <div className="card">
+          <h2>Peças no romaneio ({itens.length})</h2>
+          {itens.length===0&&<div className="empty"><div className="big"><I name="cube-outline"/></div><p>Nenhuma peça ainda. Adicione acima.</p></div>}
+          {itens.map((it,i)=><div className="item" key={i}>
+            <div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"flex-start"}}>
+              <div style={{minWidth:0}}>
+                <div className="tt">{it.nome_produto||"(sem nome)"}</div>
+                <div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+                <div className="mt"><b>{gradeTexto(it.grade)}</b> · total {somaGrade(it.grade)} un</div>
+              </div>
+              <div style={{display:"flex",gap:6}}>
+                <button className="btn ghost xs" onClick={()=>setEditIdx(i)}><I name="create-outline" size={16}/> Editar</button>
+                <button className="btn ghost xs" onClick={()=>removeItem(i)}>Remover</button>
+              </div>
+            </div>
+          </div>)}
+          <label>Observações</label>
+          <textarea rows="2" value={obs} onChange={e=>setObs(e.target.value)} placeholder="Opcional"/>
+          <div className="row2" style={{marginTop:16}}>
+            <button className="btn ghost" onClick={salvarRascunho}><I name="save-outline"/> Salvar rascunho</button>
+            <button className="btn primary" onClick={enviar} disabled={enviando}>{enviando?"Enviando…":`Enviar pra ${rDestino}`}</button>
+          </div>
+          <div style={{fontSize:11.5,color:"var(--muted)",marginTop:9,textAlign:"right"}}>
+            {autoSalvo?"Autosave ativo · rascunho salvo neste computador":"Autosave aguardando dados…"}
+          </div>
+        </div>
         {editIdx!==null&&<EditItemSheet item={itens[editIdx]} flash={flash} onCancel={()=>setEditIdx(null)} onSave={salvarEdicaoItem}/>}
       </div>
     }
 
     function Conferir({nome,rota,flash}){
-      const [lista,setLista]=useState(null),[aberto,setAberto]=useState(null),[conf,setConf]=useState({}),[salvando,setSalvando]=useState(false),[resultado,setResultado]=useState(null),[q,setQ]=useState("");
+      const draftInicial=useMemo(()=>loadDraft("conferir",rota),[rota.origem,rota.destino]);
+      const [lista,setLista]=useState(null),[aberto,setAberto]=useState(null);
+      const [conf,setConf]=useState(()=>draftInicial?.conf||{});
+      const [salvando,setSalvando]=useState(false),[resultado,setResultado]=useState(null),[q,setQ]=useState("");
+      const [autoSalvo,setAutoSalvo]=useState(!!draftInicial);
       const chaveItem=(it,i)=>(it&&it.id!=null&&String(it.id).trim()!=="")?"id:"+it.id:"idx:"+i;
-      async function carregar(){setLista(null);try{const {romaneios}=await api({action:"listRomaneios",status:"enviado",origem:rota.origem,destino:rota.destino});setLista(romaneios||[])}catch(e){flash("Erro: "+e.message);setLista([])}}
+
+      async function carregar(){
+        setLista(null);
+        try{
+          const {romaneios}=await api({action:"listRomaneios",status:"enviado",origem:rota.origem,destino:rota.destino});
+          setLista(romaneios||[])
+        }catch(e){flash("Erro: "+e.message);setLista([])}
+      }
       useEffect(()=>{carregar()},[]);
-      async function abrir(id){try{const {romaneio}=await api({action:"getRomaneio",id});const ini={};(romaneio.itens||[]).forEach((it,i)=>{ini[chaveItem(it,i)]={grade_conferida:{...parseGrade(it.grade_enviada)},status_item:"ok",observacao_item:""}});setConf(ini);setAberto(romaneio);setResultado(null)}catch(e){flash("Erro: "+e.message)}}
+
+      function salvarRascunho(){
+        if(!aberto){flash("Abra um romaneio primeiro.");return}
+        const ok=saveDraft("conferir",rota,{romaneioId:aberto.id,conf});
+        if(ok){setAutoSalvo(true);flash("Conferência salva como rascunho.");}
+        else flash("Não foi possível salvar o rascunho.");
+      }
+
+      useEffect(()=>{
+        if(!aberto)return;
+        const timer=setTimeout(()=>{
+          saveDraft("conferir",rota,{romaneioId:aberto.id,conf});
+          setAutoSalvo(true);
+        },700);
+        return ()=>clearTimeout(timer);
+      },[conf,aberto?.id,rota.origem,rota.destino]);
+
+      async function abrir(id){
+        try{
+          const {romaneio}=await api({action:"getRomaneio",id});
+          const draft=loadDraft("conferir",rota);
+          const ini={};
+          (romaneio.itens||[]).forEach((it,i)=>{
+            const k=chaveItem(it,i);
+            ini[k]={grade_conferida:{...parseGrade(it.grade_enviada)},status_item:"ok",observacao_item:""};
+          });
+          if(draft&&String(draft.romaneioId)===String(id)&&draft.conf){
+            setConf(draft.conf);
+            setAutoSalvo(true);
+          }else{
+            setConf(ini);
+            setAutoSalvo(false);
+          }
+          setAberto(romaneio);
+          setResultado(null);
+        }catch(e){flash("Erro: "+e.message)}
+      }
+
       const setItem=(k,campo,v)=>setConf(c=>({...c,[k]:{...c[k],[campo]:v}}));
+
       async function finalizar(){
+        if(!aberto){return}
         setSalvando(true);
         try{
-          const itens=(aberto.itens||[]).map((it,i)=>{const k=chaveItem(it,i),c=conf[k]||{};return {id:it.id,grade_conferida:c.grade_conferida||{},status_item:c.status_item||"ok",observacao_item:c.observacao_item||""}});
-          const {romaneio}=await api({action:"conferir",id:aberto.id,conferido_por:nome,itens});setResultado(romaneio);flash("Conferência salva ✅")
-        }catch(e){flash("Erro: "+e.message)}setSalvando(false)
+          const itens=(aberto.itens||[]).map((it,i)=>{
+            const k=chaveItem(it,i),c=conf[k]||{};
+            return {id:it.id,grade_conferida:c.grade_conferida||{},status_item:c.status_item||"ok",observacao_item:c.observacao_item||""}
+          });
+          const {romaneio}=await api({action:"conferir",id:aberto.id,conferido_por:nome,itens});
+          clearDraft("conferir",rota);
+          setAutoSalvo(false);
+          setResultado(romaneio);
+          flash("Conferência salva ✅")
+        }catch(e){flash("Erro: "+e.message)}
+        setSalvando(false)
       }
+
       function relatorio(rom){
         const divs=(rom.itens||[]).filter(it=>it.status_item&&it.status_item!=="ok");
         if(!divs.length)return "Conferido sem divergências ✅";
@@ -541,15 +715,82 @@
         return `⚠️ DIVERGÊNCIAS — ${rom.id}\n${rom.origem} → ${rom.destino}\nConferido por ${rom.conferido_por||"—"}\n\n${linhas}`;
       }
       const copiar=t=>{navigator.clipboard?.writeText(t);flash("Copiado!")};
+
       function baixarConfXlsx(rom){
-        const linhas=(rom.itens||[]).map(it=>({Produto:it.nome_produto||"",Codigo:it.codigo_produto||"",Marca:it.marca||"",Endereco:it.endereco||"","Grade enviada":gradeTexto(parseGrade(it.grade_enviada)),"Total env":somaGrade(parseGrade(it.grade_enviada)),"Grade conferida":gradeTexto(parseGrade(it.grade_conferida)),"Total conf":somaGrade(parseGrade(it.grade_conferida)),Situação:it.status_item||"",Obs:it.observacao_item||""}));
+        const linhas=(rom.itens||[]).map(it=>({
+          Produto:it.nome_produto||"",Codigo:it.codigo_produto||"",Marca:it.marca||"",Endereco:it.endereco||"",
+          "Grade enviada":gradeTexto(parseGrade(it.grade_enviada)),"Total env":somaGrade(parseGrade(it.grade_enviada)),
+          "Grade conferida":gradeTexto(parseGrade(it.grade_conferida)),"Total conf":somaGrade(parseGrade(it.grade_conferida)),
+          Situação:it.status_item||"",Obs:it.observacao_item||""
+        }));
         if(!linhas.length){flash("Nada pra exportar.");return}
-        const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(linhas),"Conferência");XLSX.writeFile(wb,`conferencia-${rom.id}.xlsx`);flash("Planilha baixada 📊")
+        const wb=XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(linhas),"Conferência");
+        XLSX.writeFile(wb,`conferencia-${rom.id}.xlsx`);
+        flash("Planilha baixada 📊")
       }
-      if(resultado){const rel=relatorio(resultado),temDiv=resultado.status==="divergencia";return <div><button className="btn ghost sm" onClick={()=>{setAberto(null);setResultado(null);carregar()}} style={{marginBottom:14}}><I name="chevron-back" size={20}/> Voltar à lista</button><Head eyebrow="Conferência" titulo="Finalizado" sub={`${resultado.id} · ${resultado.origem} → ${resultado.destino}`}/><div className="card"><span className={"chip "+(temDiv?"divergencia":"conferido")}>{temDiv?"⚠️ Com divergência":"✓ Tudo certo"}</span><div className="wpp">{rel}</div><div className="row2" style={{marginTop:14}}><button className="btn primary" onClick={()=>copiar(rel)}><I name="copy-outline"/> Copiar</button><button className="btn ghost" onClick={()=>baixarConfXlsx(resultado)}><I name="download-outline"/> Baixar xlsx</button></div></div></div>}
-      if(aberto)return <div><button className="btn ghost sm" onClick={()=>setAberto(null)} style={{marginBottom:14}}><I name="chevron-back" size={20}/> Romaneios</button><Head eyebrow="Conferência" titulo={`Conferindo ${aberto.id}`} sub={`${aberto.origem} → ${aberto.destino} · por ${aberto.criado_por||"—"} · ${fmtData(aberto.data_criacao)}`}/>{(aberto.itens||[]).map((it,i)=>{const k=chaveItem(it,i),c=conf[k]||{grade_conferida:{},status_item:"ok",observacao_item:""},gEnv=parseGrade(it.grade_enviada),dif=GRADE.some(t=>(Number(gEnv[t])||0)!==(Number((c.grade_conferida||{})[t])||0));return <div className="card" key={k}><div className="item"><div className="tt">{it.nome_produto||"(sem nome)"}</div><div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div><div className="mt">enviado: <b>{gradeTexto(gEnv)}</b> · total {somaGrade(gEnv)}</div></div><label>Recebido por tamanho <span style={{color:"var(--accent)"}}>(total {somaGrade(c.grade_conferida)})</span></label><GradeInput grade={c.grade_conferida||{}} onChange={g=>setItem(k,"grade_conferida",g)}/><label>Situação</label><div className="seg"><button className={c.status_item==="ok"?"on":""} onClick={()=>setItem(k,"status_item","ok")}>✓ OK</button><button className={c.status_item==="divergencia"?"on":""} onClick={()=>setItem(k,"status_item","divergencia")}>⚠️ Divergência</button></div>{dif&&c.status_item==="ok"&&<div className="aviso">Grade diferente da enviada — marque divergência se for o caso.</div>}{c.status_item==="divergencia"&&<><label>O que houve?</label><input value={c.observacao_item||""} onChange={e=>setItem(k,"observacao_item",e.target.value)} placeholder="Ex: faltou 1 no P, peça errada, avariada"/></>}</div>})}<button className="btn primary block" onClick={finalizar} disabled={salvando}>{salvando?"Salvando…":"Finalizar conferência"}</button></div>;
-      const filtrada=(lista||[]).filter(r=>{if(!q.trim())return true;const s=q.toLowerCase();return String(r.id).toLowerCase().includes(s)||String(r.criado_por||"").toLowerCase().includes(s)});
-      return <div><Head eyebrow="Conferência" titulo={`Chegando de ${rota.origem}`} sub={`Romaneios enviados de ${rota.origem} pra ${rota.destino} aguardando conferência.`}/><div className="search"><span className="mag"><I name="search-outline"/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar por código ou pessoa"/></div>{lista===null&&<div className="spin"/>}{lista&&filtrada.length===0&&<div className="empty"><div className="big"><I name="checkmark-done-circle-outline" style={{color:"var(--ok)"}}/></div><p>Nada pendente por aqui.</p></div>}{lista&&filtrada.length>0&&<div className="rows">{filtrada.map(r=><button className="rw" key={r.id} onClick={()=>abrir(r.id)}><div className="ico" style={{width:38,height:38,borderRadius:11,background:"var(--warn-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flex:"0 0 auto"}}><I name="cube" style={{color:"var(--warn)"}}/></div><div className="tx"><div className="tt">{r.id}</div><div className="mt">{r.criado_por||"—"} · {fmtData(r.data_criacao)}</div></div><span className="chip enviado">enviado</span><I name="chevron-forward" style={{color:"var(--muted)"}}/></button>)}</div>}<button className="btn ghost block" style={{marginTop:14}} onClick={carregar}>Atualizar</button></div>
+
+      if(resultado){
+        const rel=relatorio(resultado),temDiv=resultado.status==="divergencia";
+        return <div>
+          <button className="btn ghost sm" onClick={()=>{setAberto(null);setResultado(null);carregar()}} style={{marginBottom:14}}><I name="chevron-back" size={20}/> Voltar à lista</button>
+          <Head eyebrow="Conferência" titulo="Finalizado" sub={`${resultado.id} · ${resultado.origem} → ${resultado.destino}`}/>
+          <div className="card">
+            <span className={"chip "+(temDiv?"divergencia":"conferido")}>{temDiv?"⚠️ Com divergência":"✓ Tudo certo"}</span>
+            <div className="wpp">{rel}</div>
+            <div className="row2" style={{marginTop:14}}>
+              <button className="btn primary" onClick={()=>copiar(rel)}><I name="copy-outline"/> Copiar</button>
+              <button className="btn ghost" onClick={()=>baixarConfXlsx(resultado)}><I name="download-outline"/> Baixar xlsx</button>
+            </div>
+          </div>
+        </div>
+      }
+
+      if(aberto)return <div>
+        <button className="btn ghost sm" onClick={()=>setAberto(null)} style={{marginBottom:14}}><I name="chevron-back" size={20}/> Romaneios</button>
+        <Head eyebrow="Conferência" titulo={`Conferindo ${aberto.id}`} sub={`${aberto.origem} → ${aberto.destino} · por ${aberto.criado_por||"—"} · ${fmtData(aberto.data_criacao)}`}/>
+        {(aberto.itens||[]).map((it,i)=>{
+          const k=chaveItem(it,i),c=conf[k]||{grade_conferida:{},status_item:"ok",observacao_item:""};
+          const gEnv=parseGrade(it.grade_enviada),dif=GRADE.some(t=>(Number(gEnv[t])||0)!==(Number((c.grade_conferida||{})[t])||0));
+          return <div className="card" key={k}>
+            <div className="item">
+              <div className="tt">{it.nome_produto||"(sem nome)"}</div>
+              <div className="mt">{it.marca||"—"} · cód {it.codigo_produto||"—"} · end {it.endereco||"—"}</div>
+              <div className="mt">enviado: <b>{gradeTexto(gEnv)}</b> · total {somaGrade(gEnv)}</div>
+            </div>
+            <label>Recebido por tamanho <span style={{color:"var(--accent)"}}>(total {somaGrade(c.grade_conferida)})</span></label>
+            <GradeInput grade={c.grade_conferida||{}} onChange={g=>setItem(k,"grade_conferida",g)}/>
+            <label>Situação</label>
+            <div className="seg">
+              <button className={c.status_item==="ok"?"on":""} onClick={()=>setItem(k,"status_item","ok")}>✓ OK</button>
+              <button className={c.status_item==="divergencia"?"on":""} onClick={()=>setItem(k,"status_item","divergencia")}>⚠️ Divergência</button>
+            </div>
+            {dif&&c.status_item==="ok"&&<div className="aviso">Grade diferente da enviada — marque divergência se for o caso.</div>}
+            {c.status_item==="divergencia"&&<><label>O que houve?</label><input value={c.observacao_item||""} onChange={e=>setItem(k,"observacao_item",e.target.value)} placeholder="Ex: faltou 1 no P, peça errada, avariada"/></>}
+          </div>
+        })}
+        <div className="row2" style={{marginTop:14}}>
+          <button className="btn ghost" onClick={salvarRascunho}><I name="save-outline"/> Salvar rascunho</button>
+          <button className="btn primary" onClick={finalizar} disabled={salvando}>{salvando?"Salvando…":"Finalizar conferência"}</button>
+        </div>
+        <div style={{fontSize:11.5,color:"var(--muted)",marginTop:9,textAlign:"right"}}>
+          {autoSalvo?"Autosave ativo · conferência salva neste computador":"Autosave aguardando dados…"}
+        </div>
+      </div>;
+
+      const filtrada=(lista||[]).filter(r=>{
+        if(!q.trim())return true;
+        const s=q.toLowerCase();
+        return String(r.id).toLowerCase().includes(s)||String(r.criado_por||"").toLowerCase().includes(s)
+      });
+      return <div>
+        <Head eyebrow="Conferência" titulo={`Chegando de ${rota.origem}`} sub={`Romaneios enviados de ${rota.origem} pra ${rota.destino} aguardando conferência.`}/>
+        <div className="search"><span className="mag"><I name="search-outline"/></span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar por código ou pessoa"/></div>
+        {lista===null&&<div className="spin"/>}
+        {lista&&filtrada.length===0&&<div className="empty"><div className="big"><I name="checkmark-done-circle-outline" style={{color:"var(--ok)"}}/></div><p>Nada pendente por aqui.</p></div>}
+        {lista&&filtrada.length>0&&<div className="rows">{filtrada.map(r=><button className="rw" key={r.id} onClick={()=>abrir(r.id)}><div className="ico" style={{width:38,height:38,borderRadius:11,background:"var(--warn-soft)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flex:"0 0 auto"}}><I name="cube" style={{color:"var(--warn)"}}/></div><div className="tx"><div className="tt">{r.id}</div><div className="mt">{r.criado_por||"—"} · {fmtData(r.data_criacao)}</div></div><span className="chip enviado">enviado</span><I name="chevron-forward" style={{color:"var(--muted)"}}/></button>)}</div>}
+        <button className="btn ghost block" style={{marginTop:14}} onClick={carregar}>Atualizar</button>
+      </div>
     }
 
     function EditarRomaneio({nome,editar,flash,voltar,onEditado}){
